@@ -3,14 +3,14 @@
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 
 <section>
-	<h1>학생 명단 조회</h1>
+	<h1>교수 명단 조회</h1>
 	
 	<!-- 검색 -->
 	<div>
 	<form action="" method="get">
 		<label for="">학과 번호</label>
 		<input type="search" >
-		<label for="">학번</label>
+		<label for="">사번</label>
 		<input type="number" >
 		<button type="submit">
 			<div class="">
@@ -33,7 +33,7 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th>학번</th>
+				<th>사번</th>
 				<th>이름</th>
 				<th>생년월일</th>
 				<th>성별</th>
@@ -41,10 +41,7 @@
 				<th>전화번호</th>
 				<th>이메일</th>
 				<th>학과번호</th>
-				<th>학년</th>
-				<th>학기</th>
-				<th>입학일</th>
-				<th>졸업일(졸업예정일)</th>
+				<th>고용일</th>
 			</tr>
 		</thead>
 		<tbody>

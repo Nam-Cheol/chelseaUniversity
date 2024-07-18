@@ -14,8 +14,9 @@ import java.util.List;
 public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public TuitionController() {
-		super();
+	@Override
+	public void init() throws ServletException {
+		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,9 +35,6 @@ public class TuitionController extends HttpServlet {
 		// 교직원 -> 학사관리 -> 등록금 고지서 페이지
 		case "/bill":
 			request.getRequestDispatcher("/WEB-INF/views/tuition/createPayment.jsp").forward(request, response);
-			break;
-		case "/create":
-			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 			break;
 
 		default:
@@ -73,12 +71,13 @@ public class TuitionController extends HttpServlet {
 
 	/**
 	 * 교직원이 등록금 납부서 발송
+	 * 
 	 * @param request
 	 * @param response
 	 * @param session
 	 */
 	private void handleCreateBill(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		
+
 	}
 
 }
