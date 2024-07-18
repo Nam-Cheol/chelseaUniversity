@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/home/studentHeader2.jsp" %>
+<%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 
 </div>
 </body>

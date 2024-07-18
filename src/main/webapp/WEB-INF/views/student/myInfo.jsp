@@ -1,4 +1,6 @@
-<%@ include file="/WEB-INF/views/home/studentHeader2.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start" style="min-width: 100em;">
