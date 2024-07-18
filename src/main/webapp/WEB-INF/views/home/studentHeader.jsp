@@ -7,6 +7,7 @@
 <title>첼시대학교</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
 </head>
 <body>
 <div class="user-utils-wrap">
@@ -45,5 +46,6 @@
 </li>
 </ul>
 </nav>
-
 </header>
+
+<body>
