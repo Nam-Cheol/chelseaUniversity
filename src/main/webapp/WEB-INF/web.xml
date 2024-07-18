@@ -9,6 +9,13 @@
   <servlet-mapping>
     <servlet-name>GradeController</servlet-name>
     <url-pattern>/GradeController</url-pattern>
+    <display-name>admin</display-name>
+    <servlet-name>admin</servlet-name>
+    <servlet-class>com.chelseaUniversity.ver1.controller.adminController</servlet-class>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>admin</servlet-name>
+    <url-pattern>/admin</url-pattern>
   </servlet-mapping>
   <display-name>chelseaUniversity</display-name>
   <welcome-file-list>
