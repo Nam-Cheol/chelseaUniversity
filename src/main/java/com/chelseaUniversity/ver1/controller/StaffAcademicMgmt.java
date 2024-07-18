@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet("/user/*")
+@WebServlet("/desk")
 public class StaffAcademicMgmt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
