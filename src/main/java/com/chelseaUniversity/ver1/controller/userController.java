@@ -123,9 +123,26 @@ public class userController extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getPathInfo();
+		HttpSession session = request.getSession();
+		System.out.println("액션 : " + action);
+		switch (action) {
+		case "/signin":
+			signInHandler(request,response,session);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/*
+	 * 로그인 기능 처리
+	 */
+	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		String id =  request.getParameter("id");
+		String password = request.getParameter("password");
 	}
 
 }
