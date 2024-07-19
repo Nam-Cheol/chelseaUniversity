@@ -2,7 +2,9 @@ package com.chelseaUniversity.ver1.model.dto;
 
 import java.sql.Date;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * student_tb insert용
@@ -10,6 +12,8 @@ import lombok.Data;
  *
  */
 @Data
+@Builder
+@ToString
 public class CreateStudentDto {
 
 	private String name;
