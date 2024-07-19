@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>첼시대학교</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signIn.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signIn.css" type="text/css">
 </head>
 <body>
 <c:if test="${param.pass == false}">
@@ -28,8 +27,7 @@
         <h3 class="titles">로그인</h3>
         <div class="login">
             <form action="${pageContext.request.contextPath}/user/signin" method="post">
-                <input type="number" id="id" name="id" placeholder="아이디를 입력하세요." class="box" 
-                value="${cookie.id.value}">
+                <input type="number" id="id" name="id" placeholder="아이디를 입력하세요." value="${cookie.id.value}">
                 <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." class="box">
                 <button type="submit">LOGIN</button>
                 <div class="options">

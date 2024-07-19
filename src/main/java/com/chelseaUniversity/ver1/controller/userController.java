@@ -172,6 +172,10 @@ public class userController extends HttpServlet {
 	 */
 	private void showSignIn(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		try {
+			if(request.getParameter("logout") != null) {
+				session.setAttribute("principal", null);
+				session.setAttribute("user", null);
+			}
 			request.getRequestDispatcher("/WEB-INF/views/sign/signin.jsp").forward(request, response);
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
@@ -214,17 +218,20 @@ public class userController extends HttpServlet {
 			if(user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
 				session.setAttribute("principal", student);
-				response.sendRedirect(request.getContextPath()+"?role=student");
+				session.setAttribute("user", user);
+				response.sendRedirect(request.getContextPath());
 				System.out.println("학생으로 로그인");
 			} else if(user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				session.setAttribute("principal", professor);
-				response.sendRedirect(request.getContextPath()+"?role=professor");
+				session.setAttribute("user", user);
+				response.sendRedirect(request.getContextPath());
 				System.out.println("교수로 로그인");
 			} else {
 				Staff staff = userRepository.staffById(id);
 				session.setAttribute("principal", staff);
-				response.sendRedirect(request.getContextPath()+"?role=staff");
+				session.setAttribute("user", user);
+				response.sendRedirect(request.getContextPath());
 				System.out.println("교직원으로 로그인");
 			}
 		} else {

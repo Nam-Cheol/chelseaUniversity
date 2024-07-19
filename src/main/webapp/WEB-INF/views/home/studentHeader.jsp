@@ -23,10 +23,10 @@
 <div class="user-utils-wrap">
 <ul class="user-utils">
 <li>
-	<a href="${pageContext.request.contextPath}/index.jsp">박시우님 (202300001)</a>
+	<a href="${pageContext.request.contextPath}/index.jsp">${principal.name} (${principal.id})</a>
 </li>
 <li>
-	<a href="${pageContext.request.contextPath}/index.jsp">로그아웃</a>
+	<a href="${pageContext.request.contextPath}/user/signin?logout=true">로그아웃</a>
 </li>
 </ul>
 </div>
