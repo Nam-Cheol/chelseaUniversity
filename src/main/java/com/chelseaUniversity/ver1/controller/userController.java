@@ -32,11 +32,11 @@ public class userController extends HttpServlet {
 	private StudentRepository studentRepository;
 	private StudentListForm studentListForm;
 	private UserRepository userRepository;
-	
+
 	@Override
 	public void init() throws ServletException {
-	studentRepository = new StudentRepositoryImpl();
-	studentListForm = new StudentListForm();
+		studentRepository = new StudentRepositoryImpl();
+		studentListForm = new StudentListForm();
 		userRepository = new UserRepositoryImpl();
 	}
 
@@ -66,10 +66,58 @@ public class userController extends HttpServlet {
 			showProfessorCreatePage(request, response, session);
 			break;
 
+		case "/searchStudent":
+			searchStudentList(request, response, session);
+			break;
+
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
+	}
+
+	/**
+	 * 학생 정보 검색 - 학과id, 학번, 몇 개씩 볼 지
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 */
+	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		try {
+			studentListForm = new StudentListForm();
+//			String deptId = request.getParameter("dept_id");
+			String stuId = request.getParameter("stu_id");
+			studentListForm.setStudentId(Integer.parseInt(stuId));
+			System.out.println("학번 : " + stuId);
+//			String limit = request.getParameter("limit");
+
+//			studentListForm.setDeptId(Integer.parseInt(deptId));
+//			studentListForm.setPage(Integer.parseInt(limit));
+
+//			if(studentListForm.getDeptId() != null) {
+//				List<Student> student = studentRepository.selectByDepartmentId(studentListForm);
+//				request.setAttribute("allStudentList", student);
+//				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+//			}else if(studentListForm.getStudentId() != null) {
+//				Student student = studentRepository.selectByStudentId(studentListForm.getStudentId());
+//				request.setAttribute("allStudentList", student);
+//				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+//			}else {
+//				response.sendRedirect(request.getContextPath() + "/user/studentList?stu_list_page=1");
+//			}
+
+			if (studentListForm.getStudentId() != null) {
+				Student student = studentRepository.selectByStudentId(Integer.parseInt(stuId));
+				System.out.println(student);
+				request.setAttribute("allStudentList", student);
+				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -84,7 +132,6 @@ public class userController extends HttpServlet {
 
 			// TODO - 교직원이 맞는지 인증검사
 
-//			int limit = Integer.parseInt(request.getParameter("limit"));
 			int limit = 20;
 			int page = 1;
 
@@ -99,14 +146,14 @@ public class userController extends HttpServlet {
 			}
 
 			int offset = (page - 1) * limit;
-			
+
 			// 전체 학생 수
 			int totalStudents = studentRepository.selectStudentAmount();
 
 			// 총 페이지 수 계산
 			int totalPages = (int) Math.ceil((double) totalStudents / limit);
 
-			List<Student> allStudentList = studentRepository.selectStudentList(studentListForm, limit , offset);
+			List<Student> allStudentList = studentRepository.selectStudentList(studentListForm, limit, offset);
 
 			request.setAttribute("allStudentList", allStudentList);
 			request.setAttribute("totalStudents", totalStudents);
@@ -195,17 +242,18 @@ public class userController extends HttpServlet {
 	/*
 	 * 로그인 기능 처리
 	 */
-	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-		int id =  Integer.parseInt(request.getParameter("id"));
+	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
 		User user = userRepository.selectById_Password(id, password);
-		if(user != null) {
-			if(user.getUserRole().equals("student")) {
+		if (user != null) {
+			if (user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
 				session.setAttribute("principal", student);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("학생으로 로그인");
-			} else if(user.getUserRole().equals("professor")) {
+			} else if (user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				session.setAttribute("principal", professor);
 				response.sendRedirect(request.getContextPath());
@@ -217,7 +265,7 @@ public class userController extends HttpServlet {
 				System.out.println("교직원으로 로그인");
 			}
 		} else {
-				response.sendRedirect(request.getContextPath()+"/user/signin?pass=false");
+			response.sendRedirect(request.getContextPath() + "/user/signin?pass=false");
 		}
 	}
 

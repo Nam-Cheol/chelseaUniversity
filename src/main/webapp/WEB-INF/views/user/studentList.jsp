@@ -7,9 +7,8 @@
 
 	<!-- 검색 -->
 	<div>
-		<form action="${pageContext.request.contextPath}/user/studentList" method="get">
-			<!-- <input type="text" name="limit" value="20"> -->
-			<label for="dept_id">학과 번호</label> <input type="search" id="dept_id"> <label for="stu_id">학번</label> <input type="search" id="stu_id">
+		<form action="${pageContext.request.contextPath}/user/searchStudent" method="get">
+			<label for="dept_id">학과 번호</label> <input type="search" id="dept_id" name="dept_id"> <label for="stu_id">학번</label> <input type="search" id="stu_id" name="stu_id">
 			<button type="submit">
 				<div class="">
 					<p>조회</p>
@@ -23,6 +22,12 @@
 					<p>새학기 적용</p>
 				</div>
 			</button>
+			
+			<select name ="limit">
+			<option value="20">20개씩</option>
+			<option value="40">40개씩</option>
+			<option value="60">60개씩</option>
+			</select>
 		</form>
 	</div>
 
@@ -46,21 +51,21 @@
 					<th>졸업일(졸업예정일)</th>
 				</tr>
 			</thead>
-			<c:forEach var="allStudentList" items="${allStudentList}">
+			<c:forEach var="studentList" items="${allStudentList}">
 				<tbody>
 					<tr>
-						<td>${allStudentList.id}</td>
-						<td>${allStudentList.name}</td>
-						<td>${allStudentList.birthDate}</td>
-						<td>${allStudentList.gender}</td>
-						<td>${allStudentList.address}</td>
-						<td>${allStudentList.tel}</td>
-						<td>${allStudentList.email}</td>
-						<td>${allStudentList.deptId}</td>
-						<td>${allStudentList.grade}</td>
-						<td>${allStudentList.semester}</td>
-						<td>${allStudentList.entranceDate}</td>
-						<td>${allStudentList.graduationDate}</td>
+						<td>${studentList.id}</td>
+						<td>${studentList.name}</td>
+						<td>${studentList.birthDate}</td>
+						<td>${studentList.gender}</td>
+						<td>${studentList.address}</td>
+						<td>${studentList.tel}</td>
+						<td>${studentList.email}</td>
+						<td>${studentList.deptId}</td>
+						<td>${studentList.grade}</td>
+						<td>${studentList.semester}</td>
+						<td>${studentList.entranceDate}</td>
+						<td>${studentList.graduationDate}</td>
 					</tr>
 				</tbody>
 			</c:forEach>
