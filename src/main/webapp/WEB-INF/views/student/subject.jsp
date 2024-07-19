@@ -14,7 +14,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/student/info" class="selected--menu">전체 강의 조회</a></td>
+					<td><a href="/chelseaUniversity/subject/list" class="selected--menu">전체 강의 조회</a></td>
 				</tr>
 			</table>
 		</div>

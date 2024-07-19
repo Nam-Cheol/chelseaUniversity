@@ -21,7 +21,7 @@ public class SubjectController extends HttpServlet {
 		
 		switch (action) {
 		case "/list":
-			request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
 			break;
 
 		default:

@@ -49,4 +49,14 @@
     <servlet-name>SugangController</servlet-name>
     <url-pattern>/SugangController</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>boardController</display-name>
+    <servlet-name>boardController</servlet-name>
+    <servlet-class>com.chelseaUniversity.ver1.controller.boardController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>boardController</servlet-name>
+    <url-pattern>/boardController</url-pattern>
+  </servlet-mapping>
 </web-app>

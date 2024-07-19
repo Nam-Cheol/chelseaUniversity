@@ -11,14 +11,23 @@
 	<!-- 세부 메뉴 div-->
 	<div class="sub--menu">
 		<div class="sub--menu--top">
-			<h2>수업</h2>
+			<h2>수강신청</h2>
 		</div>
 		<!-- 메뉴 -->
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
 					<td><a href="/chelseaUniversity/student/info"
-						class="selected--menu">전체 강의 조회</a></td>
+						class="selected--menu">강의 시간표 조회</a></td>
+				</tr>
+				<tr>
+					<td><a href="/chelseaUniversity/student/info">예비 수강 신청</a></td>
+				</tr>
+				<tr>
+					<td><a href="/chelseaUniversity/student/info">수강 신청</a></td>
+				</tr>
+				<tr>
+					<td><a href="/chelseaUniversity/student/info">수강 신청 내역 조회</a></td>
 				</tr>
 			</table>
 		</div>
