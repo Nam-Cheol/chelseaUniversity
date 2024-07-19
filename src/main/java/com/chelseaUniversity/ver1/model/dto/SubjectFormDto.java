@@ -1,12 +1,16 @@
 package com.chelseaUniversity.ver1.model.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-/**
- * 
- * @author 박성희
- *
- */
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class SubjectFormDto {
 	private Integer id;
 	private String name;
