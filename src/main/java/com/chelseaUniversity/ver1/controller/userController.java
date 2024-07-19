@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,41 +85,55 @@ public class userController extends HttpServlet {
 	 * @param response
 	 * @param session
 	 */
-	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws NumberFormatException ,IOException {
+		studentListForm = new StudentListForm();
+		
 		try {
-			studentListForm = new StudentListForm();
-//			String deptId = request.getParameter("dept_id");
-			String stuId = request.getParameter("stu_id");
-			studentListForm.setStudentId(Integer.parseInt(stuId));
-			System.out.println("학번 : " + stuId);
-//			String limit = request.getParameter("limit");
 
-//			studentListForm.setDeptId(Integer.parseInt(deptId));
-//			studentListForm.setPage(Integer.parseInt(limit));
+			if (request.getParameter("dept_id") != null) {
+				String deptId = request.getParameter("dept_id");
+				String limit = request.getParameter("limit");
 
-//			if(studentListForm.getDeptId() != null) {
-//				List<Student> student = studentRepository.selectByDepartmentId(studentListForm);
-//				request.setAttribute("allStudentList", student);
-//				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-//			}else if(studentListForm.getStudentId() != null) {
-//				Student student = studentRepository.selectByStudentId(studentListForm.getStudentId());
-//				request.setAttribute("allStudentList", student);
-//				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-//			}else {
-//				response.sendRedirect(request.getContextPath() + "/user/studentList?stu_list_page=1");
-//			}
+				studentListForm.setDeptId(Integer.parseInt(deptId));
+				studentListForm.setPage(Integer.parseInt(limit));
 
-			if (studentListForm.getStudentId() != null) {
-				Student student = studentRepository.selectByStudentId(Integer.parseInt(stuId));
-				System.out.println(student);
+				System.out.println("1 : " + deptId);
+				System.out.println("3" + limit);
+
+				List<Student> student = studentRepository.selectByDepartmentId(studentListForm);
 				request.setAttribute("allStudentList", student);
+				System.out.println("11111111" + student);
 				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			if (request.getParameter("stu_id") != null) {
+				String stuId = request.getParameter("stu_id");
+				String limit = request.getParameter("limit");
 
+				studentListForm.setDeptId(Integer.parseInt(stuId));
+				studentListForm.setPage(Integer.parseInt(limit));
+
+				System.out.println("1 : " + stuId);
+				System.out.println("3" + limit);
+
+				Student student = studentRepository.selectByStudentId(Integer.parseInt(stuId));
+				request.setAttribute("oneStudent", student);
+				System.out.println("222222222" + student);
+				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	
+		
 	}
 
 	/**
@@ -219,7 +234,7 @@ public class userController extends HttpServlet {
 	 */
 	private void showSignIn(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		try {
-			if(request.getParameter("logout") != null) {
+			if (request.getParameter("logout") != null) {
 				session.setAttribute("principal", null);
 				session.setAttribute("user", null);
 			}
@@ -253,17 +268,17 @@ public class userController extends HttpServlet {
 		String password = request.getParameter("password");
 		String save = request.getParameter("save-login");
 		User user = userRepository.selectById_Password(id, password);
-		if(user != null) {
-			if(save != null) {
+		if (user != null) {
+			if (save != null) {
 				Cookie cookie = new Cookie("id", String.valueOf(id));
-				cookie.setMaxAge(60*60*24);
+				cookie.setMaxAge(60 * 60 * 24);
 				response.addCookie(cookie);
 				System.out.println("쿠키전송");
 			} else {
 				Cookie cookie = new Cookie("id", null);
 				response.addCookie(cookie);
 			}
-			if(user.getUserRole().equals("student")) {
+			if (user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
 				session.setAttribute("principal", student);
 				session.setAttribute("user", user);

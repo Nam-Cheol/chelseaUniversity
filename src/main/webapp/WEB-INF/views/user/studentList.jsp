@@ -69,6 +69,24 @@
 					</tr>
 				</tbody>
 			</c:forEach>
+			<c:if test="${not empty oneStudent }">
+				<tbody>
+					<tr>
+						<td>${oneStudent.id}</td>
+						<td>${oneStudent.name}</td>
+						<td>${oneStudent.birthDate}</td>
+						<td>${oneStudent.gender}</td>
+						<td>${oneStudent.address}</td>
+						<td>${oneStudent.tel}</td>
+						<td>${oneStudent.email}</td>
+						<td>${oneStudent.deptId}</td>
+						<td>${oneStudent.grade}</td>
+						<td>${oneStudent.semester}</td>
+						<td>${oneStudent.entranceDate}</td>
+						<td>${oneStudent.graduationDate}</td>
+					</tr>
+				</tbody>
+			</c:if>
 		</table>
 
 		<div class="pagination">
