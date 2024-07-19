@@ -66,11 +66,31 @@ public class userController extends HttpServlet {
 		case "/professor":
 			showProfessorCreatePage(request, response, session);
 			break;
-
+		case "/findid":
+			showFindIdPage(request, response, session);
+			break;
+		case "/findpassword":
+			showFindPasswordPage(request, response, session);
+			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
+	}
+	
+	/*
+	 * 비밀번호 찾기 페이지 처리
+	 */
+	private void showFindPasswordPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		System.out.println("비밀번호 찾기");
+		request.getRequestDispatcher("/WEB-INF/views/find/findPassword.jsp").forward(request, response);
+	}
+
+	/*
+	 * 아이디 찾기 페이지 처리
+	 */
+	private void showFindIdPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/views/find/findId.jsp").forward(request, response);
 	}
 
 	/**
@@ -204,15 +224,16 @@ public class userController extends HttpServlet {
 		int id =  Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
 		String save = request.getParameter("save-login");
+		Cookie cookie = null;
 		User user = userRepository.selectById_Password(id, password);
 		if(user != null) {
 			if(save != null) {
-				Cookie cookie = new Cookie("id", String.valueOf(id));
+				cookie = new Cookie("id", String.valueOf(id));
 				cookie.setMaxAge(60*60*24);
 				response.addCookie(cookie);
-				System.out.println("쿠키전송");
 			} else {
-				Cookie cookie = new Cookie("id", null);
+				cookie = new Cookie("id", String.valueOf(id));
+				cookie.setMaxAge(0);
 				response.addCookie(cookie);
 			}
 			if(user.getUserRole().equals("student")) {
