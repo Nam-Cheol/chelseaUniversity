@@ -21,7 +21,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	// 나중에 Define 클래스로 이동
 	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,grade,semester,entrance_date,graduation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
-	public static final String SELECT_ALL_STUDENT_SQL = " SEvmwECT * FROM student_tb ORDER BY id limit = ? offset = ? ";
+	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit = ? offset = ? ";
 
 	@Override
 	public int insertToStudent(CreateStudentDto createStudentDto) {
