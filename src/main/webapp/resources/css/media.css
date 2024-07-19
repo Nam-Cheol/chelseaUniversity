@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+/* 타블렛 가로, 노트북 */
+@media (max-width:1280px) {
+	
+	.header-wrap{
+	width: 100%;
+	}
+	
+	.header-toggle{
+		display: block;
+	}
+	
+	.gnb{
+	display: none;
+	}
+	
+	.menu-toggle-wrap{
+	display: block;
+	}
+	
+}
+
+
+/* 768px - 모바일 가로, 타블렛 세로 */
+
+/* 480px - 모바일 세로 */
