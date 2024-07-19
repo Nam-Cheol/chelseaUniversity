@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.ChangePasswordDto;
 import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
+import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
 import com.chelseaUniversity.ver1.utill.DBUtil;
 
@@ -40,53 +43,62 @@ public class UserRepositoryImpl implements UserRepository{
 	// 로그인성공시 유저정보 받아오기
 	// 학생 정보 받아오기
 	@Override
-	public String studentById(int id) {
-		String name = null;
+	public StudentInfoDto studentById(int id) {
+		StudentInfoDto student = null;
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(GET_STUDENT_BYID)){
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				name = rs.getString("name");
+				student = StudentInfoDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.tel(rs.getString("tel")).email(rs.getString("email")).deptId(rs.getInt("dept_id"))
+						.grade(rs.getInt("grade")).semester(rs.getInt("semester")).entranceDate(rs.getDate("entrance_date"))
+						.graduationDate(rs.getDate("graduation_date")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return name;
+		return student;
 	}
 	
 	// 교수 정보 받아오기
 	@Override
-	public String professorById(int id) {
-		String name = null;
+	public ProfessorInfoDto professorById(int id) {
+		ProfessorInfoDto professor = null;
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(GET_PROFESSOR_BYID)){
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				name = rs.getString("name");
+				professor = ProfessorInfoDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("id")).hireDate(rs.getDate("hire_date")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return name;
+		return professor;
 	}
 
 	// 교직원 정보 받아오기
 	@Override
-	public String staffById(int id) {
-		String name = null;
+	public Staff staffById(int id) {
+		Staff staff = null;
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(GET_STAFF_BYID)){
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				name = rs.getString("name");
+				staff = Staff.builder().id(rs.getInt("id")).name(rs.getString("name")).birthDate(rs.getDate("birth_date"))
+						.gender(rs.getString("gender")).address(rs.getString("address")).tel(rs.getString("tel"))
+						.email(rs.getString("email")).hireDate(rs.getDate("hire_date")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return name;
+		return staff;
 	}
 
 	

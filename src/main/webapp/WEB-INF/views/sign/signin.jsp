@@ -27,7 +27,7 @@
         <h3 class="titles">로그인</h3>
         <div class="login">
             <form action="${pageContext.request.contextPath}/user/signin" method="post">
-                <input type="text" id="id" name="id" placeholder="아이디를 입력하세요." class="box">
+                <input type="number" id="id" name="id" placeholder="아이디를 입력하세요." class="box">
                 <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." class="box">
                 <button type="submit">LOGIN</button>
                 <div class="options">
