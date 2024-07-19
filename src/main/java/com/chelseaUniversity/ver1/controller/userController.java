@@ -1,5 +1,21 @@
 package com.chelseaUniversity.ver1.controller;
 
+import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
+
+import com.chelseaUniversity.ver1.model.Staff;
+import com.chelseaUniversity.ver1.model.Student;
+import com.chelseaUniversity.ver1.model.User;
+import com.chelseaUniversity.ver1.model.dto.CreateStudentDto;
+import com.chelseaUniversity.ver1.model.dto.StudentListForm;
+import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -7,25 +23,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
-import java.util.List;
-
-import com.chelseaUniversity.ver1.model.Student;
-import com.chelseaUniversity.ver1.model.dto.StudentListForm;
-import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
-import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
-
-import org.eclipse.jdt.internal.compiler.parser.RecoveredRequiresStatement;
-
-import com.chelseaUniversity.ver1.model.Staff;
-import com.chelseaUniversity.ver1.model.User;
-import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
-import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
-import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
-import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
-import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
 
 @WebServlet("/user/*")
 public class userController extends HttpServlet {
@@ -85,9 +82,10 @@ public class userController extends HttpServlet {
 	 * @param response
 	 * @param session
 	 */
-	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws NumberFormatException ,IOException {
+	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws NumberFormatException, IOException {
 		studentListForm = new StudentListForm();
-		
+
 		try {
 
 			if (request.getParameter("dept_id") != null) {
@@ -110,7 +108,7 @@ public class userController extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			if (request.getParameter("stu_id") != null) {
 				String stuId = request.getParameter("stu_id");
@@ -132,8 +130,6 @@ public class userController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-	
-		
 	}
 
 	/**
@@ -253,10 +249,53 @@ public class userController extends HttpServlet {
 		case "/signin":
 			signInHandler(request, response, session);
 			break;
+		case "/student":
+			CreateStudentHandler(request, response, session);
+			break;
 
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * 교직원 -> 학생 추가
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 */
+	private void CreateStudentHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+		try {
+			String name = request.getParameter("name");
+			String birth = request.getParameter("birth");
+			String gender = request.getParameter("gender");
+			String address = request.getParameter("address");
+			String tel = request.getParameter("tel");
+			String email = request.getParameter("email");
+			String deptId = request.getParameter("deptId");
+			String entranceDate = request.getParameter("entranceDate");
+
+			CreateStudentDto createStudentDto = CreateStudentDto.builder().name(name).birthDate(Date.valueOf(birth)).gender("남성")
+					.address(address).tel(tel).deptId(Integer.parseInt(deptId)).entranceDate(Date.valueOf(entranceDate)).email(email).build();
+
+			System.out.println(createStudentDto);
+			
+			int rowCount=studentRepository.insertToStudent(createStudentDto);
+			
+			if(rowCount == 1) {
+				System.out.println("학생 등록 성공");
+				response.sendRedirect(request.getContextPath()+"/user/student");
+			}else {
+				System.out.println("학생 등록 실패");
+				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/*

@@ -20,7 +20,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class StudentRepositoryImpl implements StudentRepository {
 
 	// 나중에 Define 클래스로 이동
-	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,grade,semester,entrance_date,graduation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,entrance_date,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ORDER BY id ";
 	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id = ? ";
@@ -40,8 +40,9 @@ public class StudentRepositoryImpl implements StudentRepository {
 				pstmt.setString(4, createStudentDto.getAddress());
 				pstmt.setString(5, createStudentDto.getTel());
 				pstmt.setInt(6, createStudentDto.getDeptId());
-				// TODO - 나머지 학생 정보 기입 + 학년이랑 학기 DTO 없음.
-				pstmt.executeUpdate();
+				pstmt.setDate(7, createStudentDto.getEntranceDate());
+				pstmt.setString(8, createStudentDto.getEmail());
+				rowCount = pstmt.executeUpdate();
 				conn.commit();
 			} catch (Exception e) {
 				conn.rollback();
