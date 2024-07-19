@@ -21,7 +21,8 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	// 나중에 Define 클래스로 이동
 	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,grade,semester,entrance_date,graduation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
-	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit = ? offset = ? ";
+	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
+	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ORDER BY id ";
 
 	@Override
 	public int insertToStudent(CreateStudentDto createStudentDto) {
@@ -50,31 +51,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 		}
 
 		return rowCount;
-	}
-
-	/**
-	 * 학생 전체 조회
-	 * 
-	 */
-	public List<CreateStudentDto> getAllStudent(int limit, int offset){
-		
-		List<CreateStudentDto> allStudentList = new ArrayList<>();
-		
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)){
-			pstmt.setInt(1, limit);
-			pstmt.setInt(2, offset);
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				allStudentList.add(CreateStudentDto.builder()
-						.name("name").birthDate(null).gender("").address("").tel("").deptId(null).entranceDate(null).email("").build());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return allStudentList;
-		
 	}
 
 	@Override
@@ -125,10 +101,26 @@ public class StudentRepositoryImpl implements StudentRepository {
 		return null;
 	}
 
+	/**
+	 * 교직원 -> 학생 전체 조회
+	 */
 	@Override
-	public List<Student> selectStudentList(StudentListForm studentListForm) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Student> selectStudentList(StudentListForm studentListForm , int limit, int offset) {
+		List<Student> allStudentList = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name")).birthDate(rs.getDate("birth_date")).gender(rs.getString("gender")).address(rs.getString("address"))
+						.tel(rs.getString("tel")).deptId(rs.getInt("dept_id")).entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allStudentList;
 	}
 
 	@Override
@@ -143,10 +135,26 @@ public class StudentRepositoryImpl implements StudentRepository {
 		return null;
 	}
 
+	/**
+	 * 페이지 개수를 확인하기 위해 학생 전체 수 조회
+	 */
 	@Override
 	public Integer selectStudentAmount() {
-		// TODO Auto-generated method stub
-		return null;
+
+		int totalStudents = 0;
+		
+		try (Connection conn = DBUtil.getConnection()){
+			
+			PreparedStatement pstmt = conn.prepareStatement(COUNT_ALL_STUDENT_SQL);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				totalStudents = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return totalStudents;
 	}
 
 	@Override

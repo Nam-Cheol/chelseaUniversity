@@ -2,9 +2,13 @@ package com.chelseaUniversity.ver1.model;
 
 import java.sql.Date;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@Builder
+@ToString
 public class Student {
 	
 	private Integer id;
