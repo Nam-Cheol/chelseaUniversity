@@ -10,6 +10,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/signIn.css">
 </head>
 <body>
+<c:if test="${param.pass == false}">
+	<script>
+		alert("아이디 혹은 비밀번호가 틀렸습니다.")
+	</script>
+</c:if>
 <!-- s : header-->
     <header>
         <div class="Logo">

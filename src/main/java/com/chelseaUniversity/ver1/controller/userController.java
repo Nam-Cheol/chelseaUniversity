@@ -9,13 +9,21 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.internal.compiler.parser.RecoveredRequiresStatement;
+
+import com.chelseaUniversity.ver1.model.User;
+import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
+import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
+
 @WebServlet("/user/*")
 public class userController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private UserRepository userRepository;
+	
 	@Override
 	public void init() throws ServletException {
-
+		userRepository = new UserRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -140,9 +148,36 @@ public class userController extends HttpServlet {
 	/*
 	 * 로그인 기능 처리
 	 */
-	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String id =  request.getParameter("id");
+	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		int id =  Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
+		User user = userRepository.selectById_Password(id, password);
+		if(user != null) {
+			if(user.getUserRole().equals("student")) {
+				String name = userRepository.studentById(id);
+				PrincipalDto principal = PrincipalDto.builder().id(user.getId())
+						.password(user.getPassword()).userRole(user.getUserRole())
+						.name(name).build();
+				session.setAttribute("principal", principal);
+				response.sendRedirect(request.getContextPath());
+			} else if(user.getUserRole().equals("professor")) {
+				String name = userRepository.professorById(id);
+				PrincipalDto principal = PrincipalDto.builder().id(user.getId())
+						.password(user.getPassword()).userRole(user.getUserRole())
+						.name(name).build();
+				session.setAttribute("principal", principal);
+				response.sendRedirect(request.getContextPath());
+			} else {
+				String name = userRepository.staffById(id);
+				PrincipalDto principal = PrincipalDto.builder().id(user.getId())
+						.password(user.getPassword()).userRole(user.getUserRole())
+						.name(name).build();
+				session.setAttribute("principal", principal);
+				response.sendRedirect(request.getContextPath());
+			}
+		} else {
+				response.sendRedirect(request.getContextPath()+"/user/signin?pass=false");
+		}
 	}
 
 }

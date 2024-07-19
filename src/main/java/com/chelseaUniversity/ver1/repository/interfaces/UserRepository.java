@@ -7,7 +7,13 @@ import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
 public interface UserRepository {
 	
 	// 로그인용
-	public PrincipalDto selectById(Integer userId);
+	public User selectById_Password(int id, String password);
+	
+	public String studentById(int id);
+	
+	public String professorById(int id);
+	
+	public String staffById(int id);
 	
 	// 패스워드 변경
 	public int updatePassword(ChangePasswordDto changePasswordDto);
