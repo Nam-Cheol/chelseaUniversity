@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<h4>강의 목록</h4>
 		<table border="1">
 			<tbody>
 				<tr>
@@ -34,13 +36,50 @@
 					<th>정원</th>
 					<th>강의계획서</th>
 				</tr>
-				<c:forEach var="subject"  items="${subjectList}">
+				<c:forEach var="subject"  items="${classesList}">
 					<tr>
-						<th></th>
+						<td><c:out value="${subject.subYear}-${subject.semester}학기"></c:out></td>
+						<td><c:choose>
+							<c:when test="${fn:startsWith(subject.roomId, 'E')}">
+								<c:out value="공과대학"></c:out>
+							</c:when>
+							<c:when test="${fn:startsWith(subject.roomId, 'H')}">
+								<c:out value="인문대학"></c:out>
+							</c:when>
+							<c:when test="${fn:startsWith(subject.roomId, 'S')}">
+								<c:out value="사회과학대학"></c:out>
+							</c:when>
+							<c:when test="${fn:startsWith(subject.roomId, 'C')}">
+								<c:out value="상경대학"></c:out>
+							</c:when>
+						</c:choose></td>
+						<td><c:out value="${subject.deptId}"></c:out></td>
+						<td><c:out value="${subject.id}"></c:out></td>
+						<td><c:out value="${subject.type}"></c:out></td>
+						<td><c:out value="${subject.name}"></c:out></td>
+						<td><c:out value="${subject.professorId}"></c:out></td>
+						<td><c:out value="${subject.grades}"></c:out></td>
+						<td><c:out value="${subject.numOfStudent}"></c:out></td>
+						<td><c:out value="${subject.capacity}"></c:out></td>
+						<td><a href="${pageContext.request.contextPath}/subject/syllabus/${subject.id}">강의계획서</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
+	</div>
+		<br>
+	<div class="pagination">
+		<!-- index for  -->
+		<c:forEach begin="1" end="${totalPages}"  var="i" >
+			<c:choose>
+				<c:when test="${ i == currentPage }">
+					<span class="current-page" >${i}</span>
+				</c:when>
+				<c:otherwise>
+					<span><a href="${pageContext.request.contextPath}/subject/list?page=${i}">${i}</a></span>	
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
 	</div>
 </body>
 </html>
