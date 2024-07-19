@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
 	<Resource
-<<<<<<< HEAD
 		name="jdbc/university"
-=======
-		name="jdbc/MyDB"
->>>>>>> c76436a22914fd214abf05a2651c829388b38257
 		auth="Container"
 		type="javax.sql.DataSource"
 		factory="com.zaxxer.hikari.HikariJNDIFactory"
