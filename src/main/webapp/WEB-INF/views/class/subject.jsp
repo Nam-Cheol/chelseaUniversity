@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,13 +13,13 @@
 		<table>
 			<tbody>
 				<tr>
-					<td><a href="/subject/list/1">전체 강의 조회</a></td>
-					<td><a href="/professor/subject">내 강의 조회</a></td>
-					<td><a href="/evaluation/read">내 강의 평가</a></td>
+					<td><a href=${pageContext.request.contextPath}/subject/list>전체 강의 조회</a></td>
+					<td><a href=${pageContext.request.contextPath}/professor/subject>내 강의 조회</a></td>
+					<td><a href=${pageContext.request.contextPath}/evaluation/read>내 강의 평가</a></td>
 				</tr>
 			</tbody>
 		</table>
-		<table>
+		<table border="1">
 			<tbody>
 				<tr>
 					<th>연도/학기</th>
@@ -32,6 +34,11 @@
 					<th>정원</th>
 					<th>강의계획서</th>
 				</tr>
+				<c:forEach var="subject"  items="${subjectList}">
+					<tr>
+						<th></th>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
