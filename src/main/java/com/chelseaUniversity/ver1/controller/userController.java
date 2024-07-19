@@ -2,6 +2,7 @@ package com.chelseaUniversity.ver1.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -218,6 +219,10 @@ public class userController extends HttpServlet {
 	 */
 	private void showSignIn(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		try {
+			if(request.getParameter("logout") != null) {
+				session.setAttribute("principal", null);
+				session.setAttribute("user", null);
+			}
 			request.getRequestDispatcher("/WEB-INF/views/sign/signin.jsp").forward(request, response);
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
@@ -246,21 +251,34 @@ public class userController extends HttpServlet {
 			throws IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
+		String save = request.getParameter("save-login");
 		User user = userRepository.selectById_Password(id, password);
-		if (user != null) {
-			if (user.getUserRole().equals("student")) {
+		if(user != null) {
+			if(save != null) {
+				Cookie cookie = new Cookie("id", String.valueOf(id));
+				cookie.setMaxAge(60*60*24);
+				response.addCookie(cookie);
+				System.out.println("쿠키전송");
+			} else {
+				Cookie cookie = new Cookie("id", null);
+				response.addCookie(cookie);
+			}
+			if(user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
 				session.setAttribute("principal", student);
+				session.setAttribute("user", user);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("학생으로 로그인");
 			} else if (user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				session.setAttribute("principal", professor);
+				session.setAttribute("user", user);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("교수로 로그인");
 			} else {
 				Staff staff = userRepository.staffById(id);
 				session.setAttribute("principal", staff);
+				session.setAttribute("user", user);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("교직원으로 로그인");
 			}
