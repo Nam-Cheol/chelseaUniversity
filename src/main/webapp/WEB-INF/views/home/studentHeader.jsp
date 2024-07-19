@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,19 +47,19 @@
 <a href="${pageContext.request.contextPath}/index.jsp">홈</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/views/my/myDB.jsp">MY</a>
+<a href="${pageContext.request.contextPath}/student/info">MY</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">수업</a>
+<a href="${pageContext.request.contextPath}/subject/list">수업</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">수강신청</a>
+<a href="${pageContext.request.contextPath}/sugang/list">수강신청</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/index.jsp">성적</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">학사정보</a>
+<a href="${pageContext.request.contextPath}/notice">학사정보</a>
 </li>
 </ul>
 <!-- e : gnb -->

@@ -36,6 +36,14 @@ public class TuitionController extends HttpServlet {
 		case "/bill":
 			request.getRequestDispatcher("/WEB-INF/views/tuition/createPayment.jsp").forward(request, response);
 			break;
+			
+		case "/list":
+			request.getRequestDispatcher("/WEB-INF/views/student/tuitionHistory.jsp").forward(request, response);
+			break;
+			
+		case "/payment":
+			request.getRequestDispatcher("/WEB-INF/views/student/tuitionBill.jsp").forward(request, response);
+			break;
 
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
