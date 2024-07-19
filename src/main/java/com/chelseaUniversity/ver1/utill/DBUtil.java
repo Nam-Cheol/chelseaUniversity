@@ -18,7 +18,7 @@ public class DBUtil {
 		try {
 			// InitialContext 객체를 생성하여 JNDI API 기술을 통해 존재하는 리소를 찾는 방법
 			InitialContext ctx = new InitialContext();
-			dataSource = (DataSource)ctx.lookup("java:comp/env/jdbc/MyDB");
+			dataSource = (DataSource)ctx.lookup("java:comp/env/jdbc/university");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

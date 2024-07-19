@@ -9,13 +9,24 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.internal.compiler.parser.RecoveredRequiresStatement;
+
+import com.chelseaUniversity.ver1.model.Staff;
+import com.chelseaUniversity.ver1.model.User;
+import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
+import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
+
 @WebServlet("/user/*")
 public class userController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private UserRepository userRepository;
+	
 	@Override
 	public void init() throws ServletException {
-
+		userRepository = new UserRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -140,9 +151,30 @@ public class userController extends HttpServlet {
 	/*
 	 * 로그인 기능 처리
 	 */
-	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String id =  request.getParameter("id");
+	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		int id =  Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
+		User user = userRepository.selectById_Password(id, password);
+		if(user != null) {
+			if(user.getUserRole().equals("student")) {
+				StudentInfoDto student = userRepository.studentById(id);
+				session.setAttribute("principal", student);
+				response.sendRedirect(request.getContextPath());
+				System.out.println("학생으로 로그인");
+			} else if(user.getUserRole().equals("professor")) {
+				ProfessorInfoDto professor = userRepository.professorById(id);
+				session.setAttribute("principal", professor);
+				response.sendRedirect(request.getContextPath());
+				System.out.println("교수로 로그인");
+			} else {
+				Staff staff = userRepository.staffById(id);
+				session.setAttribute("principal", staff);
+				response.sendRedirect(request.getContextPath());
+				System.out.println("교직원으로 로그인");
+			}
+		} else {
+				response.sendRedirect(request.getContextPath()+"/user/signin?pass=false");
+		}
 	}
 
 }
