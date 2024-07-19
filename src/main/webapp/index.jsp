@@ -1,5 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:choose>
+<c:when test="${principal == null}">
+<%@ include file="/WEB-INF/views/sign/signin.jsp" %>
+</c:when>
 <c:when test="${param.role eq 'student'}">
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 </c:when>

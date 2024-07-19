@@ -21,7 +21,7 @@ public class SugangController extends HttpServlet {
 		
 		switch (action) {
 		case "/list":
-			
+			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
 			break;
 
 		default:
