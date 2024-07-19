@@ -59,6 +59,7 @@ button:hover {
 	background-color: #00CDFF;
 	color: black;
 }
+
 .options {
     display: flex;
     justify-content: flex-start;

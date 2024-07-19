@@ -13,12 +13,25 @@
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 </c:otherwise>
 </c:choose>
+<%
+	
+%>
 <div class="media">
 <div class="main">
 	<img src="${pageContext.request.contextPath}/resources/img/stampord.jpg" alt="스탬포드 브릿지"
 	class="stampord">
 </div>
-<div class="notice"></div>
+<div class="notice">
+<h2>공지사항</h2>
+<hr width ="90%" align ="left" color = blue>
+</div>
+<div class="notice">
+<h2>학사일정</h2>
+<hr width ="80%" align ="left" color = blue>
+</div>
+<div class="notice">
+<p>${principal.name}님,환영합니다.</p>
+</div>
 </div>
 </body>
 </html>
