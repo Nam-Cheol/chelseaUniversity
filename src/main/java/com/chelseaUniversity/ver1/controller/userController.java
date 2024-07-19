@@ -2,6 +2,7 @@ package com.chelseaUniversity.ver1.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -154,22 +155,32 @@ public class userController extends HttpServlet {
 	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 		int id =  Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
+		String save = request.getParameter("save-login");
 		User user = userRepository.selectById_Password(id, password);
 		if(user != null) {
+			if(save != null) {
+				Cookie cookie = new Cookie("id", String.valueOf(id));
+				cookie.setMaxAge(60*60*24);
+				response.addCookie(cookie);
+				System.out.println("쿠키전송");
+			} else {
+				Cookie cookie = new Cookie("id", null);
+				response.addCookie(cookie);
+			}
 			if(user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
 				session.setAttribute("principal", student);
-				response.sendRedirect(request.getContextPath());
+				response.sendRedirect(request.getContextPath()+"?role=student");
 				System.out.println("학생으로 로그인");
 			} else if(user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				session.setAttribute("principal", professor);
-				response.sendRedirect(request.getContextPath());
+				response.sendRedirect(request.getContextPath()+"?role=professor");
 				System.out.println("교수로 로그인");
 			} else {
 				Staff staff = userRepository.staffById(id);
 				session.setAttribute("principal", staff);
-				response.sendRedirect(request.getContextPath());
+				response.sendRedirect(request.getContextPath()+"?role=staff");
 				System.out.println("교직원으로 로그인");
 			}
 		} else {
