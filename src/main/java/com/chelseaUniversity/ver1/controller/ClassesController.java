@@ -36,10 +36,18 @@ public class ClassesController extends HttpServlet {
 		case "/list":
 			showLists(request, response, session);
 			break;
+			
+		case "/syllabus":
+			showSyllabus(request, response, session);
+			break;
 
 		default:
 			break;
 		}
+	}
+
+	private void showSyllabus(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		
 	}
 
 	private void showLists(HttpServletRequest request, HttpServletResponse response, HttpSession session)
