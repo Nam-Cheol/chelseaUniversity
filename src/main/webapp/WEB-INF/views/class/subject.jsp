@@ -14,7 +14,7 @@
 		<table>
 			<tbody>
 				<tr>
-					<td><a href=${pageContext.request.contextPath}/subject/list>전체 강의 조회</a></td>
+					<td><a href=${pageContext.request.contextPath}/subject/list?page=1>전체 강의 조회</a></td>
 					<td><a href=${pageContext.request.contextPath}/professor/subject>내 강의 조회</a></td>
 					<td><a href=${pageContext.request.contextPath}/evaluation/read>내 강의 평가</a></td>
 				</tr>
