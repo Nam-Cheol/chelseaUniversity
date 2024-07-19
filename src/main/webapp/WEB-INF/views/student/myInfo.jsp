@@ -48,21 +48,21 @@
 			</colgroup>
 				<tr>
 					<th>학번</th>
-					<td></td>
+					<td>${principal.id}</td>
 					<th>소속</th>
-					<td>1</td>
+					<td>${principal.deptId}</td>
 				</tr>
 				<tr>
 					<th>학년</th>
-					<td></td>
+					<td>${principal.grade}</td>
 					<th>학기</th>
-					<td></td>
+					<td>${principal.semester}</td>
 				</tr>
 				<tr>
 					<th>입학일</th>
-					<td></td>
+					<td>${principal.entranceDate}</td>
 					<th>졸업일(졸업예정일)</th>
-					<td></td>
+					<td>${principal.graduationDate}</td>
 				</tr>
 			</table>
 			<table border="1" class="input--table" >
@@ -74,21 +74,21 @@
 			</colgroup>
 				<tr>
 					<th>성명</th>
-					<td></td>
+					<td>${principal.name}</td>
 					<th>생년월일</th>
-					<td></td>
+					<td>${principal.birthDate}</td>
 				</tr>
 				<tr>
 					<th>성별</th>
-					<td></td>
+					<td>${principal.gender}</td>
 					<th>주소</th>
-					<td></td>
+					<td>${principal.address}</td>
 				</tr>
 				<tr>
 					<th>연락처</th>
-					<td></td>
+					<td>${principal.tel}</td>
 					<th>email</th>
-					<td></td>
+					<td>${principal.email}</td>
 				</tr>
 			</table>
 			<button type="button" onclick="location.href='/update'" class="btn btn-dark update--button">수정하기</button>

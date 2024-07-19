@@ -1,11 +1,15 @@
 package com.chelseaUniversity.ver1.controller;
 
+import java.io.IOException;
+
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/student/*")
 public class StudentController extends HttpServlet {
@@ -19,6 +23,12 @@ public class StudentController extends HttpServlet {
 
 		String action = request.getPathInfo();
 		System.out.println(action);
+		HttpSession session = request.getSession();
+		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
+		if(principal == null) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
 		
 		if(action != null || action.trim().isEmpty()) {
 			
@@ -26,7 +36,7 @@ public class StudentController extends HttpServlet {
 			case "/info":
 				request.getRequestDispatcher("/WEB-INF/views/student/myInfo.jsp").forward(request, response);
 				break;
-
+				
 			default:
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;

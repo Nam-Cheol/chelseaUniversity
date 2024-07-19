@@ -5,7 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
+
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 
 @WebServlet("/break/*")
 public class BreakController extends HttpServlet {
@@ -18,6 +22,8 @@ public class BreakController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println(action);
+		HttpSession session = request.getSession();
+		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
 		
 		if(action != null || action.trim().isEmpty()) {
 			
