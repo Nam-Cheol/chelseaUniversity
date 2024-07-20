@@ -1,0 +1,208 @@
+package com.chelseaUniversity.ver1.repository;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.chelseaUniversity.ver1.model.Student;
+import com.chelseaUniversity.ver1.model.dto.CreateStudentDto;
+import com.chelseaUniversity.ver1.model.dto.FindIdFormDto;
+import com.chelseaUniversity.ver1.model.dto.FindPasswordFormDto;
+import com.chelseaUniversity.ver1.model.dto.StudentListForm;
+import com.chelseaUniversity.ver1.model.dto.UserUpdateDto;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.model.dto.response.UserInfoForUpdateDto;
+import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
+import com.chelseaUniversity.ver1.utill.DBUtil;
+
+public class StudentRepositoryImpl implements StudentRepository {
+
+	// 나중에 Define 클래스로 이동
+	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,grade,semester,entrance_date,graduation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
+	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ORDER BY id ";
+
+	@Override
+	public int insertToStudent(CreateStudentDto createStudentDto) {
+
+		int rowCount = 0;
+
+		try (Connection conn = DBUtil.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_STUDENT_SQL)) {
+				pstmt.setString(1, createStudentDto.getName());
+				pstmt.setDate(2, createStudentDto.getBirthDate());
+				pstmt.setString(3, createStudentDto.getGender());
+				pstmt.setString(4, createStudentDto.getAddress());
+				pstmt.setString(5, createStudentDto.getTel());
+				pstmt.setInt(6, createStudentDto.getDeptId());
+				// TODO - 나머지 학생 정보 기입 + 학년이랑 학기 DTO 없음.
+				pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return rowCount;
+	}
+
+	@Override
+	public Integer selectIdByCreateStudentDto(CreateStudentDto createStudentDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Integer> selectIdList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student selectByStudentId(Integer studentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserInfoForUpdateDto selectByUserId(Integer userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int updateStudent(UserUpdateDto userUpdateDto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public StudentInfoDto selectStudentInfoById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer selectIdByNameAndEmail(FindIdFormDto findIdFormDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer selectStudentByIdAndNameAndEmail(FindPasswordFormDto findPasswordFormDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 교직원 -> 학생 전체 조회
+	 */
+	@Override
+	public List<Student> selectStudentList(StudentListForm studentListForm , int limit, int offset) {
+		List<Student> allStudentList = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name")).birthDate(rs.getDate("birth_date")).gender(rs.getString("gender")).address(rs.getString("address"))
+						.tel(rs.getString("tel")).deptId(rs.getInt("dept_id")).entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allStudentList;
+	}
+
+	@Override
+	public List<Student> selectByDepartmentId(StudentListForm studentListForm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Student> selectByStudentId(StudentListForm studentListForm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 페이지 개수를 확인하기 위해 학생 전체 수 조회
+	 */
+	@Override
+	public Integer selectStudentAmount() {
+
+		int totalStudents = 0;
+		
+		try (Connection conn = DBUtil.getConnection()){
+			
+			PreparedStatement pstmt = conn.prepareStatement(COUNT_ALL_STUDENT_SQL);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				totalStudents = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return totalStudents;
+	}
+
+	@Override
+	public Integer selectStudentAmountByDeptId(Integer deptId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester1_2() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester2_1() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester2_2() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester3_1() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester3_2() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester4_1() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int updateStudentGradeAndSemester4_2() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

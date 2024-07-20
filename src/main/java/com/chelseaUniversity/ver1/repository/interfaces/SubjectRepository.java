@@ -45,7 +45,7 @@ public interface SubjectRepository {
 	 * @author 서영
 	 * @return 전체 강의 정보
 	 */
-	public List<SubjectDto> selectDtoAll();
+	public List<SubjectFormDto> selectDtoAll(int limit, int offset);
 	public List<SubjectDto> selectDtoAllLimit(Integer page);
 	
 	/**
@@ -102,7 +102,7 @@ public interface SubjectRepository {
 	 * 정원 < 신청인원인 강의의 id 리스트
 	 */
 	public List<Integer> selectIdByMoreNumOfStudent();
-	
+	int getTotalBoardCount(); 	
 	
 	
 }

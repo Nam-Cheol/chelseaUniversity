@@ -59,6 +59,7 @@ button:hover {
 	background-color: #00CDFF;
 	color: black;
 }
+
 .options {
     display: flex;
     justify-content: flex-start;
@@ -85,10 +86,20 @@ button:hover {
     text-decoration: none;
     color: black;
 }
-
-.box {
-	height: 30px;
+input[type="number"] {
+	height: 25px;
 }
+
+input[type="password"] {
+	height: 25px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 
 .footer {
 	height: 100px;
@@ -103,3 +114,4 @@ button:hover {
 	margin-top: 20px;
 	margin-left: 20px;
 }
+

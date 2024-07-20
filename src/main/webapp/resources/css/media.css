@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+/* 타블렛 가로, 노트북 */
+@media (max-width:1280px) {
+	
+	.header-wrap{
+	width: 100%;
+	}
+	
+	.header-toggle{
+		display: block;
+	}
+	
+	.gnb{
+	display: none;
+	}
+	
+	.menu-toggle-wrap{
+	display: block;
+	}
+	
+}
+
+.main {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 400px;
+	margin-top: 30px;
+}
+.stampord {
+	width: 1200px;
+	height: 400px;
+}
+.media {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.notice {
+	width: 20%;
+	height: 100vh;
+	margin-top: 30px;
+}
+/* 768px - 모바일 가로, 타블렛 세로 */
+
+/* 480px - 모바일 세로 */
