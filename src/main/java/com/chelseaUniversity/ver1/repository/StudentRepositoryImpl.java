@@ -20,9 +20,11 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class StudentRepositoryImpl implements StudentRepository {
 
 	// 나중에 Define 클래스로 이동
-	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,grade,semester,entrance_date,graduation_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,entrance_date,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ORDER BY id ";
+	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id = ? ";
+	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id = ? ";
 
 	@Override
 	public int insertToStudent(CreateStudentDto createStudentDto) {
@@ -38,8 +40,9 @@ public class StudentRepositoryImpl implements StudentRepository {
 				pstmt.setString(4, createStudentDto.getAddress());
 				pstmt.setString(5, createStudentDto.getTel());
 				pstmt.setInt(6, createStudentDto.getDeptId());
-				// TODO - 나머지 학생 정보 기입 + 학년이랑 학기 DTO 없음.
-				pstmt.executeUpdate();
+				pstmt.setDate(7, createStudentDto.getEntranceDate());
+				pstmt.setString(8, createStudentDto.getEmail());
+				rowCount = pstmt.executeUpdate();
 				conn.commit();
 			} catch (Exception e) {
 				conn.rollback();
@@ -67,8 +70,25 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	@Override
 	public Student selectByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Student student = null;
+		System.out.println("들어옴");
+		try (Connection conn = DBUtil.getConnection()){
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_ID);
+			pstmt.setInt(1, studentId);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				student = Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+				.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+				.address(rs.getString("address")).tel(rs.getString("tel")).deptId(rs.getInt("dept_id"))
+				.entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("student :: " + student);
+		
+		return student;
 	}
 
 	@Override
@@ -105,17 +125,19 @@ public class StudentRepositoryImpl implements StudentRepository {
 	 * 교직원 -> 학생 전체 조회
 	 */
 	@Override
-	public List<Student> selectStudentList(StudentListForm studentListForm , int limit, int offset) {
+	public List<Student> selectStudentList(StudentListForm studentListForm, int limit, int offset) {
 		List<Student> allStudentList = new ArrayList<>();
-		
+
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)) {
 			pstmt.setInt(1, limit);
 			pstmt.setInt(2, offset);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name")).birthDate(rs.getDate("birth_date")).gender(rs.getString("gender")).address(rs.getString("address"))
-						.tel(rs.getString("tel")).deptId(rs.getInt("dept_id")).entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
+				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).deptId(rs.getInt("dept_id"))
+						.entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,8 +147,28 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	@Override
 	public List<Student> selectByDepartmentId(StudentListForm studentListForm) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Student> student = new ArrayList<>();
+
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_DEPT_ID)) {
+			pstmt.setInt(1, studentListForm.getDeptId());
+			try (ResultSet rs = pstmt.executeQuery()){
+				while (rs.next()) {
+					student.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+							.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+							.address(rs.getString("address")).tel(rs.getString("tel")).deptId(rs.getInt("dept_id"))
+							.entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return student;
+		
 	}
 
 	@Override
@@ -142,9 +184,9 @@ public class StudentRepositoryImpl implements StudentRepository {
 	public Integer selectStudentAmount() {
 
 		int totalStudents = 0;
-		
-		try (Connection conn = DBUtil.getConnection()){
-			
+
+		try (Connection conn = DBUtil.getConnection()) {
+
 			PreparedStatement pstmt = conn.prepareStatement(COUNT_ALL_STUDENT_SQL);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -153,7 +195,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return totalStudents;
 	}
 

@@ -5,12 +5,12 @@
 <h1>학생 등록</h1>
 
 <div>
-	<form action="" method="post">
+	<form action="${pageContext.request.contextPath}/user/student" method="post">
 		<label for="name">이름</label>
-		<input type="" id="name" name="name" placeholder="학생 이름을 입력하세요." required>
+		<input type="name" id="name" name="name" placeholder="학생 이름을 입력하세요." required>
 		
 		<label for="birth">생년월일</label>
-		<input type="date" id="birth" name="birthDate" placeholder="생년월일을 입력하세요." required>
+		<input type="date" id="birth" name="birth" placeholder="생년월일을 입력하세요." required>
 		
 		<label>성별</label>
 		<label for="male">남성</label>
@@ -28,7 +28,7 @@
 		<input type="email" id="email" name="email" placeholder="이메일을 입력하세요." required>
 		
 		<label for="dept-id">학과ID</label>
-		<input type="number" id="dept-id" name="deptId" placeholder="학과ID를 입력하세요." required>
+		<input type="text" id="dept-id" name="deptId" placeholder="학과ID를 입력하세요." required>
 		
 		<label for="entr">입학일</label>
 		<input type="date" id="entr" name="entranceDate" placeholder="이메일을 입력하세요." required>
