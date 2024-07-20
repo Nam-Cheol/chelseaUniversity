@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.Professor;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.CreateProfessorDto;
 import com.chelseaUniversity.ver1.model.dto.CreateStudentDto;
+import com.chelseaUniversity.ver1.model.dto.ProfessorListForm;
 import com.chelseaUniversity.ver1.model.dto.StudentListForm;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
@@ -18,6 +20,7 @@ import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
+import com.chelseaUniversity.ver1.service.ProfessorService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,6 +37,7 @@ public class userController extends HttpServlet {
 	private StudentRepository studentRepository;
 	private ProfessorRepository professorRepository;
 	private StudentListForm studentListForm;
+	private ProfessorListForm professorListForm;
 	private UserRepository userRepository;
 
 	@Override
@@ -41,6 +45,7 @@ public class userController extends HttpServlet {
 		studentRepository = new StudentRepositoryImpl();
 		professorRepository = new ProfessorRepositoryImpl();
 		studentListForm = new StudentListForm();
+		professorListForm = new ProfessorListForm();
 		userRepository = new UserRepositoryImpl();
 	}
 
@@ -222,8 +227,35 @@ public class userController extends HttpServlet {
 	 * @param session
 	 */
 	private void showProfessorListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
+		ProfessorService professorService;
+		professorService = new ProfessorService();
 		try {
+			professorListForm.setPage(0);
+			
+			String deptId=request.getParameter("dept_id");
+			String proId=request.getParameter("pro_id");
+			
+			if(deptId != null) {
+				professorListForm.setDeptId(Integer.parseInt(deptId));
+			}else if(proId != null) {
+				professorListForm.setProfessorId(Integer.parseInt(proId));
+			}
+			
+			Integer amount = professorService.readProfessorAmount(professorListForm);
+			if(proId != null) {
+				amount = 1;
+			}
+			
+			System.out.println("userController에서 amount" + amount);
+			
+			List<Professor> list = professorService.readProfessorList(professorListForm);
+			
+			System.out.println("userController에서 교수list : " + list);
+			
+			request.setAttribute("professorList", list);
+			request.setAttribute("listCount", Math.ceil(amount / 20.0));
+			request.setAttribute("pro_deptId", deptId);
+			request.setAttribute("page", 1);
 			request.getRequestDispatcher("/WEB-INF/views/user/professorList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
