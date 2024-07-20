@@ -229,32 +229,36 @@ public class userController extends HttpServlet {
 	private void showProfessorListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		ProfessorService professorService;
 		professorService = new ProfessorService();
+		String deptId = null;
 		try {
 			professorListForm.setPage(0);
+
+			deptId = request.getParameter("dept_id");
+			String proId = request.getParameter("pro_id");
+			System.out.println("getparameter deptId : " + request.getParameter("dept_id"));
 			
-			String deptId=request.getParameter("dept_id");
-			String proId=request.getParameter("pro_id");
 			
-			if(deptId != null) {
+			if (request.getParameter("dept_id") != null) {
 				professorListForm.setDeptId(Integer.parseInt(deptId));
-			}else if(proId != null) {
+			} 
+			else if (proId != null) {
 				professorListForm.setProfessorId(Integer.parseInt(proId));
 			}
-			
+
 			Integer amount = professorService.readProfessorAmount(professorListForm);
-			if(proId != null) {
+			if (proId != null) {
 				amount = 1;
 			}
-			
+
 			System.out.println("userController에서 amount" + amount);
-			
+
 			List<Professor> list = professorService.readProfessorList(professorListForm);
-			
+
 			System.out.println("userController에서 교수list : " + list);
-			
+
 			request.setAttribute("professorList", list);
 			request.setAttribute("listCount", Math.ceil(amount / 20.0));
-			request.setAttribute("pro_deptId", deptId);
+//			request.setAttribute("pro_deptId", deptId);
 			request.setAttribute("page", 1);
 			request.getRequestDispatcher("/WEB-INF/views/user/professorList.jsp").forward(request, response);
 		} catch (Exception e) {
@@ -349,7 +353,7 @@ public class userController extends HttpServlet {
 			String entranceDate = request.getParameter("entranceDate");
 
 			CreateStudentDto createStudentDto = new CreateStudentDto();
-			
+
 			createStudentDto.setName(name);
 			createStudentDto.setBirthDate(Date.valueOf(birth));
 			createStudentDto.setGender(gender);

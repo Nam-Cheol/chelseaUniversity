@@ -67,9 +67,9 @@
 		
 		<div class="pagination">
 			<!-- index for  -->
-			<c:forEach begin="1" end="${totalPages}" var="i">
+			<c:forEach begin="1" end="${listCount}" var="i">
 				<c:choose>
-					<c:when test="${i == currentPage}">
+					<c:when test="${i == page}">
 						<span class="current-page">${i}</span>
 					</c:when>
 					<c:otherwise>
