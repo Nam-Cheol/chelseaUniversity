@@ -17,17 +17,22 @@
 					</div>
 				</div>
 			</button>
-			<button type="submit">
-				<div class="">
-					<p>새학기 적용</p>
-				</div>
-			</button>
 			
-			<select name ="limit">
+			<!-- <select name ="limit">
 			<option value="20">20개씩</option>
 			<option value="40">40개씩</option>
 			<option value="60">60개씩</option>
-			</select>
+			</select> -->
+			
+		</form>
+		
+		<form action="">
+			<button type="submit">
+				<div class="">
+			
+					<p>새학기 적용</p>
+				</div>
+			</button>
 		</form>
 	</div>
 

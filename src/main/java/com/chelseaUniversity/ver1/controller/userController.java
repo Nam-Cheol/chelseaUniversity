@@ -7,12 +7,15 @@ import java.util.List;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
+import com.chelseaUniversity.ver1.model.dto.CreateProfessorDto;
 import com.chelseaUniversity.ver1.model.dto.CreateStudentDto;
 import com.chelseaUniversity.ver1.model.dto.StudentListForm;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.ProfessorRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
 
@@ -29,12 +32,14 @@ public class userController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private StudentRepository studentRepository;
+	private ProfessorRepository professorRepository;
 	private StudentListForm studentListForm;
 	private UserRepository userRepository;
 
 	@Override
 	public void init() throws ServletException {
 		studentRepository = new StudentRepositoryImpl();
+		professorRepository = new ProfessorRepositoryImpl();
 		studentListForm = new StudentListForm();
 		userRepository = new UserRepositoryImpl();
 	}
@@ -80,11 +85,12 @@ public class userController extends HttpServlet {
 			break;
 		}
 	}
-	
+
 	/*
 	 * 비밀번호 찾기 페이지 처리
 	 */
-	private void showFindPasswordPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void showFindPasswordPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		System.out.println("비밀번호 찾기");
 		request.getRequestDispatcher("/WEB-INF/views/find/findPassword.jsp").forward(request, response);
 	}
@@ -92,7 +98,8 @@ public class userController extends HttpServlet {
 	/*
 	 * 아이디 찾기 페이지 처리
 	 */
-	private void showFindIdPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void showFindIdPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/find/findId.jsp").forward(request, response);
 	}
 
@@ -102,15 +109,24 @@ public class userController extends HttpServlet {
 	 * @param request
 	 * @param response
 	 * @param session
+	 * @throws ServletException
 	 */
 	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-			throws NumberFormatException, IOException {
+			throws NumberFormatException, IOException, ServletException {
 		studentListForm = new StudentListForm();
+
+		try {
+			if (request.getParameter("dept_id") == null || request.getParameter("stu_id") == null) {
+				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		try {
 
 			if (request.getParameter("dept_id") != null) {
-				String deptId = request.getParameter("dept_id");
+				String deptId = request.getParameter("dept_id").trim();
 				String limit = request.getParameter("limit");
 
 				studentListForm.setDeptId(Integer.parseInt(deptId));
@@ -132,7 +148,7 @@ public class userController extends HttpServlet {
 
 		try {
 			if (request.getParameter("stu_id") != null) {
-				String stuId = request.getParameter("stu_id");
+				String stuId = request.getParameter("stu_id").trim();
 				String limit = request.getParameter("limit");
 
 				studentListForm.setDeptId(Integer.parseInt(stuId));
@@ -273,6 +289,9 @@ public class userController extends HttpServlet {
 		case "/student":
 			CreateStudentHandler(request, response, session);
 			break;
+		case "/professor":
+			CreateProfessorHandler(request, response, session);
+			break;
 
 		default:
 			break;
@@ -298,25 +317,70 @@ public class userController extends HttpServlet {
 			String deptId = request.getParameter("deptId");
 			String entranceDate = request.getParameter("entranceDate");
 
-			CreateStudentDto createStudentDto = CreateStudentDto.builder().name(name).birthDate(Date.valueOf(birth)).gender("남성")
-					.address(address).tel(tel).deptId(Integer.parseInt(deptId)).entranceDate(Date.valueOf(entranceDate)).email(email).build();
+			CreateStudentDto createStudentDto = new CreateStudentDto();
+			
+			createStudentDto.setName(name);
+			createStudentDto.setBirthDate(Date.valueOf(birth));
+			createStudentDto.setGender(gender);
+			createStudentDto.setAddress(address);
+			createStudentDto.setTel(tel);
+			createStudentDto.setEmail(email);
+			createStudentDto.setDeptId(Integer.parseInt(deptId));
+			createStudentDto.setEntranceDate(Date.valueOf(entranceDate));
 
-			System.out.println(createStudentDto);
-			
-			int rowCount=studentRepository.insertToStudent(createStudentDto);
-			
-			if(rowCount == 1) {
-				System.out.println("학생 등록 성공");
-				response.sendRedirect(request.getContextPath()+"/user/student");
-			}else {
-				System.out.println("학생 등록 실패");
+			int rowCount = studentRepository.insertToStudent(createStudentDto);
+
+			if (rowCount == 1) {
+				System.out.println("학생 등록 성공 : " + createStudentDto);
+				response.sendRedirect(request.getContextPath() + "/user/student");
+			} else {
+				System.out.println("학생 등록 실패" + createStudentDto);
 				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
+	/**
+	 * 교직원 -> 교수 추가
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 */
+	private void CreateProfessorHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		try {
+			String name = request.getParameter("name");
+			String birth = request.getParameter("birth");
+			String gender = request.getParameter("gender");
+			String address = request.getParameter("address");
+			String tel = request.getParameter("tel");
+			String email = request.getParameter("email");
+			String deptId = request.getParameter("deptId");
+
+			CreateProfessorDto createProfessorDto = new CreateProfessorDto();
+			createProfessorDto.setName(name);
+			createProfessorDto.setBirthDate(Date.valueOf(birth));
+			createProfessorDto.setGender(gender);
+			createProfessorDto.setAddress(address);
+			createProfessorDto.setTel(tel);
+			createProfessorDto.setEmail(email);
+			createProfessorDto.setDeptId(Integer.parseInt(deptId));
+
+			int rowCount = professorRepository.insertToProfessor(createProfessorDto);
+
+			if (rowCount == 1) {
+				System.out.println("교수 등록 성공 : " + createProfessorDto);
+				response.sendRedirect(request.getContextPath() + "/user/professor");
+			} else {
+				System.out.println("교수 등록 실패" + createProfessorDto);
+				request.getRequestDispatcher("/WEB-INF/views/user/createProfessor.jsp").forward(request, response);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -329,10 +393,10 @@ public class userController extends HttpServlet {
 		String save = request.getParameter("save-login");
 		Cookie cookie = null;
 		User user = userRepository.selectById_Password(id, password);
-		if(user != null) {
-			if(save != null) {
+		if (user != null) {
+			if (save != null) {
 				cookie = new Cookie("id", String.valueOf(id));
-				cookie.setMaxAge(60*60*24);
+				cookie.setMaxAge(60 * 60 * 24);
 				response.addCookie(cookie);
 			} else {
 				cookie = new Cookie("id", String.valueOf(id));

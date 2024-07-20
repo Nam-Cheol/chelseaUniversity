@@ -19,7 +19,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class StudentRepositoryImpl implements StudentRepository {
 
-	// 나중에 Define 클래스로 이동
+	// TODO - 나중에 Define 클래스로 이동
 	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,entrance_date,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ORDER BY id ";

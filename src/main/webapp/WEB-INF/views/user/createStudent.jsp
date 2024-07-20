@@ -14,7 +14,7 @@
 		
 		<label>성별</label>
 		<label for="male">남성</label>
-		<input type="radio" id="male" name="gender">
+		<input type="radio" id="male" name="gender" required>
 		<label for="female">여성</label>
 		<input type="radio" id="female" name="gender">
 		
