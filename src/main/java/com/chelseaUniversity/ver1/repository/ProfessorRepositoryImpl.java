@@ -19,6 +19,10 @@ public class ProfessorRepositoryImpl implements ProfessorRepository{
 
 	// TODO - 나중에 Define 클래스로 이동
 	public static final String INSERT_PROFESSOR_SQL = " INSERT INTO professor_tb(name,birth_date,gender,address,tel,dept_id,email) VALUES (?, ?, ?, ?, ?, ?, ?) ";
+	public static final String SELECT_ALL_PROFESSOR_SQL = " SELECT * FROM professor_tb ORDER BY id limit 20 offset 21 ";
+	public static final String COUNT_ALL_PROFESSOR_SQL = " SELECT count(*) FROM professor_tb ORDER BY id " ;
+	public static final String SELECT_PROFESSOR_BY_DEPT_ID = " SELECT * FROM professor_tb WHERE dept_id = ? ";
+	public static final String SELECT_PROFESSOR_BY_ID = " SELECT * FROM professor_tb WHERE id = ? ";
 	
 	@Override
 	public int insertToProfessor(CreateProfessorDto createProfessorDto) {

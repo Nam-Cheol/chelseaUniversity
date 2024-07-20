@@ -73,21 +73,23 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 		Student student = null;
 		System.out.println("들어옴");
-		try (Connection conn = DBUtil.getConnection()){
+		try (Connection conn = DBUtil.getConnection()) {
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_ID);
 			pstmt.setInt(1, studentId);
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				student = Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
-				.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
-				.address(rs.getString("address")).tel(rs.getString("tel")).deptId(rs.getInt("dept_id"))
-				.entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build();
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+						.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+						.build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println("student :: " + student);
-		
+
 		return student;
 	}
 
@@ -136,8 +138,10 @@ public class StudentRepositoryImpl implements StudentRepository {
 			while (rs.next()) {
 				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
 						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
-						.address(rs.getString("address")).tel(rs.getString("tel")).deptId(rs.getInt("dept_id"))
-						.entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+						.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+						.build());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,18 +151,20 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	@Override
 	public List<Student> selectByDepartmentId(StudentListForm studentListForm) {
-		
+
 		List<Student> student = new ArrayList<>();
 
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_DEPT_ID)) {
 			pstmt.setInt(1, studentListForm.getDeptId());
-			try (ResultSet rs = pstmt.executeQuery()){
+			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					student.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
 							.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
-							.address(rs.getString("address")).tel(rs.getString("tel")).deptId(rs.getInt("dept_id"))
-							.entranceDate(rs.getDate("entrance_date")).email(rs.getString("email")).build());
+							.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+							.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+							.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+							.build());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -168,7 +174,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 		}
 
 		return student;
-		
+
 	}
 
 	@Override

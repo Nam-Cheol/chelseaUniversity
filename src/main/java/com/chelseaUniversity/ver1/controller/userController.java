@@ -115,13 +115,12 @@ public class userController extends HttpServlet {
 			throws NumberFormatException, IOException, ServletException {
 		studentListForm = new StudentListForm();
 
-		try {
-			if (request.getParameter("dept_id") == null || request.getParameter("stu_id") == null) {
-				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		/*
+		 * try { if (request.getParameter("dept_id") == null &&
+		 * request.getParameter("stu_id") == null) {
+		 * request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(
+		 * request, response); } } catch (Exception e) { e.printStackTrace(); }
+		 */
 
 		try {
 
