@@ -32,7 +32,6 @@
 		<form action="">
 			<button type="submit">
 				<div class="">
-			
 					<p>새학기 적용</p>
 				</div>
 			</button>

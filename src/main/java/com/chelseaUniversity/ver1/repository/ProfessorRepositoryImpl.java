@@ -2,9 +2,12 @@ package com.chelseaUniversity.ver1.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Professor;
+import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.dto.CreateProfessorDto;
 import com.chelseaUniversity.ver1.model.dto.FindIdFormDto;
 import com.chelseaUniversity.ver1.model.dto.FindPasswordFormDto;
@@ -97,8 +100,25 @@ public class ProfessorRepositoryImpl implements ProfessorRepository{
 
 	@Override
 	public List<Professor> selectProfessorList(ProfessorListForm professorListForm) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Professor> allProfessorList = new ArrayList<>();
+
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_SQL)) {
+			pstmt.setInt(1, professorListForm.getPage());
+//			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				allProfessorList.add(Professor.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hireDate"))
+						.build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allProfessorList;
 	}
 
 	@Override

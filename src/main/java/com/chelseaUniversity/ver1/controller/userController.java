@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.Professor;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.CreateProfessorDto;
 import com.chelseaUniversity.ver1.model.dto.CreateStudentDto;
+import com.chelseaUniversity.ver1.model.dto.ProfessorListForm;
 import com.chelseaUniversity.ver1.model.dto.StudentListForm;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
@@ -34,6 +36,7 @@ public class userController extends HttpServlet {
 	private StudentRepository studentRepository;
 	private ProfessorRepository professorRepository;
 	private StudentListForm studentListForm;
+	private ProfessorListForm professorListForm;
 	private UserRepository userRepository;
 
 	@Override
@@ -115,18 +118,21 @@ public class userController extends HttpServlet {
 			throws NumberFormatException, IOException, ServletException {
 		studentListForm = new StudentListForm();
 
-		/*
-		 * try { if (request.getParameter("dept_id") == null &&
-		 * request.getParameter("stu_id") == null) {
-		 * request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(
-		 * request, response); } } catch (Exception e) { e.printStackTrace(); }
-		 */
+		String deptId = request.getParameter("dept_id").trim();
+		String stuId = request.getParameter("stu_id").trim();
+		String limit = request.getParameter("limit");
+		
+		if(deptId != null) {
+			studentListForm.setDeptId(Integer.parseInt(deptId));
+		}else if(stuId != null) {
+			studentListForm.setStudentId(Integer.parseInt(stuId));
+		}else if(limit != null) {
+			studentListForm.setPage(Integer.parseInt(limit));
+		}
 
 		try {
 
 			if (request.getParameter("dept_id") != null) {
-				String deptId = request.getParameter("dept_id").trim();
-				String limit = request.getParameter("limit");
 
 				studentListForm.setDeptId(Integer.parseInt(deptId));
 				studentListForm.setPage(Integer.parseInt(limit));
@@ -140,28 +146,22 @@ public class userController extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
+			
 			if (request.getParameter("stu_id") != null) {
-				String stuId = request.getParameter("stu_id").trim();
-				String limit = request.getParameter("limit");
-
+				
 				studentListForm.setDeptId(Integer.parseInt(stuId));
 				studentListForm.setPage(Integer.parseInt(limit));
-
+				
 				System.out.println("1 : " + stuId);
 				System.out.println("3" + limit);
-
+				
 				Student student = studentRepository.selectByStudentId(Integer.parseInt(stuId));
 				request.setAttribute("oneStudent", student);
 				System.out.println("222222222" + student);
 				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-
+				
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -224,6 +224,36 @@ public class userController extends HttpServlet {
 	private void showProfessorListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
 		try {
+			// TODO - 교직원이 맞는지 인증검사
+			int limit = 20;
+			int page = 1;
+
+			try {
+				String pageStr = request.getParameter("pro_list_page");
+				if (pageStr != null) {
+					page = Integer.parseInt(pageStr);
+				}
+			} catch (Exception e) {
+				// 유효하지 않은 번호를 마음대로 보낸 경우
+				page = 1;
+			}
+
+			int offset = (page - 1) * limit;
+
+			// 전체 교수 인원수
+			int totalStudents = professorRepository.selectProfessorAmount();
+
+			// 총 페이지 수 계산
+			int totalPages = (int) Math.ceil((double) totalStudents / limit);
+			
+			professorListForm.setPage(totalPages);
+
+			List<Professor> allProfessorList = professorRepository.selectProfessorList(professorListForm);
+
+//			request.setAttribute("allStudentList", allStudentList);
+			request.setAttribute("totalStudents", totalStudents);
+			request.setAttribute("totalPages", totalPages);
+
 			request.getRequestDispatcher("/WEB-INF/views/user/professorList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();

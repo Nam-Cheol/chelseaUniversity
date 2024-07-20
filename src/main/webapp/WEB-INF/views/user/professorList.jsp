@@ -65,6 +65,20 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		
+		<div class="pagination">
+			<!-- index for  -->
+			<c:forEach begin="1" end="${totalPages}" var="i">
+				<c:choose>
+					<c:when test="${i == currentPage}">
+						<span class="current-page">${i}</span>
+					</c:when>
+					<c:otherwise>
+						<span><a href="${pageContext.request.contextPath}/user/studentList?pro_list_page=${i}">${i}</a></span>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</div>
 	</div>
 
 </section>
