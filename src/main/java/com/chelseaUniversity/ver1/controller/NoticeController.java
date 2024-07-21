@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/notice")
+@WebServlet("/notice/*")
 public class NoticeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private NoticeRepository noticeRepository;
@@ -29,12 +29,22 @@ public class NoticeController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String action = request.getPathInfo();
 		
-		List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+		switch (action) {
+		case "/list":
+			List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+			request.setAttribute("noticeList", noticeList);
+			request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
+			break;
+
+		default:
+			break;
+		}
 		
-		request.setAttribute("noticeList", noticeList);
 		
-		request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
