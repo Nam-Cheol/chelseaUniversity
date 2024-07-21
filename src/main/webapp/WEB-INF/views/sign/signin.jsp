@@ -14,8 +14,15 @@
 		alert("아이디 혹은 비밀번호가 틀렸습니다.")
 	</script>
 </c:if>
-<c:set var="cookies" value="${pageContext.request.cookies}"/>
 <!-- s : header-->
+<script type="text/javascript">
+	function findId(){
+		window.open("<%= request.getContextPath() %>/user/findid","findid","width=640, height=550")
+	}
+	function findPassword(){
+		window.open("<%= request.getContextPath() %>/user/findpassword","findpassword","width=640, height=550")
+	}
+</script>
     <header>
         <div class="Logo">
             <img src="${pageContext.request.contextPath}/resources/img/Chelsea_FC_Logo_Big.svg.png" alt="">
@@ -33,8 +40,8 @@
                 <div class="options">
                     <input type="checkbox" name="save-login" id="login-btn" class="checkbox"> 
                     <label for="login-btn" class="save-id">아이디 저장</label>
-                    <a href="">아이디 찾기</a>
-                    <a href="">비밀번호 찾기</a>
+                    <a href="javascript:findId()">아이디 찾기</a>
+                    <a href="javascript:findPassword()">비밀번호 찾기</a>
                 </div>
             </form>
         </div>

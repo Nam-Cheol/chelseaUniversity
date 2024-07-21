@@ -5,10 +5,13 @@
 <section>
 	<h1>학생 명단 조회</h1>
 
-	<!-- 검색 -->
+	<!-- 학생 학과 번호와 학번으로 검색 -->
 	<div>
 		<form action="${pageContext.request.contextPath}/user/searchStudent" method="get">
-			<label for="dept_id">학과 번호</label> <input type="search" id="dept_id" name="dept_id"> <label for="stu_id">학번</label> <input type="search" id="stu_id" name="stu_id">
+			<label for="dept_id">학과 번호</label> 
+			<input type="search" id="dept_id" name="dept_id"> 
+			<label for="stu_id">학번</label> 
+			<input type="search" id="stu_id" name="stu_id">
 			<button type="submit">
 				<div class="">
 					<p>조회</p>
@@ -17,17 +20,21 @@
 					</div>
 				</div>
 			</button>
+			
+			<!-- <select name ="limit">
+			<option value="20">20개씩</option>
+			<option value="40">40개씩</option>
+			<option value="60">60개씩</option>
+			</select> -->
+			
+		</form>
+		
+		<form action="">
 			<button type="submit">
 				<div class="">
 					<p>새학기 적용</p>
 				</div>
 			</button>
-			
-			<select name ="limit">
-			<option value="20">20개씩</option>
-			<option value="40">40개씩</option>
-			<option value="60">60개씩</option>
-			</select>
 		</form>
 	</div>
 
