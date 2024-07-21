@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.Department;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
@@ -13,9 +14,11 @@ import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.DepartmentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
 
+import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
