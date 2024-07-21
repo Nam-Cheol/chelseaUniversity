@@ -81,33 +81,29 @@ public class TuitionController extends HttpServlet {
 	}
 
 	/**
-	 * 교직원이 등록금 납부서 발송
+	 * 교직원 -> 등록금 납부서 발송버튼 눌렀을때
 	 * 
 	 * @param request
 	 * @param response
 	 * @param session
 	 * @throws IOException
+	 * @throws ServletException 
 	 */
 	private void handleCreateBill(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-			throws IOException {
+			throws IOException, ServletException {
 		StuStatService stuStatService = new StuStatService();
 		TuitionService tuitionService = new TuitionService();
 		List<Integer> studentIdList = stuStatService.readIdList();
-		System.out.println("studentIdList : " + studentIdList);
-		// 고지서 생성 개수 반환
+
 		int insertCount = 0;
 
-		// 모든 학생에 대해 일괄 생성 (고지서 생성 대상인지는 tuition 서비스에서 확인)
 		for (Integer studentId : studentIdList) {
-			// 생성될 때마다 +1됨
 			insertCount += tuitionService.createTuition(studentId);
 		}
 
-		// jsp로 생성 개수 보내기
 		request.setAttribute("insertCount", insertCount);
-		System.out.println(insertCount);
-
-		response.sendRedirect(request.getContextPath() + "/tuition/createPayment");
+		request.getRequestDispatcher("/WEB-INF/views/tuition/createPayment.jsp").forward(request, response);
+//		response.sendRedirect(request.getContextPath() + "/tuition/bill");
 	}
 
 }

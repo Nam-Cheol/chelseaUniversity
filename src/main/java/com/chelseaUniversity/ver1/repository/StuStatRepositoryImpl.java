@@ -24,7 +24,7 @@ public class StuStatRepositoryImpl implements StuStatRepository{
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_STAT_BY_ID);
 			pstmt.setInt(1, studentId);
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
 				stuStat.setId(rs.getInt("id"));
 				stuStat.setStudentId(rs.getInt("student_id"));
 				stuStat.setStatus(rs.getString("status"));

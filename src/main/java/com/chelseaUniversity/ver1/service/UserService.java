@@ -9,7 +9,7 @@ public class UserService {
 	StudentRepository studentRepository = new StudentRepositoryImpl();
 	
 	/**
-	 * 학생 조회
+	 * 학생 학번으로 조회하기
 	 * 
 	 * @param studentId
 	 * @return studentEntity

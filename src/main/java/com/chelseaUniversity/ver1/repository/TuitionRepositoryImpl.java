@@ -15,7 +15,7 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 	// TODO - Define 클래스로 이동해야 할 쿼리문
 	public final String SELECT_TUI_AMOUNT_BY_STU_ID = " SELECT amount FROM coll_tuit_tb WHERE college_id = (SELECT d.college_id FROM student_tb AS s JOIN department_tb AS d ON s.dept_id = d.id WHERE s.id = ?) ";
 	public final String INSERT_TUITION = " INSERT INTO tuition_tb (student_id, tui_year, semester, tui_amount, sch_type, sch_amount) VALUES (?, ?, ?, ?, ?, ?) ";
-	
+
 	@Override
 	public List<Tuition> selectByStudentId(Integer studentId) {
 		// TODO Auto-generated method stub
@@ -59,8 +59,7 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 				pstmt.setInt(4, tuition.getTuiAmount());
 				pstmt.setInt(5, tuition.getSchType());
 				pstmt.setInt(6, tuition.getSchAmount());
-				pstmt.setBoolean(7, tuition.getStatus());
-				pstmt.executeUpdate();
+				rsCount = pstmt.executeUpdate();
 				conn.commit();
 			} catch (Exception e) {
 				conn.rollback();

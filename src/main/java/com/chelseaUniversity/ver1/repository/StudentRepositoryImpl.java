@@ -81,7 +81,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 	@Override
 	public Student selectByStudentId(Integer studentId) {
 		Student student = null;
-		System.out.println("들어옴");
 		try (Connection conn = DBUtil.getConnection()) {
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_ID);
 			pstmt.setInt(1, studentId);
@@ -97,7 +96,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("StudentRepositoryImpl-student : " + student);
 		return student;
 	}
 
