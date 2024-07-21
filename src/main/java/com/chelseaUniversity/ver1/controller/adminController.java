@@ -21,8 +21,8 @@ public class adminController extends HttpServlet {
 		String action = request.getPathInfo();
 
 		switch (action) {
-		case "/admin":
-			request.getRequestDispatcher("/WEB-INF/views/admin/admintest.jsp").forward(request, response);
+		case "/registration":
+			request.getRequestDispatcher("/WEB-INF/views/admin/adminregistration.jsp").forward(request, response);
 			break;
 		case "/delete":
 			

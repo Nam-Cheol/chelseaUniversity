@@ -1,14 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>어드민 테스트</title>
-<style type="text/css">
+@charset "UTF-8";
 
     body {
-        display: flex;
         align-items: center;
         justify-content: center;
         height: 100vh;
@@ -16,26 +8,62 @@
     }
 
     .college-box {
-        height: 300px;
-        width: 300px;
+    	width: 100%;
+        height: 630px;
         background-color: #ffffff; 
         border-radius: 8px; 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        padding: 20px;
+		padding: 10px;
         box-sizing: border-box;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
     }
+    
+    .registration-list-container{
+    	width: 20%;
+    	height: 100%;
+    	margin-top: 40px;
+    }
+    
+    .registration-list-top{
+    	display: flex;
+    	justify-content: center;
+    	width: 80%;
+    	font-size: 40px;
+    	margin-bottom: 15px;
+    }
+    
+    .registration-list{
+    	border: 1px solid black;
+    	border-left: hidden;
+    	border-right: hidden;
+    	width: 80%;
+    }
+    
+    
+    .registration-list tr td{
+    	display: flex;
+    	justify-content: center;
+    	font-size: 20px;
+    	padding: 15px;
+    }
+    
+    .college-registration-right-container{
+    	display: flex;
+    	flex-direction:column;
+    	height:100%;
+    	width: 80%;
+    }
 
-    h2 {
+   .college-registration-top {
         background-color: #003399; 
         color: #ffffff; 
-        width: 100%;
+        width: 80%;
         text-align: center;
         padding: 10px;
         border-radius: 5px;
-        margin: -20px -20px 20px -20px; 
+        margin: 20px 0 20px 0 ; 
     }
     
     label, input, button, a {
@@ -50,7 +78,7 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
-        margin: 20px;
+        margin: 10px;
     }
 
     button:hover {
@@ -58,7 +86,7 @@
     }
 
     a {
-        color: #ffffff; 
+        color: black; 
         text-decoration: none;
         margin-top: 20px;
         display: block;
@@ -68,21 +96,3 @@
     a:hover {
         text-decoration: underline;
     }
-
-</style>
-<link rel="stylesheet" type="text/css" href="css/styles.css">
-</head>
-<body>
-<div class="college-box">
-    <h2>단과대학 등록</h2>
-    <form action="create-college" method="post">
-        <label for="college-name">단과이름:</label>
-        <input type="text" id="college-name" name="college-name" value="ㅇㅇ대학">
-        <br>
-        <button type="submit">등록</button>
-        <button type="submit">삭제</button>    
-    </form>
-    <a href="read-college">단과대학 목록</a>
-</div>
-</body>
-</html>
