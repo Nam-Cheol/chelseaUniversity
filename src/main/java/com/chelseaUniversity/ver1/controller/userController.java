@@ -20,6 +20,7 @@ import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
+import com.chelseaUniversity.ver1.service.ProfessorService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,6 +45,7 @@ public class userController extends HttpServlet {
 		studentRepository = new StudentRepositoryImpl();
 		professorRepository = new ProfessorRepositoryImpl();
 		studentListForm = new StudentListForm();
+		professorListForm = new ProfessorListForm();
 		userRepository = new UserRepositoryImpl();
 	}
 
@@ -222,38 +224,39 @@ public class userController extends HttpServlet {
 	 * @param session
 	 */
 	private void showProfessorListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
+		ProfessorService professorService;
+		professorService = new ProfessorService();
+		String deptId = null;
 		try {
-			// TODO - 교직원이 맞는지 인증검사
-			int limit = 20;
-			int page = 1;
+			professorListForm.setPage(0);
 
-			try {
-				String pageStr = request.getParameter("pro_list_page");
-				if (pageStr != null) {
-					page = Integer.parseInt(pageStr);
-				}
-			} catch (Exception e) {
-				// 유효하지 않은 번호를 마음대로 보낸 경우
-				page = 1;
+			deptId = request.getParameter("dept_id");
+			String proId = request.getParameter("pro_id");
+			System.out.println("getparameter deptId : " + request.getParameter("dept_id"));
+			
+			
+			if (request.getParameter("dept_id") != null) {
+				professorListForm.setDeptId(Integer.parseInt(deptId));
+			} 
+			else if (proId != null) {
+				professorListForm.setProfessorId(Integer.parseInt(proId));
 			}
 
-			int offset = (page - 1) * limit;
+			Integer amount = professorService.readProfessorAmount(professorListForm);
+			if (proId != null) {
+				amount = 1;
+			}
 
-			// 전체 교수 인원수
-			int totalStudents = professorRepository.selectProfessorAmount();
+			System.out.println("userController에서 amount" + amount);
 
-			// 총 페이지 수 계산
-			int totalPages = (int) Math.ceil((double) totalStudents / limit);
-			
-			professorListForm.setPage(totalPages);
+			List<Professor> list = professorService.readProfessorList(professorListForm);
 
-			List<Professor> allProfessorList = professorRepository.selectProfessorList(professorListForm);
+			System.out.println("userController에서 교수list : " + list);
 
-//			request.setAttribute("allStudentList", allStudentList);
-			request.setAttribute("totalStudents", totalStudents);
-			request.setAttribute("totalPages", totalPages);
-
+			request.setAttribute("professorList", list);
+			request.setAttribute("listCount", Math.ceil(amount / 20.0));
+//			request.setAttribute("pro_deptId", deptId);
+			request.setAttribute("page", 1);
 			request.getRequestDispatcher("/WEB-INF/views/user/professorList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -347,7 +350,7 @@ public class userController extends HttpServlet {
 			String entranceDate = request.getParameter("entranceDate");
 
 			CreateStudentDto createStudentDto = new CreateStudentDto();
-			
+
 			createStudentDto.setName(name);
 			createStudentDto.setBirthDate(Date.valueOf(birth));
 			createStudentDto.setGender(gender);

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+
 
 <section>
 	<h1>교수 명단 조회</h1>
@@ -45,21 +47,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="professorList" items="${allProfessorList}">
+				<c:forEach var="professorList" items="${professorList}">
 					<tbody>
 						<tr>
-							<td>${studentList.id}</td>
-							<td>${studentList.name}</td>
-							<td>${studentList.birthDate}</td>
-							<td>${studentList.gender}</td>
-							<td>${studentList.address}</td>
-							<td>${studentList.tel}</td>
-							<td>${studentList.email}</td>
-							<td>${studentList.deptId}</td>
-							<td>${studentList.grade}</td>
-							<td>${studentList.semester}</td>
-							<td>${studentList.entranceDate}</td>
-							<td>${studentList.graduationDate}</td>
+							<td>${professorList.id}</td>
+							<td>${professorList.name}</td>
+							<td>${professorList.birthDate}</td>
+							<td>${professorList.gender}</td>
+							<td>${professorList.address}</td>
+							<td>${professorList.tel}</td>
+							<td>${professorList.email}</td>
+							<td>${professorList.deptId}</td>
+							<td>${professorList.hireDate}</td>
 						</tr>
 					</tbody>
 				</c:forEach>
@@ -68,13 +67,13 @@
 		
 		<div class="pagination">
 			<!-- index for  -->
-			<c:forEach begin="1" end="${totalPages}" var="i">
+			<c:forEach begin="1" end="${listCount}" var="i">
 				<c:choose>
-					<c:when test="${i == currentPage}">
+					<c:when test="${i == page}">
 						<span class="current-page">${i}</span>
 					</c:when>
 					<c:otherwise>
-						<span><a href="${pageContext.request.contextPath}/user/studentList?pro_list_page=${i}">${i}</a></span>
+						<span><a href="${pageContext.request.contextPath}/user/professorList?pro_list_page=${i}">${i}</a></span>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
