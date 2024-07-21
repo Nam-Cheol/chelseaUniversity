@@ -25,6 +25,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ";
 	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id = ? ";
 	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id = ? ";
+	public static final String SELECT_ALL_STUDENTS_ID = " SELECT id FROM student_tb ";
 
 	@Override
 	public int insertToStudent(CreateStudentDto createStudentDto) {
@@ -64,20 +65,21 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	@Override
 	public List<Integer> selectIdList() {
-		
-		
-		
-		
-		
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+		List<Integer> list = new ArrayList<>(); 
+		try (Connection conn = DBUtil.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENTS_ID);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getInt("id"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	@Override
 	public Student selectByStudentId(Integer studentId) {
-
 		Student student = null;
 		System.out.println("들어옴");
 		try (Connection conn = DBUtil.getConnection()) {
@@ -95,8 +97,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("student :: " + student);
-
+		System.out.println("StudentRepositoryImpl-student : " + student);
 		return student;
 	}
 

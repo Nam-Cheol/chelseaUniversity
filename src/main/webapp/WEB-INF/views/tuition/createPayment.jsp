@@ -6,8 +6,7 @@
 <main>
 	<h1>등록금 고지서</h1>
 
-	<form action="${pageContext.request.contextPath}/tuition/create"
-		method="post">
+	<form action="${pageContext.request.contextPath}/tuition/create" method="post">
 		<button type="submit">등록금 고지서 발송</button>
 	</form>
 	<c:if test="${not empty insertCount}">
