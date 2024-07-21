@@ -73,7 +73,7 @@
 						<span class="current-page">${i}</span>
 					</c:when>
 					<c:otherwise>
-						<span><a href="${pageContext.request.contextPath}/user/professorList?pro_list_page=${i}">${i}</a></span>
+						<span><a href="${pageContext.request.contextPath}/user/professorList/pro_list_page=${i}">${i}</a></span>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>

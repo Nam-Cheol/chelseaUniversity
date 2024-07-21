@@ -66,6 +66,9 @@ public class userController extends HttpServlet {
 		case "/professorList":
 			showProfessorListPage(request, response, session);
 			break;
+		case "/professorList/pro_list_page{i}":
+			showProfessorListByPage(request, response, session);
+			break;
 
 		case "/student":
 			showStudentCreatePage(request, response, session);
@@ -88,6 +91,28 @@ public class userController extends HttpServlet {
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
+		}
+	}
+
+	private void showProfessorListByPage(HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws IOException {
+		
+		try {
+			ProfessorService professorService = new ProfessorService();
+			if (request.getAttribute("pro_deptId") != null) {
+				professorListForm.setDeptId(Integer.parseInt((String) request.getAttribute("pro_deptId")));
+			}
+			professorListForm.setPage((Integer.parseInt((String) request.getAttribute("page")) - 1) * 20);
+			Integer amount = professorService.readProfessorAmount(professorListForm);
+			List<Professor> list = professorService.readProfessorList(professorListForm);
+			
+			request.setAttribute("listCount", Math.ceil(amount / 20.0));
+			request.setAttribute("professorList", list);
+			request.setAttribute("page", professorListForm.getPage());
+			
+			response.sendRedirect(request.getContextPath()+"/user/professorList");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -255,7 +280,7 @@ public class userController extends HttpServlet {
 
 			request.setAttribute("professorList", list);
 			request.setAttribute("listCount", Math.ceil(amount / 20.0));
-//			request.setAttribute("pro_deptId", deptId);
+			request.setAttribute("pro_deptId", deptId);
 			request.setAttribute("page", 1);
 			request.getRequestDispatcher("/WEB-INF/views/user/professorList.jsp").forward(request, response);
 		} catch (Exception e) {

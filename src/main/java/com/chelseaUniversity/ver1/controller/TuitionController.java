@@ -10,6 +10,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.service.StuStatService;
+import com.chelseaUniversity.ver1.service.TuitionService;
+
 @WebServlet("/tuition/*")
 public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -65,7 +68,7 @@ public class TuitionController extends HttpServlet {
 		String action = request.getPathInfo();
 		switch (action) {
 
-		// 교직원 -> 학사관리 -> 등록금 고지서 발송하기
+		// 교직원 -> 학사관리 -> 등록금 납부 고지서 생성하기
 		case "/create":
 			handleCreateBill(request, response, session);
 			break;
@@ -85,7 +88,24 @@ public class TuitionController extends HttpServlet {
 	 * @param session
 	 */
 	private void handleCreateBill(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
+//		StuStatService stuStatService = new StuStatService();
+//		TuitionService uitionService = new TuitionService();
+//		List<Integer> studentIdList = stuStatService.readIdList();
+//
+//		// 고지서 생성 개수 반환
+//		int insertCount = 0;
+//
+//		// 모든 학생에 대해 일괄 생성 (고지서 생성 대상인지는 서비스에서 확인)
+//		for (Integer studentId : studentIdList) {
+//			// 생성될 때마다 +1됨
+//			insertCount += tuitionService.createTuition(studentId);
+//		}
+//
+//		// jsp로 생성 개수 보내기
+//		model.addAttribute("insertCount", insertCount);
+//		System.out.println(insertCount);
+//
+//		return "/tuition/createPayment";
 	}
 
 }
