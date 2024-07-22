@@ -55,7 +55,6 @@ public class SugangController extends HttpServlet {
 			request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 			break;
-
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
