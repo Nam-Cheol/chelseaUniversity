@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.BreakApp;
-import com.chelseaUniversity.ver1.model.CollTuit;
 import com.chelseaUniversity.ver1.model.dto.BreakAppFormDto;
 import com.chelseaUniversity.ver1.repository.interfaces.BreakAppRepository;
 import com.chelseaUniversity.ver1.utill.DBUtil;
