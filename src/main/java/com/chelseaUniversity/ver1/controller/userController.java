@@ -130,6 +130,7 @@ public class userController extends HttpServlet {
 	 */
 	private void showFindIdPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
+		System.out.println("get으로 발동");
 		request.getRequestDispatcher("/WEB-INF/views/find/findId.jsp").forward(request, response);
 	}
 
@@ -349,9 +350,45 @@ public class userController extends HttpServlet {
 		case "/professor":
 			CreateProfessorHandler(request, response, session);
 			break;
-
+		case "/findid":
+			findIdHandler(request,response);
+			break;
+		case "/findpassword":
+			findPasswordHandler(request,response);
+			break;
 		default:
 			break;
+		}
+	}
+
+	/*
+	 * 비밀번호 찾기 기능
+	 */
+	private void findPasswordHandler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String password = userRepository.findPassword(id, name);
+		if(password != null) {
+			System.out.println(password + " 비밀번호 전송");
+			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=password&password="+password).forward(request, response);
+		} else {
+			response.sendRedirect(request.getContextPath()+"/user/findid?password=fail");
+		}
+	}
+
+	/*
+	 * id 찾기 기능
+	 */
+	private void findIdHandler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		int id = userRepository.findId(name, email);
+		System.out.println("post로 발동");
+		if(id == 0) {
+			response.sendRedirect(request.getContextPath()+"/user/findid?id=fail");
+		} else {
+			System.out.println(id + " id 전송");
+			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=id&id="+id).forward(request, response);
 		}
 	}
 
@@ -450,6 +487,7 @@ public class userController extends HttpServlet {
 		String save = request.getParameter("save-login");
 		Cookie cookie = null;
 		User user = userRepository.selectById_Password(id, password);
+		System.out.println(user.getId());
 		if (user != null) {
 			if (save != null) {
 				cookie = new Cookie("id", String.valueOf(id));

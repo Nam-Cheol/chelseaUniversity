@@ -50,7 +50,7 @@
 					<th>학번</th>
 					<td>${principal.id}</td>
 					<th>소속</th>
-					<td>${principal.deptId}</td>
+					<td>${principal.deptName}</td>
 				</tr>
 				<tr>
 					<th>학년</th>

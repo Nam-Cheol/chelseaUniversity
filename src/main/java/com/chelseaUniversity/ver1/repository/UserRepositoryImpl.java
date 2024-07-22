@@ -15,7 +15,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class UserRepositoryImpl implements UserRepository{
 
 	private final String GET_USER_LOGIN = " SELECT * FROM user_tb WHERE id = ? and password = ? ";
-	private final String GET_STUDENT_BYID = " SELECT s.id, s.name, s.birth_date, s.gender, s.address, s.tel, s.email, s.grade, s.semester, s.entrance_date, s.graduation_date, d.name AS\r\n"
+	private final String GET_STUDENT_BYID = " SELECT s.*, d.name AS\r\n"
 			+ "		dept_name, c.name AS college_name\r\n"
 			+ "		FROM student_tb AS s\r\n"
 			+ "		LEFT JOIN department_tb AS d\r\n"
@@ -25,6 +25,29 @@ public class UserRepositoryImpl implements UserRepository{
 			+ "		WHERE s.id = ? ";
 	private final String GET_PROFESSOR_BYID = " SELECT * FROM professor_tb WHERE id = ?";
 	private final String GET_STAFF_BYID = " SELECT * FROM staff_tb WHERE id = ?";
+	private final String GET_ID_BYNAME = " SELECT id FROM student_tb\r\n"
+			+ "where name = ? and email = ?\r\n"
+			+ "UNION\r\n"
+			+ "SELECT id FROM professor_tb\r\n"
+			+ "where name = ? and email = ?\r\n"
+			+ "UNION\r\n"
+			+ "SELECT id FROM staff_tb\r\n"
+			+ "where name = ? and email = ?";
+	private final String GET_PASSWORD_BYID = " SELECT password from user_tb as u\r\n"
+			+ "join student_tb as s\r\n"
+			+ "on u.id = s.id\r\n"
+			+ "where u.id = ? and s.name = ?\r\n"
+			+ "union\r\n"
+			+ "SELECT password from user_tb as u\r\n"
+			+ "join professor_tb as p\r\n"
+			+ "on u.id = p.id\r\n"
+			+ "where u.id = ? and p.name = ?\r\n"
+			+ "union\r\n"
+			+ "SELECT password from user_tb as u\r\n"
+			+ "join staff_tb as t\r\n"
+			+ "on u.id = t.id\r\n"
+			+ "where u.id = ? and t.name = ?";
+
 	
 	// 로그인 검사
 	@Override
@@ -108,14 +131,61 @@ public class UserRepositoryImpl implements UserRepository{
 		return staff;
 	}
 
+	// 비밀번호 변경
 	@Override
 	public int updatePassword(ChangePasswordDto changePasswordDto) {
 		return 0;
 	}
 
+	// 회원가입
 	@Override
 	public int insertToUser(User user) {
 		return 0;
+	}
+
+	// id 찾기
+	@Override
+	public int findId(String name, String email) {
+		int id = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(GET_ID_BYNAME)){
+			pstmt.setString(1, name);
+			pstmt.setString(2, email);
+			pstmt.setString(3, name);
+			pstmt.setString(4, email);
+			pstmt.setString(5, name);
+			pstmt.setString(6, email);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	
+	// 비밀번호 찾기
+	@Override
+	public String findPassword(int id, String name) {
+		String password = null;
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(GET_PASSWORD_BYID)){
+				pstmt.setInt(1, id);
+				pstmt.setString(2, name);
+				pstmt.setInt(3, id);
+				pstmt.setString(4, name);
+				pstmt.setInt(5, id);
+				pstmt.setString(6, name);
+				ResultSet rs = pstmt.executeQuery();
+				if(rs.next()) {
+					password = rs.getString("password");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return password;
 	}
 
 	
