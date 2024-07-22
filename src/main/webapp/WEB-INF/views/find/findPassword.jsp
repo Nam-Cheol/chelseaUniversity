@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/findUser.css" type="text/css">
 </head>
 <body>
+	<c:if test="${param.password eq 'fail'}"><script>alert("존재하지않는 아이디 혹은 이름입니다.")</script></c:if>
 	<div class="formbox">
 	<h2>비밀번호 찾기</h2>
 	<form action="${pageContext.request.contextPath}/user/findpassword"method="post">

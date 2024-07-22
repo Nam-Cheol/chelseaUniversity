@@ -33,16 +33,21 @@ public class UserRepositoryImpl implements UserRepository{
 			+ "UNION\r\n"
 			+ "SELECT id FROM staff_tb\r\n"
 			+ "where name = ? and email = ?";
-	private final String GET_PASSWORD_BYID = " SELECT password from user_tb\r\n"
-			+ "where id = 2023000001";
-	private final String GET_PASSWORD_PASS = " SELECT id FROM student_tb\r\n"
-			+ "where id = ? and name = ?\r\n"
-			+ "UNION\r\n"
-			+ "SELECT id FROM professor_tb\r\n"
-			+ "where id = ? and name = ?\r\n"
-			+ "UNION\r\n"
-			+ "SELECT id FROM staff_tb\r\n"
-			+ "where id = ? and name = ?";
+	private final String GET_PASSWORD_BYID = " SELECT password from user_tb as u\r\n"
+			+ "join student_tb as s\r\n"
+			+ "on u.id = s.id\r\n"
+			+ "where u.id = ? and s.name = ?\r\n"
+			+ "union\r\n"
+			+ "SELECT password from user_tb as u\r\n"
+			+ "join professor_tb as p\r\n"
+			+ "on u.id = p.id\r\n"
+			+ "where u.id = ? and p.name = ?\r\n"
+			+ "union\r\n"
+			+ "SELECT password from user_tb as u\r\n"
+			+ "join staff_tb as t\r\n"
+			+ "on u.id = t.id\r\n"
+			+ "where u.id = ? and t.name = ?";
+	private final String SET_PASSWORD_BYID = "UPDATE user_tb SET password = ? WHERE id = ?";
 	
 	// 로그인 검사
 	@Override
@@ -129,7 +134,16 @@ public class UserRepositoryImpl implements UserRepository{
 	// 비밀번호 변경
 	@Override
 	public int updatePassword(ChangePasswordDto changePasswordDto) {
-		return 0;
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SET_PASSWORD_BYID)){
+			pstmt.setString(1, changePasswordDto.getAfterPassword());
+			pstmt.setInt(2, changePasswordDto.getId());
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
 	}
 
 	// 회원가입
@@ -146,6 +160,10 @@ public class UserRepositoryImpl implements UserRepository{
 			PreparedStatement pstmt = conn.prepareStatement(GET_ID_BYNAME)){
 			pstmt.setString(1, name);
 			pstmt.setString(2, email);
+			pstmt.setString(3, name);
+			pstmt.setString(4, email);
+			pstmt.setString(5, name);
+			pstmt.setString(6, email);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
 				id = rs.getInt("id");
@@ -161,8 +179,21 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public String findPassword(int id, String name) {
 		String password = null;
-		
-		
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(GET_PASSWORD_BYID)){
+				pstmt.setInt(1, id);
+				pstmt.setString(2, name);
+				pstmt.setInt(3, id);
+				pstmt.setString(4, name);
+				pstmt.setInt(5, id);
+				pstmt.setString(6, name);
+				ResultSet rs = pstmt.executeQuery();
+				if(rs.next()) {
+					password = rs.getString("password");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		return password;
 	}
 

@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+
+<main>
+	<h1>휴학 처리</h1>
+	
+	<c:choose>
+	<c:when test="test=${breakAppList.size() > 0}">
+	<table>
+		<thead>
+		<tr>
+			<th>신청일자</th>
+			<th>신청자 학번</th>
+			<th>구분</th>
+			<th>시작학기</th>
+			<th>종료학기</th>
+			<th>신청서 확인</th>
+		</tr>
+		</thead>
+		
+		<tbody>
+		<c:forEach var="breakAppList" items="${breakAppList}">
+			<tr>
+				<td>${breakAppList.appDate}</td>
+				<td>${breakAppList.studentId}</td>
+				<td>${breakAppList.type}</td>
+				<td>${breakAppList.fromYear}</td>
+				<td>${breakAppList.appDate}</td>
+				<td>${breakAppList.toYear}</td>
+				<td><a href="/break/detail/${breakApp.id}">Click</a></td>
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>
+	
+	</c:when>
+	<c:otherwise>
+	<p>대기 중인 신청 내역이 없습니다.</p>
+	</c:otherwise>
+	</c:choose>
+</main>
+
+<%@ include file="/WEB-INF/views/home/footer.jsp"%>

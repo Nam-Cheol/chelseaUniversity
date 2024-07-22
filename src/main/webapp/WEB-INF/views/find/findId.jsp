@@ -9,13 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/findUser.css" type="text/css">
 </head>
 <body>
-	<c:choose>
-	<c:when test="${param.id eq 'fail'}"><script>alert("존재하지않는 이름 혹은 이메일입니다.")</script></c:when>
-	<c:when test="${param.id eq null}"></c:when>
-	<c:otherwise><script>
-	var id = "<%=request.getParameter("id")%>";
-	alert("회원님의 ID는 " + id)</script></c:otherwise>
-	</c:choose>
+	<c:if test="${param.id eq 'fail'}"><script>alert("존재하지않는 이름 혹은 이메일입니다.")</script></c:if>
 	<div class="formbox">
 	<h2>아이디 찾기</h2>
 	<form action="${pageContext.request.contextPath}/user/findid"method="post">

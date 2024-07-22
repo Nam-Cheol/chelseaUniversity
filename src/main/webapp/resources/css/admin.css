@@ -21,6 +21,10 @@
         align-items: center;
     }
     
+    .college-list{
+    	width: 80%;
+    }
+    
     .registration-list-container{
     	width: 20%;
     	height: 100%;
