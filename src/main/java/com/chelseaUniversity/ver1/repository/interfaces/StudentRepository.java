@@ -50,7 +50,7 @@ public interface StudentRepository {
 	public Integer selectStudentByIdAndNameAndEmail(FindPasswordFormDto findPasswordFormDto);
 	
 	// 페이지별 학생 조회
-	public List<Student> selectStudentList(StudentListForm studentListForm);
+	public List<Student> selectStudentList(StudentListForm studentListForm, int limit, int offset);
 	
 	// 페이지, 과별 학생조회
 	public List<Student> selectByDepartmentId(StudentListForm studentListForm);
