@@ -130,6 +130,7 @@ public class userController extends HttpServlet {
 	 */
 	private void showFindIdPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
+		System.out.println("get으로 발동");
 		request.getRequestDispatcher("/WEB-INF/views/find/findId.jsp").forward(request, response);
 	}
 
@@ -349,9 +350,37 @@ public class userController extends HttpServlet {
 		case "/professor":
 			CreateProfessorHandler(request, response, session);
 			break;
-
+		case "/findid":
+			findIdHandler(request,response);
+			break;
+		case "/findpassword":
+			findPasswordHandler(request,response);
+			break;
 		default:
 			break;
+		}
+	}
+
+	/*
+	 * 비밀번호 찾기 기능
+	 */
+	private void findPasswordHandler(HttpServletRequest request, HttpServletResponse response) {
+		
+	}
+
+	/*
+	 * id 찾기 기능
+	 */
+	private void findIdHandler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		int id = userRepository.findId(name, email);
+		System.out.println("post로 발동");
+		if(id == 0) {
+			System.out.println(id);
+			response.sendRedirect(request.getContextPath()+"/user/findid?id=fail");
+		} else {
+			response.sendRedirect(request.getContextPath()+"/user/findid?id="+id);
 		}
 	}
 
@@ -450,6 +479,7 @@ public class userController extends HttpServlet {
 		String save = request.getParameter("save-login");
 		Cookie cookie = null;
 		User user = userRepository.selectById_Password(id, password);
+		System.out.println(user.getId());
 		if (user != null) {
 			if (save != null) {
 				cookie = new Cookie("id", String.valueOf(id));
