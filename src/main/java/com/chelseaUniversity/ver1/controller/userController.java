@@ -463,11 +463,12 @@ public class userController extends HttpServlet {
 			int rowCount = studentRepository.insertToStudent(createStudentDto);
 
 			if (rowCount == 1) {
-				System.out.println("학생 등록 성공 : " + createStudentDto);
-				response.sendRedirect(request.getContextPath() + "/user/student");
-			} else {
-				System.out.println("학생 등록 실패" + createStudentDto);
+				request.setAttribute("createStudentDto", createStudentDto);
 				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
+//				response.sendRedirect(request.getContextPath() + "/user/student");
+			} else {
+				response.sendRedirect(request.getContextPath() + "/user/student");
+//				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
 			}
 
 		} catch (Exception e) {
@@ -504,11 +505,10 @@ public class userController extends HttpServlet {
 			int rowCount = professorRepository.insertToProfessor(createProfessorDto);
 
 			if (rowCount == 1) {
-				System.out.println("교수 등록 성공 : " + createProfessorDto);
-				response.sendRedirect(request.getContextPath() + "/user/professor");
-			} else {
-				System.out.println("교수 등록 실패" + createProfessorDto);
+				request.setAttribute("createProfessorDto", createProfessorDto);
 				request.getRequestDispatcher("/WEB-INF/views/user/createProfessor.jsp").forward(request, response);
+			} else {
+				response.sendRedirect(request.getContextPath() + "/user/professor");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
