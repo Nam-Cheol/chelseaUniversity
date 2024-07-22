@@ -2,9 +2,11 @@ package com.chelseaUniversity.ver1.model;
 
 import java.sql.Date;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Professor {
 
 	private Integer id;
