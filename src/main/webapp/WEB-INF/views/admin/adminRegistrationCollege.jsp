@@ -16,19 +16,19 @@
 		</div>
 		<table class="registration-list">
 			<tr>
-				<td>단과대학</td>
+				<td><a href="${pageContext.request.contextPath}/admin/college">단과대학</a></td>
 			</tr>
 			<tr>
-				<td>학과</td>
+				<td><a href="${pageContext.request.contextPath}/admin/department">학과</a></td>
 			</tr>
 			<tr>
-				<td>강의실</td>
+				<td><a href="${pageContext.request.contextPath}/admin/room">강의실</a></td>
 			</tr>
 			<tr>	
-				<td>강의</td>
+				<td><a href="${pageContext.request.contextPath}/admin/subject">강의</a></td>
 			</tr>
 			<tr>
-				<td>단대별 등록금</td>
+				<td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
 			</tr>
 		</table>
 	</div>
@@ -36,53 +36,33 @@
     <h2 class="college-registration-top">단과대학 등록</h2>
     <form action="create-college" method="post">
         <label for="college-name">단과이름:</label>
-        <input type="text" id="college-name" name="college-name" value="ㅇㅇ대학">
+        <input type="text" id="college-name" name="college-name" value="가나대학">
         <br>
         <button type="submit">등록</button>
+    </form>
+    <form action="">
         <button type="submit">삭제</button>    
     </form>
     <br><br>
     
 
-<%
-    try
-    {
-        //JDBC 드라이버 연결
-        Class.forName("com.mysql.jdbc.Driver");
-        String address = "jdbc:mysql://192.168.0.145:3306/university";
-        String username = "university";
-        String password = "1234";
-        Connection connection = DriverManager.getConnection(address, username, password);
-		
-        String Query = " SELECT * FROM college_tb ORDER BY id asc ";
-				
-        PreparedStatement psmt = connection.prepareStatement(Query);
-        
-			
-        ResultSet result = psmt.executeQuery();%>
-        
         <p>단과 대학 리스트</p>
         <br>
-        <table border="1">
-	        <thead>
+        <table border="1" class="college-list">
                 <tr>
                     <th>id</th>
                     <th>단과이름</th>
                 </tr>
-    	    </thead>
-     <% while(result.next()) {%>
-            <tbody>
+                <c:forEach var="college" items="${collegeList}">
                 <tr>
-                    <td><%=result.getString("id") %></td>
-                    <td><%=result.getString("name") %></td>
+                    <th>${college.id} </th>
+                    <th>${college.name} </th>
                 </tr>
-            </tbody>
+                </c:forEach>
         </table>
-    <%} %>
-    
     <%
     }
-    catch(Exception ex)
+    catch(Exception exception)
     {
     	out.print("리스트 연결 실패");
     }%>
