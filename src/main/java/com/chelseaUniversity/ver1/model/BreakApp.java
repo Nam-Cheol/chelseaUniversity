@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import com.chelseaUniversity.ver1.utill.DateUtil;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * 휴학 신청 내역
  */
 @Data
+@Builder
 public class BreakApp {
 
 	private Integer id;

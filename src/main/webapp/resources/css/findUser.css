@@ -1,0 +1,25 @@
+@charset "UTF-8";
+body {
+	display: flex;
+	justify-content: center;
+}
+
+.formbox{
+	border: 1px solid #1E96FF;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 350px;
+	height: 250px;
+	margin: 10px;
+}
+input {
+	margin-top: 25px;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

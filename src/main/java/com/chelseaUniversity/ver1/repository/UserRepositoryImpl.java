@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.ChangePasswordDto;
-import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
@@ -16,7 +15,14 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class UserRepositoryImpl implements UserRepository{
 
 	private final String GET_USER_LOGIN = " SELECT * FROM user_tb WHERE id = ? and password = ? ";
-	private final String GET_STUDENT_BYID = " SELECT * FROM student_tb WHERE id = ?";
+	private final String GET_STUDENT_BYID = " SELECT s.id, s.name, s.birth_date, s.gender, s.address, s.tel, s.email, s.grade, s.semester, s.entrance_date, s.graduation_date, d.name AS\r\n"
+			+ "		dept_name, c.name AS college_name\r\n"
+			+ "		FROM student_tb AS s\r\n"
+			+ "		LEFT JOIN department_tb AS d\r\n"
+			+ "		ON s.dept_id = d.id\r\n"
+			+ "		LEFT JOIN college_tb AS c\r\n"
+			+ "		ON d.college_id = c.id\r\n"
+			+ "		WHERE s.id = ? ";
 	private final String GET_PROFESSOR_BYID = " SELECT * FROM professor_tb WHERE id = ?";
 	private final String GET_STAFF_BYID = " SELECT * FROM staff_tb WHERE id = ?";
 	
@@ -54,7 +60,8 @@ public class UserRepositoryImpl implements UserRepository{
 						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
 						.tel(rs.getString("tel")).email(rs.getString("email")).deptId(rs.getInt("dept_id"))
 						.grade(rs.getInt("grade")).semester(rs.getInt("semester")).entranceDate(rs.getDate("entrance_date"))
-						.graduationDate(rs.getDate("graduation_date")).build();
+						.graduationDate(rs.getDate("graduation_date")).address(rs.getString("address"))
+						.deptName(rs.getString("dept_name")).collegeName(rs.getString("college_name")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +108,6 @@ public class UserRepositoryImpl implements UserRepository{
 		return staff;
 	}
 
-	
 	@Override
 	public int updatePassword(ChangePasswordDto changePasswordDto) {
 		return 0;

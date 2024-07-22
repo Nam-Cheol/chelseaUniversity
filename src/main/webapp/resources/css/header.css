@@ -33,18 +33,18 @@ header{
 .header-nav{
 	display: flex;
 	height:140px;
-	justify-content:space-between;
 	align-items: center;
 }
 
 .gnb{
 	display: flex;
+	justify-content: space-around;
 }
 
 .gnb li a{
-	font-size: 20px;
+	font-size: 28px;
 	font-weight: bold;
-	margin: 0 20px;
+	margin: 0 50px;
 	padding: 5px;
 	color: #001489;
 }
