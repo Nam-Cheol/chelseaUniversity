@@ -60,12 +60,6 @@
                 </tr>
                 </c:forEach>
         </table>
-    <%
-    }
-    catch(Exception exception)
-    {
-    	out.print("리스트 연결 실패");
-    }%>
 
 </div>
 </div>
