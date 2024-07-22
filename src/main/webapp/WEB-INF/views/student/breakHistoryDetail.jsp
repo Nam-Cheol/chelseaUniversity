@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -46,48 +45,67 @@
 		<h1>휴학 내역 조회</h1>
 		<div class="split--div"></div>
 
-	<c:choose>
-	
-		<c:when test="${application}">
-		<table border="1" class="list--table">
-			<thead>
-				<tr>
-					<th>신청일자</th>
-					<th>구분</th>
-					<th>시작학기</th>
-					<th>종료학기</th>
-					<th>신청서 확인</th>
-					<th>상태</th>
-				</tr>
-			</thead>
+		<div class="d-flex flex-column align-items-center" style="width: 100%">
+			<div class="document--layout">
+				<h3>휴학 신청서</h3>
+				<table border="1">
+					<tr>
+						<th>단 과 대</th>
+						<td>${principal.collegeName}</td>
+						<th>학 과</th>
+						<td>${principal.deptName}</td>
+					</tr>
+					<tr>
+						<th>학 번</th>
+						<td>${principal.id}</td>
+						<th>학 년</th>
+						<td>${principal.grade}학년</td>
+					</tr>
+					<tr>
+						<th>전 화 번 호</th>
+						<td>${principal.tel}</td>
+						<th>성 명</th>
+						<td>${principal.name}</td>
+					</tr>
+					<tr>
+						<th>주 소</th>
+						<td colspan="3">${principal.address}</td>
+					</tr>
+					<tr>
+						<th>기 간</th>
+						<td colspan="3">${app.fromYear}년도&nbsp;${app.fromSemester}학기부터&nbsp; ${app.toYear}년도&nbsp;${app.toSemester}학기까지</td>
+					</tr>
+					<tr>
+						<th>휴 학 구 분</th>
+						<td colspan="3">${app.type}휴학</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<p>위와 같이 휴학하고자 하오니 허가하여 주시기 바랍니다.</p> <br>
+							<p>${app.appDate}</p>
+						</td>
+					</tr>
+				</table>
+			</div>
 
-			<tbody>
-
-				<tr>
-					<td>${app.appDate}</td>
-					<td>${app.type}휴학</td>
-					<td>${app.fromYear}년도&nbsp;${app.fromSemester}학기</td>
-					<td>${app.toYear}년도&nbsp;${app.toSemester}학기</td>
-					<td><a href="/chelseaUniversity/break/detail?id=${app.id}">Click</a></td>
-					<td><span style="color: #767676; font-weight: 600">처리중</span>
 
 
 
-					</td>
-				</tr>
+			<form action="/chelseaUniversity/break/delete?id=${app.id}" method="post"
+				class="d-flex flex-column align-items-center">
+				<button type="submit" class="btn btn-dark"
+					onclick="return confirm('신청을 취소하시겠습니까?')">취소하기</button>
+			</form>
 
-			</tbody>
-		</table>
-		</c:when>
-		<c:otherwise>
 
-			<p class="no--list--p">휴학 신청 내역이 없습니다.</p>
-		
-		</c:otherwise>
-		</c:choose>
 
+
+
+		</div>
 	</main>
 </div>
+
+
 
 <footer>
 	<!-- 필요 시 -->

@@ -14,8 +14,6 @@
 
 <header>
 
-
-
 <p class="h-border-top"></p>
 <div class="header-wrap">
 
@@ -59,7 +57,7 @@
 <a href="${pageContext.request.contextPath}/index.jsp">성적</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/notice">학사정보</a>
+<a href="${pageContext.request.contextPath}/notice/list">학사정보</a>
 </li>
 </ul>
 <!-- e : gnb -->
