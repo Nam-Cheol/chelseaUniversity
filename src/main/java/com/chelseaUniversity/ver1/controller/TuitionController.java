@@ -8,18 +8,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.tags.shaded.org.apache.regexp.recompile;
+
+import com.chelseaUniversity.ver1.model.Tuition;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 import com.chelseaUniversity.ver1.service.StuStatService;
 import com.chelseaUniversity.ver1.service.TuitionService;
 
 @WebServlet("/tuition/*")
 public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	TuitionRepository tuitionRepository;
 
 	@Override
 	public void init() throws ServletException {
-
+		tuitionRepository = new TuitionRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,6 +41,10 @@ public class TuitionController extends HttpServlet {
 		 */
 
 		String action = request.getPathInfo();
+		HttpSession session = request.getSession();
+		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
+		List<Tuition> tuitionList = checkTuitionList(principal.getId());
+		
 		switch (action) {
 
 		// 교직원 -> 학사관리 -> 등록금 고지서 페이지
@@ -41,19 +53,25 @@ public class TuitionController extends HttpServlet {
 			break;
 
 		case "/list":
+			boolean check = !tuitionList.isEmpty();
+			request.setAttribute("tuitionList", tuitionList);
+			request.setAttribute("check", check);
 			request.getRequestDispatcher("/WEB-INF/views/student/tuitionHistory.jsp").forward(request, response);
 			break;
 
 		case "/payment":
+			tuitionList = tuitionRepository.selectByStudentId(principal.getId());
+			request.setAttribute("tuitionList", tuitionList);
 			request.getRequestDispatcher("/WEB-INF/views/student/tuitionBill.jsp").forward(request, response);
 			break;
-
+			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -106,4 +124,18 @@ public class TuitionController extends HttpServlet {
 //		response.sendRedirect(request.getContextPath() + "/tuition/bill");
 	}
 
+	/**
+	 * 등록금 납부 여부
+	 */
+	private List<Tuition> checkTuitionList(int studentId) {
+		List<Tuition> temp = tuitionRepository.selectByStudentId(studentId);
+		List<Tuition> tuitionList = new ArrayList<>();
+		for (Tuition tuition : temp) {
+			System.out.println(tuition.getStatus());
+			if(tuition.getStatus() == true) {
+				tuitionList.add(tuition);
+			}
+		}
+		return tuitionList;
+	}
 }
