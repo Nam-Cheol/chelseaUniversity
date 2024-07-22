@@ -21,14 +21,21 @@ public class adminController extends HttpServlet {
 		String action = request.getPathInfo();
 
 		switch (action) {
-		case "/registration":
-			request.getRequestDispatcher("/WEB-INF/views/admin/adminregistration.jsp").forward(request, response);
+		case "/college":
+			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationCollege.jsp").forward(request, response);
 			break;
-		case "/delete":
-			
+		case "/department":
+			// TODO 경로만 생성해놓음 파일생성 예정
+			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
 			break;
-		case "/update":
-			
+		case "/room":
+			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationRoom.jsp").forward(request, response);
+			break;
+		case "/subject":
+			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationSubject.jsp").forward(request, response);
+			break;
+		case "/tuition":
+			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationTuition.jsp").forward(request, response);
 			break;
 		default:
 			break;
