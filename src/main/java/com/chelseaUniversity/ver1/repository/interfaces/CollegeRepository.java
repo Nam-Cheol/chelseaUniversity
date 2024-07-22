@@ -11,10 +11,8 @@ import com.chelseaUniversity.ver1.model.dto.CollegeFormDto;
  */
 
 public interface CollegeRepository {
-	public int insert(CollegeFormDto CollegeFormDto);
-
+	public int insert(String CollegeFormDto);
 	public List<College> selectCollegeDto();
-
 	public int selectCollegeDtoByName(String name);
 	public College selectCollegeDtoById(Integer id);
 	public int deleteById(Integer id);
