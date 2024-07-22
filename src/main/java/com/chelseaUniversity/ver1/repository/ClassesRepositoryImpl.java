@@ -13,7 +13,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class ClassesRepositoryImpl implements ClassesRepository {
 
 	public static final String COUNT_ALL_BOARDS = " SELECT count(*) as count FROM subject_tb ";
-	public static final String SELECT_ALL_CLASSES = " SELECT * FROM subject_tb ORDER BY id limit ? offset ? ";
+	public static final String SELECT_ALL_CLASSES = " SELECT s.*, p.name, d.name FROM subject_tb as s LEFT JOIN professor_tb as p on s.professor_id = p.id LEFT JOIN department_tb as d on s.dept_id = d.id ORDER BY id limit ? offset ? ";
 	public static final String GET_CLASSES_BY_PROFESSOR_ID = " SELECT * FROM subject_tb WHERE professor_id = ? ";
 	public static final String GET_CLASSES_BY_SEARCH = " SELECT * FROM subject_tb WHERE sub_year = ? and semester = ? and dept_id = ? and name = ?";
 	public static final String GET_INFO_BY_ID = " SELECT * FROM subject_tb WHERE id = ? ";
@@ -28,12 +28,13 @@ public class ClassesRepositoryImpl implements ClassesRepository {
 			pstmt.setInt(2, offset);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				allClassesList.add(ClassesDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
+				allClassesList.add(ClassesDto.builder().id(rs.getInt("id")).name(rs.getString("s.name"))
 						.professorId(rs.getInt("professor_id")).roomId(rs.getString("room_id"))
 						.deptId(rs.getInt("dept_id")).type(rs.getString("type")).subYear(rs.getInt("sub_year"))
 						.semester(rs.getInt("semester")).subDay(rs.getString("sub_day"))
 						.startTime(rs.getInt("start_time")).endTime(rs.getInt("end_time")).grades(rs.getInt("grades"))
-						.capacity(rs.getInt("capacity")).numOfStudent(rs.getInt("num_of_student")).build());
+						.capacity(rs.getInt("capacity")).numOfStudent(rs.getInt("num_of_student"))
+						.professorName(rs.getString("p.name")).deptName(rs.getString("d.name")).build());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

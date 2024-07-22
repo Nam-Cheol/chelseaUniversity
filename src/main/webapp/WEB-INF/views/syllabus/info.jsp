@@ -9,6 +9,7 @@
 </head>
 <body>
 	<h2>강의 계획서 조회</h2>
+	<a href="${pageContext.request.contextPath}/subject/list?page=1">돌아가기</a>
 	<table border="1">
 		<tr>
 			<td rowspan="4">교과목 정보</td>
@@ -42,15 +43,15 @@
 		<tr>
 			<td rowspan="4">교강사 정보</td>
 			<td>소속</td>
-			<td></td>
+			<td><c:out value="${professorInfo.deptName}"></c:out></td>
 			<td>성명</td>
-			<td></td>
+			<td><c:out value="${professorInfo.name}"></c:out></td>
 		</tr>
 		<tr>
 			<td>연락처</td>
-			<td></td>
+			<td><c:out value="${professorInfo.tel}"></c:out></td>
 			<td>email</td>
-			<td></td>
+			<td><c:out value="${professorInfo.email}"></c:out></td>
 		</tr>
 	</table>
 	<br>
@@ -58,21 +59,24 @@
 	<table border="1">
 		<tr>
 			<td>강의 개요</td>
-			<td></td>
+			<td><c:out value="${syllabusInfo.overview}"></c:out></td>
 		</tr>
 		<tr>
 			<td>강의 목표</td>
-			<td></td>
+			<td><c:out value="${syllabusInfo.objective}"></c:out></td>
 		</tr>
 		<tr>
 			<td>교재 정보</td>
-			<td></td>
+			<td><c:out value="${syllabusInfo.textbook}"></c:out></td>
 		</tr>
 		<tr>
 			<td>주간 계획</td>
-			<td></td>
+			<td><c:out value="${syllabusInfo.program}"></c:out></td>
 		</tr>
 	</table>
-
+	<br><br>
+	<form action="${pageContext.request.contextPath}/syllabus/update?id=${info.id}" method="post">
+		<button class="btn btn-edit">수정</button>
+	</form>
 </body>
 </html>

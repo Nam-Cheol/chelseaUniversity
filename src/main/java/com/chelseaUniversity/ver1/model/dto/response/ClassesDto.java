@@ -27,6 +27,8 @@ public class ClassesDto {
 	private int grades;
 	private int capacity;
 	private int numOfStudent;
+	private String professorName;
+	private String deptName;
 	
 	
 }

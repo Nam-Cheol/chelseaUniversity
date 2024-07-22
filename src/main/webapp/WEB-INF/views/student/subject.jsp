@@ -20,8 +20,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/subject/list"
-						class="selected--menu">전체 강의 조회</a></td>
+					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">전체 강의 조회</a></td>
 				</tr>
 			</table>
 		</div>
@@ -94,89 +93,7 @@
 					<!-- 강의 검색 -->
 					<label for="subName">강의명</label> <input type="text" name="name"
 						list="subName">
-					<datalist id="subName">
 
-						<option value="데이터통신">
-						<option value="딥러닝의 기초">
-						<option value="컴퓨터의 개념 및 실습">
-						<option value="컴퓨터 프로그래밍">
-						<option value="공학설계 입문">
-						<option value="반도체 공학">
-						<option value="융합전자연구">
-						<option value="기초 전기실험">
-						<option value="물리화학">
-						<option value="반응공학">
-						<option value="사고와 표현">
-						<option value="과학과 기술">
-						<option value="고체역학">
-						<option value="자유정의진리">
-						<option value="정보적 사고">
-						<option value="CAD기초">
-						<option value="에너지재료">
-						<option value="나노재료합성">
-						<option value="신소재공학개론">
-						<option value="신소재기초실습">
-						<option value="칸트철학">
-						<option value="불교철학사">
-						<option value="대륙합리론">
-						<option value="심리철학">
-						<option value="역사학개론">
-						<option value="동아시아사">
-						<option value="한국근대사">
-						<option value="한국사입문">
-						<option value="의미론">
-						<option value="형태론">
-						<option value="컴퓨터언어학">
-						<option value="이태리어">
-						<option value="고전문학연습">
-						<option value="국어정서법">
-						<option value="한국현대작가론">
-						<option value="국문학개론">
-						<option value="중세영문학">
-						<option value="영어발달사">
-						<option value="현대영국소설론">
-						<option value="영문학입문">
-						<option value="일반심리학">
-						<option value="적응심리학">
-						<option value="성격심리학">
-						<option value="인지심리학">
-						<option value="비교정치론">
-						<option value="외교정책론">
-						<option value="국제정치경제론">
-						<option value="한국정치론">
-						<option value="현대사회심리">
-						<option value="인간행동과 사회환경">
-						<option value="사회복지학개론">
-						<option value="사회복지행정론">
-						<option value="언론정보학개론">
-						<option value="방송의이해">
-						<option value="광고의이해">
-						<option value="한국언론사">
-						<option value="문화인류학">
-						<option value="세계화와 다문화주의">
-						<option value="의료인류학">
-						<option value="도시와문화">
-						<option value="기업경영의이해">
-						<option value="경영학원론">
-						<option value="마케팅의 이해">
-						<option value="마케팅 조사론">
-						<option value="경제학원론">
-						<option value="미시경제학">
-						<option value="거시경제학">
-						<option value="신자유주의 경제학">
-						<option value="재무회계">
-						<option value="회계감사">
-						<option value="원가회계">
-						<option value="관리회계">
-						<option value="농업생산경제학">
-						<option value="농산물 가격분석">
-						<option value="농산물 유통학">
-						<option value="농업 정책론">
-						<option value="무역상무론">
-						<option value="국제경영학">
-						<option value="국제무역론 입문">
-						<option value="한국무역법">
-					</datalist>
 					<!-- 검색 버튼 -->
 					<button type="submit">
 						<ul class="d-flex justify-content-center" style="margin: 0;">
@@ -218,29 +135,28 @@
 					<tr>
 						<td><c:out value="${subject.subYear}-${subject.semester}학기"></c:out></td>
 						<td><c:choose>
-								<c:when test="${fn:startsWith(subject.roomId, 'E')}">
-									<c:out value="공과대학"></c:out>
-								</c:when>
-								<c:when test="${fn:startsWith(subject.roomId, 'H')}">
-									<c:out value="인문대학"></c:out>
-								</c:when>
-								<c:when test="${fn:startsWith(subject.roomId, 'S')}">
-									<c:out value="사회과학대학"></c:out>
-								</c:when>
-								<c:when test="${fn:startsWith(subject.roomId, 'C')}">
-									<c:out value="상경대학"></c:out>
-								</c:when>
-							</c:choose></td>
-						<td><c:out value="${subject.deptId}"></c:out></td>
+							<c:when test="${fn:startsWith(subject.roomId, 'E')}">
+								<c:out value="공과대학"></c:out>
+							</c:when>
+							<c:when test="${fn:startsWith(subject.roomId, 'H')}">
+								<c:out value="인문대학"></c:out>
+							</c:when>
+							<c:when test="${fn:startsWith(subject.roomId, 'S')}">
+								<c:out value="사회과학대학"></c:out>
+							</c:when>
+							<c:when test="${fn:startsWith(subject.roomId, 'C')}">
+								<c:out value="상경대학"></c:out>
+							</c:when>
+						</c:choose></td>
+						<td><c:out value="${subject.deptName}"></c:out></td>
 						<td><c:out value="${subject.id}"></c:out></td>
 						<td><c:out value="${subject.type}"></c:out></td>
 						<td><c:out value="${subject.name}"></c:out></td>
-						<td><c:out value="${subject.professorId}"></c:out></td>
+						<td><c:out value="${subject.professorName}"></c:out></td>
 						<td><c:out value="${subject.grades}"></c:out></td>
 						<td><c:out value="${subject.numOfStudent}"></c:out></td>
 						<td><c:out value="${subject.capacity}"></c:out></td>
-						<td><a
-							href="${pageContext.request.contextPath}/subject/syllabus/${subject.id}">강의계획서</a></td>
+						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}">강의계획서</a></td>
 					</tr>
 				</c:forEach>
 
@@ -711,11 +627,11 @@
 
 
 
-			<li><a href="/subject/list/1"
+			<li><a href="${pageContext.request.contextPath}/subject/list?page=1"
 				style="font-weight: 700; color: #007bff">1</a>
-			<li><a href="/subject/list/2">2</a>
-			<li><a href="/subject/list/3">3</a>
-			<li><a href="/subject/list/4">4</a>
+			<li><a href="${pageContext.request.contextPath}/subject/list?page=2">2</a>
+			<li><a href="${pageContext.request.contextPath}/subject/list?page=3">3</a>
+			<li><a href="${pageContext.request.contextPath}/subject/list?page=4">4</a>
 		</ul>
 
 
