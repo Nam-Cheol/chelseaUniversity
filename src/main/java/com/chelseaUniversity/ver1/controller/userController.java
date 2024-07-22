@@ -2,21 +2,26 @@ package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.Notice;
 import com.chelseaUniversity.ver1.model.Professor;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
+import com.chelseaUniversity.ver1.model.dto.ChangePasswordDto;
 import com.chelseaUniversity.ver1.model.dto.CreateProfessorDto;
 import com.chelseaUniversity.ver1.model.dto.CreateStudentDto;
 import com.chelseaUniversity.ver1.model.dto.ProfessorListForm;
 import com.chelseaUniversity.ver1.model.dto.StudentListForm;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.NoticeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.ProfessorRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.NoticeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
@@ -39,6 +44,7 @@ public class userController extends HttpServlet {
 	private StudentListForm studentListForm;
 	private ProfessorListForm professorListForm;
 	private UserRepository userRepository;
+	private NoticeRepository noticeRepository;
 
 	@Override
 	public void init() throws ServletException {
@@ -47,6 +53,7 @@ public class userController extends HttpServlet {
 		studentListForm = new StudentListForm();
 		professorListForm = new ProfessorListForm();
 		userRepository = new UserRepositoryImpl();
+		noticeRepository = new NoticeRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,22 +65,18 @@ public class userController extends HttpServlet {
 		case "/signin":
 			showSignIn(request, response, session);
 			break;
-
 		case "/studentList":
 			showStudentListPage(request, response, session);
 			break;
-
 		case "/professorList":
 			showProfessorListPage(request, response, session);
 			break;
 		case "/professorList/pro_list_page{i}":
 			showProfessorListByPage(request, response, session);
 			break;
-
 		case "/student":
 			showStudentCreatePage(request, response, session);
 			break;
-
 		case "/professor":
 			showProfessorCreatePage(request, response, session);
 			break;
@@ -83,15 +86,21 @@ public class userController extends HttpServlet {
 		case "/findpassword":
 			showFindPasswordPage(request, response, session);
 			break;
-
 		case "/searchStudent":
 			searchStudentList(request, response, session);
 			break;
-
+		case"/password":
+			password(request,response,session);
+			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
+	}
+
+	// 비밀번호 변경 페이지 처리
+	private void password(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp").forward(request, response);
 	}
 
 	private void showProfessorListByPage(HttpServletRequest request, HttpServletResponse response,
@@ -356,8 +365,37 @@ public class userController extends HttpServlet {
 		case "/findpassword":
 			findPasswordHandler(request,response);
 			break;
+		case "/changepassword":
+			changePasswordHandler(request,response,session);
+			break;
 		default:
 			break;
+		}
+	}
+
+	/*
+	 * 비밀번호 변경 기능
+	 */
+	private void changePasswordHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		User user = (User)session.getAttribute("user");
+		if(user == null) {
+			response.sendRedirect(request.getContextPath()+"/user/signin");
+		}
+		String newPassword = request.getParameter("password");
+		String password = user.getPassword();
+		int id = user.getId();
+		if(password.equals(newPassword)) {
+			response.sendRedirect(request.getContextPath()+"/user/password?change=overlap");
+		}
+		ChangePasswordDto changePassword = ChangePasswordDto.builder().afterPassword(newPassword)
+				.beforePassword(password).id(id).build();
+		int rowCount = userRepository.updatePassword(changePassword);
+		if(rowCount != 0) {
+			System.out.println("비밀번호 변경 성공");
+			response.sendRedirect(request.getContextPath()+"/user/password?change=true");
+		} else {
+			System.out.println("비밀번호 변경 실패");
+			response.sendRedirect(request.getContextPath()+"/user/password?change=false");
 		}
 	}
 
@@ -425,11 +463,12 @@ public class userController extends HttpServlet {
 			int rowCount = studentRepository.insertToStudent(createStudentDto);
 
 			if (rowCount == 1) {
-				System.out.println("학생 등록 성공 : " + createStudentDto);
-				response.sendRedirect(request.getContextPath() + "/user/student");
-			} else {
-				System.out.println("학생 등록 실패" + createStudentDto);
+				request.setAttribute("createStudentDto", createStudentDto);
 				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
+//				response.sendRedirect(request.getContextPath() + "/user/student");
+			} else {
+				response.sendRedirect(request.getContextPath() + "/user/student");
+//				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
 			}
 
 		} catch (Exception e) {
@@ -466,11 +505,10 @@ public class userController extends HttpServlet {
 			int rowCount = professorRepository.insertToProfessor(createProfessorDto);
 
 			if (rowCount == 1) {
-				System.out.println("교수 등록 성공 : " + createProfessorDto);
-				response.sendRedirect(request.getContextPath() + "/user/professor");
-			} else {
-				System.out.println("교수 등록 실패" + createProfessorDto);
+				request.setAttribute("createProfessorDto", createProfessorDto);
 				request.getRequestDispatcher("/WEB-INF/views/user/createProfessor.jsp").forward(request, response);
+			} else {
+				response.sendRedirect(request.getContextPath() + "/user/professor");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -487,7 +525,6 @@ public class userController extends HttpServlet {
 		String save = request.getParameter("save-login");
 		Cookie cookie = null;
 		User user = userRepository.selectById_Password(id, password);
-		System.out.println(user.getId());
 		if (user != null) {
 			if (save != null) {
 				cookie = new Cookie("id", String.valueOf(id));
@@ -500,20 +537,26 @@ public class userController extends HttpServlet {
 			}
 			if (user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
+				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
 				session.setAttribute("principal", student);
 				session.setAttribute("user", user);
+				session.setAttribute("notice", noticeList);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("학생으로 로그인");
 			} else if (user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
+				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
 				session.setAttribute("principal", professor);
 				session.setAttribute("user", user);
+				session.setAttribute("notice", noticeList);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("교수로 로그인");
 			} else {
 				Staff staff = userRepository.staffById(id);
+				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
 				session.setAttribute("principal", staff);
 				session.setAttribute("user", user);
+				session.setAttribute("notice", noticeList);
 				response.sendRedirect(request.getContextPath());
 				System.out.println("교직원으로 로그인");
 			}
