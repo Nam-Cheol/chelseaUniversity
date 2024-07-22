@@ -15,6 +15,11 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class BreakAppRepositoryImpl implements BreakAppRepository {
 
 	public final String SELECT_BY_STU_ID = " SELECT * FROM break_app_tb WHERE student_id = ? ORDER BY id DESC ";
+	public static final String BREAK_INSERT = " insert into break_app_tb(student_id, student_grade, from_year, from_semester, to_year, to_semester, type) values (?, ?, ?, ?, ?, ?, ?) ";
+	public static final String BREAK_SELECT_BY_STUDENT_ID = " SELECT * FROM break_app_tb WHERE student_id = ? ";
+	public static final String BREAK_SELECT_BY_ID = " SELECT * FROM break_app_tb WHERE id = ? ";
+	public static final String BREAK_CANCLE = " DELETE FROM break_app_tb WHERE id = ? ";
+	
 
 	@Override
 	public int insert(BreakAppFormDto breakAppFormDto) {
