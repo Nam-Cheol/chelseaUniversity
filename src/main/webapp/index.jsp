@@ -22,15 +22,18 @@
 	class="stampord">
 </div>
 <div class="notice">
-<h2>공지사항</h2>
-<hr width ="90%" align ="left" color = blue>
+	<h2>공지사항</h2>
+	<hr width ="90%" align ="left" color = blue>
+	<c:forEach var="notice" items="${notice}">
+	<p>${notice.get}</p>
+	</c:forEach>
 </div>
 <div class="notice">
-<h2>학사일정</h2>
-<hr width ="80%" align ="left" color = blue>
+	<h2>학사일정</h2>
+	<hr width ="80%" align ="left" color = blue>
 </div>
 <div class="notice">
-<p>${principal.name}님,환영합니다.</p>
+	<p>${principal.name}님,환영합니다.</p>
 </div>
 </div>
 </body>
