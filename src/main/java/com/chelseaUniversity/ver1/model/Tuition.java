@@ -2,6 +2,8 @@ package com.chelseaUniversity.ver1.model;
 
 import com.chelseaUniversity.ver1.utill.NumberUtil;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -10,6 +12,8 @@ import lombok.Data;
  */
 
 @Data
+@AllArgsConstructor
+@Builder
 public class Tuition {
 
 	private Integer studentId;
