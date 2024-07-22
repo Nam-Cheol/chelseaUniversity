@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.ChangePasswordDto;
-import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
