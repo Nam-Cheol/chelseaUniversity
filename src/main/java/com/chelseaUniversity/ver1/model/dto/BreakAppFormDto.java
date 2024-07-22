@@ -1,4 +1,5 @@
 package com.chelseaUniversity.ver1.model.dto;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  */
 
 @Data
+@Builder
 public class BreakAppFormDto {
 	
 	private Integer studentId;

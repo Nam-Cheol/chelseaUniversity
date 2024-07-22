@@ -1,13 +1,21 @@
 package com.chelseaUniversity.ver1.repository.interfaces;
 
+import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.ChangePasswordDto;
-import com.chelseaUniversity.ver1.model.dto.response.PrincipalDto;
+import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 
 public interface UserRepository {
 	
 	// 로그인용
-	public PrincipalDto selectById(Integer userId);
+	public User selectById_Password(int id, String password);
+	
+	public StudentInfoDto studentById(int id);
+	
+	public ProfessorInfoDto professorById(int id);
+	
+	public Staff staffById(int id);
 	
 	// 패스워드 변경
 	public int updatePassword(ChangePasswordDto changePasswordDto);

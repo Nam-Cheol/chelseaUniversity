@@ -17,6 +17,9 @@ public interface BreakAppRepository {
 	// 학생의 휴학 신청 조회하기
 	public List<BreakApp> selectByStudentId(Integer studentId);
 	
+	// TODO - 추가, 하나의 휴학신청서 가져오기
+	public BreakApp selectByStudentIdOne(Integer studentId);
+	
 	// 처리되지 않은 휴학 신청 조회하기 (교직원용)
 	public List<BreakApp> selectByStatus(String status);
 	
