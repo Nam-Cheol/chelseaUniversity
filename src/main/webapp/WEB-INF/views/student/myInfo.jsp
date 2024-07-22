@@ -17,7 +17,7 @@
 					<td><a href="/chelseaUniversity/student/info" class="selected--menu">내 정보 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/password">비밀번호 변경</a></td>
+					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
@@ -50,7 +50,7 @@
 					<th>학번</th>
 					<td>${principal.id}</td>
 					<th>소속</th>
-					<td>${principal.deptId}</td>
+					<td>${principal.deptName}</td>
 				</tr>
 				<tr>
 					<th>학년</th>

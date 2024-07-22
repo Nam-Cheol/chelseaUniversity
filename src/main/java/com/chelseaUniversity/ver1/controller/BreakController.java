@@ -2,12 +2,14 @@ package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import com.chelseaUniversity.ver1.model.BreakApp;
 import com.chelseaUniversity.ver1.model.dto.BreakAppFormDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.BreakAppRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.BreakAppRepository;
+import com.chelseaUniversity.ver1.service.BreakAppService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +22,7 @@ import jakarta.servlet.http.HttpSession;
 public class BreakController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BreakAppRepository breakAppRepository;
+	BreakAppService breakAppService;
        
     public BreakController() {
         super();
@@ -28,6 +31,7 @@ public class BreakController extends HttpServlet {
     @Override
     public void init() throws ServletException {
     	breakAppRepository = new BreakAppRepositoryImpl();
+    	breakAppService = new BreakAppService();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,6 +64,10 @@ public class BreakController extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/student/breakHistory.jsp").forward(request, response);
 				break;
 				
+			case "/list/staff":
+				readBreakList(request,response,session);
+				break;
+				
 			case "/detail":
 				try {
 					int id = Integer.parseInt(request.getParameter("id"));
@@ -82,6 +90,24 @@ public class BreakController extends HttpServlet {
 			
 		} else {
 			response.sendRedirect(request.getContextPath());
+		}
+	}
+
+	/**
+	 * 교직원 -> 휴학 요청 들어왔는지 확인
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void readBreakList(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		try {
+			List<BreakApp> breakAppList = breakAppRepository.selectByStatus("처리중");
+			request.setAttribute("breakAppList", breakAppList);
+			request.getRequestDispatcher("/WEB-INF/views/staff/breakListStaff.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -23,4 +23,9 @@ public interface UserRepository {
 	// id 이용해서 user_tb에 insert
 	public int insertToUser(User user);
 
+	// 아이디찾기
+	public int findId(String name,String email);
+	
+	// 비밀번호 찾기
+	public String findPassword(int id,String name);
 }
