@@ -23,13 +23,31 @@ public class SugangController extends HttpServlet {
 		case "/list":
 			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
 			break;
+		case "/period":
+			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
+			break;
 
 		default:
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action = request.getPathInfo();
+		System.out.println("action : " + action);
+		
+		switch (action) {
+		case "/updatePeriod1":
+			break;
+		case "/updatePeriod2":
+			break;
+			
+		default:
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			break;
+		}
+		
 	}
 
 }
