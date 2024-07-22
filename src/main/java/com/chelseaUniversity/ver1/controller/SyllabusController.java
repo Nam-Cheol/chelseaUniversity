@@ -35,11 +35,12 @@ public class SyllabusController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
-		HttpSession session = request.getSession(false);
-//		if (session == null || session.getAttribute("principal") == null) {
-//			response.sendRedirect(request.getContextPath() + "/user/signin");
-//			return;
-//		}
+		HttpSession session = request.getSession();
+		System.out.println("session : " + session);
+		if (session == null || session.getAttribute("principal") == null) {
+			response.sendRedirect(request.getContextPath() + "/user/signin");
+			return;
+		}
 		switch (action) {
 		case "/info":
 			showInfo(request, response, session);

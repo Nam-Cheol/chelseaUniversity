@@ -75,8 +75,10 @@
 		</tr>
 	</table>
 	<br><br>
-	<form action="${pageContext.request.contextPath}/syllabus/update?id=${info.id}" method="post">
-		<button class="btn btn-edit">수정</button>
-	</form>
+	<c:if test="${principal.id == professorInfo.id}">
+		<form action="${pageContext.request.contextPath}/syllabus/update?id=${info.id}" method="post">
+			<button class="btn btn-edit">수정</button>
+		</form>
+	</c:if>
 </body>
 </html>
