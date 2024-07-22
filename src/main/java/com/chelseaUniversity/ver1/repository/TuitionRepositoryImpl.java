@@ -17,6 +17,7 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 	public final String SELECT_TUI_AMOUNT_BY_STU_ID = " SELECT amount FROM coll_tuit_tb WHERE college_id = (SELECT d.college_id FROM student_tb AS s JOIN department_tb AS d ON s.dept_id = d.id WHERE s.id = ?) ";
 	public final String INSERT_TUITION = " INSERT INTO tuition_tb (student_id, tui_year, semester, tui_amount, sch_type, sch_amount) VALUES (?, ?, ?, ?, ?, ?) ";
 	private static final String SELECT_TUITION_BY_STUDENT_ID = " SELECT * FROM tuition_tb WHERE student_id = ? ";
+	private static final String PAYMENT_TUITION = " UPDATE tuition_tb SET status = 1 WHERE student_id = ? AND tui_year = ? AND semester = ? ";
 	
 	@Override
 	public List<Tuition> selectByStudentId(Integer studentId) {
@@ -153,7 +154,28 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 
 	@Override
 	public int updateStatus(Integer studentId, Integer tuiYear, Integer semester) {
-		// TODO Auto-generated method stub
+		try (Connection conn = DBUtil.getConnection()){
+			
+			conn.setAutoCommit(false);
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(PAYMENT_TUITION)){
+
+				pstmt.setInt(1, studentId);
+				pstmt.setInt(2, tuiYear);
+				pstmt.setInt(3, semester);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				conn.rollback();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return 0;
 	}
 

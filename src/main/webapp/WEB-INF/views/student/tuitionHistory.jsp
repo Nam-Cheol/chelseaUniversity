@@ -45,7 +45,7 @@
 	<main>
 		<h1>등록금 내역 조회</h1>
 		<c:choose>
-			<c:when test="${check}">
+			<c:when test="${checkList}">
 				<table border="1" class="list--table">
 					<thead>
 						<tr>
