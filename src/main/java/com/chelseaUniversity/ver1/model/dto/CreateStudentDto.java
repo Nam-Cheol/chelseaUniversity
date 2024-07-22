@@ -2,8 +2,10 @@ package com.chelseaUniversity.ver1.model.dto;
 
 import java.sql.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -12,6 +14,8 @@ import lombok.ToString;
  *
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @ToString
 public class CreateStudentDto {
