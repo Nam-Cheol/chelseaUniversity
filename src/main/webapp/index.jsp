@@ -25,7 +25,7 @@
 	<h2>공지사항</h2>
 	<hr width ="90%" align ="left" color = blue>
 	<c:forEach var="notice" items="${notice}">
-	<p>${notice.get}</p>
+	<p>${notice.category} ${notice.title} ${notice.createdTime}</p>
 	</c:forEach>
 </div>
 <div class="notice">
