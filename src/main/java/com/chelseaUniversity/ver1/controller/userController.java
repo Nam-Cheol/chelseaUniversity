@@ -364,23 +364,31 @@ public class userController extends HttpServlet {
 	/*
 	 * 비밀번호 찾기 기능
 	 */
-	private void findPasswordHandler(HttpServletRequest request, HttpServletResponse response) {
-		
+	private void findPasswordHandler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String password = userRepository.findPassword(id, name);
+		if(password != null) {
+			System.out.println(password + " 비밀번호 전송");
+			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=password&password="+password).forward(request, response);
+		} else {
+			response.sendRedirect(request.getContextPath()+"/user/findid?password=fail");
+		}
 	}
 
 	/*
 	 * id 찾기 기능
 	 */
-	private void findIdHandler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void findIdHandler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		int id = userRepository.findId(name, email);
 		System.out.println("post로 발동");
 		if(id == 0) {
-			System.out.println(id);
 			response.sendRedirect(request.getContextPath()+"/user/findid?id=fail");
 		} else {
-			response.sendRedirect(request.getContextPath()+"/user/findid?id="+id);
+			System.out.println(id + " id 전송");
+			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=id&id="+id).forward(request, response);
 		}
 	}
 
