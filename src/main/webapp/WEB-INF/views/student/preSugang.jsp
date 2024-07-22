@@ -17,7 +17,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/subjectList">강의
+					<td><a href="/chelseaUniversity/sugang/subjectList?page=1">강의
 							시간표 조회</a></td>
 				</tr>
 				<tr>

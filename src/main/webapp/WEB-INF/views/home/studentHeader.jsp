@@ -51,7 +51,7 @@
 <a href="${pageContext.request.contextPath}/subject/list">수업</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/sugang/subjectList">수강신청</a>
+<a href="${pageContext.request.contextPath}/sugang/subjectList?page=1">수강신청</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/grade/thisSemester">성적</a>

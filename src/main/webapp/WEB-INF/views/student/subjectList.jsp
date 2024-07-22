@@ -17,7 +17,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/subjectList"
+					<td><a href="/chelseaUniversity/sugang/subjectList?page=1"
 						class="selected--menu">강의 시간표 조회</a></td>
 				</tr>
 				<tr>
@@ -194,7 +194,7 @@
 
 		<h4>
 			<span style="font-weight: 600;">강의 목록</span>&nbsp; <span
-				style="color: gray; font-size: 18px;">[총 80건]</span>
+				style="color: gray; font-size: 18px;">[총 ${totalCount}건]</span>
 		</h4>
 		<table border="1" class="sub--list--table">
 			<thead>
@@ -214,18 +214,20 @@
 			</thead>
 
 			<tbody>
+			
+				<c:forEach var="subject" items="${subjectList}">
 
 				<tr>
-					<td>공과대학</td>
-					<td>컴퓨터공학과</td>
-					<td>10000</td>
-					<td>전공</td>
-					<td class="sub--list--name">데이터통신</td>
-					<td>김근호</td>
-					<td>3</td>
-					<td>월 14:00-17:00&nbsp;(E601)</td>
-					<td>5</td>
-					<td>5</td>
+					<td>서브쿼리필</td>
+					<td>${subject.deptId}</td>
+					<td>${subject.id}</td>
+					<td>${subject.type}</td>
+					<td class="sub--list--name">${subject.name}</td>
+					<td>${subject.professorId}</td>
+					<td>${subject.grades}</td>
+					<td>${subject.subDay}&nbsp;${subject.startTime}:00-${subject.endTime}:00&nbsp;(${subject.roomId})</td>
+					<td>${subject.capacity}</td>
+					<td>${subject.numOfStudent}</td>
 					<td>
 						<ul class="d-flex justify-content-center sub--plan--view"
 							style="margin: 0;">
@@ -237,456 +239,28 @@
 						</ul>
 					</td>
 				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>컴퓨터공학과</td>
-					<td>10001</td>
-					<td>전공</td>
-					<td class="sub--list--name">딥러닝의 기초</td>
-					<td>김근호</td>
-					<td>3</td>
-					<td>수 09:00-12:00&nbsp;(E601)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10001"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10001"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>컴퓨터공학과</td>
-					<td>10002</td>
-					<td>교양</td>
-					<td class="sub--list--name">컴퓨터의 개념 및 실습</td>
-					<td>이치승</td>
-					<td>2</td>
-					<td>화 10:00-12:00&nbsp;(E602)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10002"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10002"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>컴퓨터공학과</td>
-					<td>10003</td>
-					<td>전공</td>
-					<td class="sub--list--name">컴퓨터 프로그래밍</td>
-					<td>이치승</td>
-					<td>3</td>
-					<td>금 15:00-18:00&nbsp;(E602)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10003"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10003"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>전자공학과</td>
-					<td>10004</td>
-					<td>전공</td>
-					<td class="sub--list--name">공학설계 입문</td>
-					<td>김미정</td>
-					<td>3</td>
-					<td>목 09:00-12:00&nbsp;(E701)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10004"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10004"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>전자공학과</td>
-					<td>10005</td>
-					<td>전공</td>
-					<td class="sub--list--name">반도체 공학</td>
-					<td>김미정</td>
-					<td>3</td>
-					<td>목 14:00-17:00&nbsp;(E701)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10005"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10005"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>전자공학과</td>
-					<td>10006</td>
-					<td>전공</td>
-					<td class="sub--list--name">융합전자연구</td>
-					<td>전대영</td>
-					<td>3</td>
-					<td>금 14:00-17:00&nbsp;(E702)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10006"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10006"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>전자공학과</td>
-					<td>10007</td>
-					<td>전공</td>
-					<td class="sub--list--name">기초 전기실험</td>
-					<td>전대영</td>
-					<td>3</td>
-					<td>월 14:00-17:00&nbsp;(E702)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10007"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10007"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>화학공학과</td>
-					<td>10008</td>
-					<td>전공</td>
-					<td class="sub--list--name">물리화학</td>
-					<td>김효린</td>
-					<td>3</td>
-					<td>목 12:00-15:00&nbsp;(E801)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10008"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10008"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>화학공학과</td>
-					<td>10009</td>
-					<td>전공</td>
-					<td class="sub--list--name">반응공학</td>
-					<td>김효린</td>
-					<td>3</td>
-					<td>수 12:00-15:00&nbsp;(E801)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10009"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10009"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>화학공학과</td>
-					<td>10010</td>
-					<td>교양</td>
-					<td class="sub--list--name">사고와 표현</td>
-					<td>김현우</td>
-					<td>2</td>
-					<td>화 11:00-13:00&nbsp;(E802)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10010"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10010"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>화학공학과</td>
-					<td>10011</td>
-					<td>교양</td>
-					<td class="sub--list--name">과학과 기술</td>
-					<td>김현우</td>
-					<td>2</td>
-					<td>화 13:00-15:00&nbsp;(E802)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10011"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10011"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>기계공학과</td>
-					<td>10012</td>
-					<td>전공</td>
-					<td class="sub--list--name">고체역학</td>
-					<td>정다운</td>
-					<td>3</td>
-					<td>월 13:00-16:00&nbsp;(E901)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10012"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10012"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>기계공학과</td>
-					<td>10013</td>
-					<td>교양</td>
-					<td class="sub--list--name">자유정의진리</td>
-					<td>정다운</td>
-					<td>2</td>
-					<td>화 09:00-11:00&nbsp;(E901)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10013"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10013"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>기계공학과</td>
-					<td>10014</td>
-					<td>교양</td>
-					<td class="sub--list--name">정보적 사고</td>
-					<td>손주이</td>
-					<td>2</td>
-					<td>목 09:00-11:00&nbsp;(E902)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10014"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10014"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>기계공학과</td>
-					<td>10015</td>
-					<td>전공</td>
-					<td class="sub--list--name">CAD기초</td>
-					<td>손주이</td>
-					<td>2</td>
-					<td>화 13:00-15:00&nbsp;(E902)</td>
-					<td>0</td>
-					<td>20</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10015"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10015"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>신소재공학과</td>
-					<td>10016</td>
-					<td>전공</td>
-					<td class="sub--list--name">에너지재료</td>
-					<td>이현서</td>
-					<td>3</td>
-					<td>수 11:00-14:00&nbsp;(E904)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10016"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10016"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>신소재공학과</td>
-					<td>10017</td>
-					<td>전공</td>
-					<td class="sub--list--name">나노재료합성</td>
-					<td>이현서</td>
-					<td>3</td>
-					<td>목 11:00-14:00&nbsp;(E904)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10017"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10017"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>신소재공학과</td>
-					<td>10018</td>
-					<td>전공</td>
-					<td class="sub--list--name">신소재공학개론</td>
-					<td>이지운</td>
-					<td>3</td>
-					<td>월 09:00-12:00&nbsp;(E905)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10018"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10018"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
-
-				<tr>
-					<td>공과대학</td>
-					<td>신소재공학과</td>
-					<td>10019</td>
-					<td>전공</td>
-					<td class="sub--list--name">신소재기초실습</td>
-					<td>이지운</td>
-					<td>3</td>
-					<td>월 13:00-16:00&nbsp;(E905)</td>
-					<td>0</td>
-					<td>30</td>
-					<td>
-						<ul class="d-flex justify-content-center sub--plan--view"
-							style="margin: 0;">
-							<li style="height: 24px;"><a href="/subject/syllabus/10019"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-							<li style="height: 24px;"><a href="/subject/syllabus/10019"
-								onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-									class="material-symbols-outlined">content_paste_search</span></a>
-						</ul>
-					</td>
-				</tr>
+				</c:forEach>
 
 			</tbody>
 		</table>
 
 		<ul class="page--list">
-
-
-
-			<li><a href="/sugang/subjectList/1"
-				style="font-weight: 700; color: #007bff">1</a>
-			<li><a href="/sugang/subjectList/2">2</a>
-			<li><a href="/sugang/subjectList/3">3</a>
-			<li><a href="/sugang/subjectList/4">4</a>
+		
+			<%
+				int totalPage = (int)request.getAttribute("totalPage");
+			for(int i = 1; i <= totalPage; i++) {%>
+			<%
+				if(Integer.parseInt(request.getParameter("page")) == i) {%>
+					<li><a href="${pageContext.request.contextPath}/sugang/subjectList?page=<%=i%>"
+						style="font-weight: 700; color: #007bff"><%=i%></a>
+					
+				<%} else { %>
+			<li><a href="${pageContext.request.contextPath}/sugang/subjectList?page=<%=i%>"><%=i%></a>
+			<%
+					}
+				} 
+			%>
+			
 		</ul>
 
 
