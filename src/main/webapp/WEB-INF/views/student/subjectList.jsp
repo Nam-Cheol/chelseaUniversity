@@ -4,7 +4,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/myinfo.css">
+	href="${pageContext.request.contextPath}/resources/css/subject.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -17,17 +17,17 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/student/info"
+					<td><a href="/chelseaUniversity/sugang/subjectList"
 						class="selected--menu">강의 시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/student/info">예비 수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/pre">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/student/info">수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/preAppList">수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/student/info">수강 신청 내역 조회</a></td>
+					<td><a href="/chelseaUniversity/sugang/list">수강 신청 내역 조회</a></td>
 				</tr>
 			</table>
 		</div>

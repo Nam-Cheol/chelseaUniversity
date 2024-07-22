@@ -51,10 +51,10 @@
 <a href="${pageContext.request.contextPath}/subject/list">수업</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/sugang/list">수강신청</a>
+<a href="${pageContext.request.contextPath}/sugang/subjectList">수강신청</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">성적</a>
+<a href="${pageContext.request.contextPath}/grade/thisSemester">성적</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/notice/list">학사정보</a>

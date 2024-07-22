@@ -7,36 +7,36 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/sugang/*")
-public class SugangController extends HttpServlet {
+@WebServlet("/grade/*")
+public class GradeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public SugangController() {
-        super();
+    public GradeController() {
     }
 
+    @Override
+    public void init() throws ServletException {
+    }
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println("action : " + action);
 		
 		switch (action) {
-		case "/subjectList":
-			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+		case "/thisSemester":
+			request.getRequestDispatcher("/WEB-INF/views/student/thisSemester.jsp").forward(request, response);
 			break;
 			
-		case "/pre":
-			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+		case "/semester":
+			request.getRequestDispatcher("/WEB-INF/views/student/semester.jsp").forward(request, response);
 			break;
 			
-		case "/preAppList":
-			request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
-			break;
-			
-		case "/list":
-			request.getRequestDispatcher("/WEB-INF/views/student/sugangHistory.jsp").forward(request, response);
+		case "/total":
+			request.getRequestDispatcher("/WEB-INF/views/student/total.jsp").forward(request, response);
 			break;
 
 		default:
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 	}
