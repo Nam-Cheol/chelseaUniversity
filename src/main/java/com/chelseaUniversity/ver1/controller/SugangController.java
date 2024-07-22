@@ -5,9 +5,7 @@ import java.util.List;
 
 import com.chelseaUniversity.ver1.model.PreStuSub;
 import com.chelseaUniversity.ver1.model.StuSub;
-import com.chelseaUniversity.ver1.model.Subject;
 import com.chelseaUniversity.ver1.model.dto.SubjectFormDto;
-import com.chelseaUniversity.ver1.model.dto.response.SubjectDto;
 import com.chelseaUniversity.ver1.repository.PreStuSubRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StuSubDetailRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StuSubRepositoryImpl;
