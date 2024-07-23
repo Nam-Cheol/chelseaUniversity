@@ -39,7 +39,7 @@ public class AdminController extends HttpServlet {
 			showCollegePage(request, response, session);
 			break;
 		case "/department":
-			// TODO 경로만 생성해놓음 파일생성 예정
+			// TODO 파일만 생성 해놓음 기능 구현 예정
 			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
 			break;
 		case "/room":
@@ -76,15 +76,28 @@ public class AdminController extends HttpServlet {
 		case "/create-college":	
 			createCollege(request, response);
 			break;
-			
+		case "/edit-college":	
+			editCollege(request, response);
+			break;
 		default:
 			break;
 		}
 	}
 
-	private void createCollege(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void editCollege(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String collegeName = request.getParameter("college-name");
+		int collegeId = Integer.parseInt(request.getParameter("college-id")); 
+		System.out.println(collegeName);
+		collegeRepository.updateByNameAndId(collegeName, collegeId);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/college");
+		
+	}
+	private void createCollege(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String collegeName = request.getParameter("college-name");
 		collegeRepository.insert(collegeName);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/college");
 	}
 
 }

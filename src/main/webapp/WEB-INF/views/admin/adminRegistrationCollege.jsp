@@ -33,19 +33,25 @@
 		</table>
 	</div>
 	<div class="college-registration-right-container">
+	
     <h2 class="college-registration-top">단과대학 등록</h2>
-    <form action="create-college" method="post">
-        <label for="college-name">단과이름:</label>
-        <input type="text" id="college-name" name="college-name" value="가나대학">
         <br>
-        <button type="submit">등록</button>
-    </form>
-    <form action="">
-        <button type="submit">삭제</button>    
-    </form>
-    <br><br>
-    
-
+		<form action="${pageContext.request.contextPath}/admin/create-college" method="post">
+	        <label for="college-name">단과이름:</label>
+			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+			<button type="submit">생성</button>
+		</form>       
+		
+		<br>
+		<form action="${pageContext.request.contextPath}/admin/edit-college" method="post">
+			<label for="college-id">id:</label>
+			<input type="text" id="college-id" name="college-id" placeholder="1,2,3 ....">
+	        <label for="college-name">단과이름:</label>
+			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+			<button type="submit">수정</button>
+		</form>        
+		<br><br>
+	
         <p>단과 대학 리스트</p>
         <br>
         <table border="1" class="college-list">
@@ -55,8 +61,8 @@
                 </tr>
                 <c:forEach var="college" items="${collegeList}">
                 <tr>
-                    <th>${college.id} </th>
-                    <th>${college.name} </th>
+                    <th>${college.id}</th>
+                    <th>${college.name}</th>
                 </tr>
                 </c:forEach>
         </table>
@@ -65,4 +71,4 @@
 </div>
 </section>
 
-<%@ include file="footer.jsp"%>
+<%@ include file="footer.jsp"%>;
