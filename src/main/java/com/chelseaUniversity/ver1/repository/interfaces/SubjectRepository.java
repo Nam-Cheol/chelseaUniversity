@@ -46,6 +46,7 @@ public interface SubjectRepository {
 	 * @return 전체 강의 정보
 	 */
 	public List<SubjectFormDto> selectDtoAll(int limit, int offset);
+	public List<SubjectFormDto> selectDtoSearch(int limit, int offset, String query, String setColumn);
 	public List<SubjectDto> selectDtoAllLimit(Integer page);
 	
 	/**

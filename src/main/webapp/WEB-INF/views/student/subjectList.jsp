@@ -39,8 +39,9 @@
 		<div class="split--div"></div>
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="/sugang/subjectList/search" method="get">
+			<form action="${pageContext.request.contextPath}/sugang/subjectList/search" method="get">
 				<div>
+					<input type="hidden" name="page" value="1">
 					<!-- 강의구분 콤보박스 -->
 					<label for="type">강의구분</label> <select name="type" id="type">
 						<option value="전체">전체</option>

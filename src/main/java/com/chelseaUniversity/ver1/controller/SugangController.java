@@ -48,17 +48,16 @@ public class SugangController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println("action : " + action);
+		int page;
 
 		switch (action) {
 		case "/subjectList":
-			int page;
 			try {
 				page = Integer.parseInt(request.getParameter("page"));
 			} catch (NumberFormatException e) {
 				page = 1;
 			}
-			viewSubjectList(request, response, page);
-			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+			viewSubjectList(request, response, page, subjectRepository.selectDtoAll(VIEW_SUBJECT, getOffset(page)));
 			break;
 			
 		case "/pre":
@@ -77,6 +76,22 @@ public class SugangController extends HttpServlet {
 			request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 			break;
+			
+		case "/subjectList/search":
+			String type = request.getParameter("type");
+			String deptId = request.getParameter("deptId");
+			String name = request.getParameter("name");
+			try {
+				page = Integer.parseInt(request.getParameter("page"));
+			} catch (NumberFormatException e) {
+				page = 1;
+			}
+			System.out.println("type : " + type);
+			System.out.println("page : " + page);
+			viewSubjectList(request, response, page, subjectRepository.selectDtoSearch
+					(VIEW_SUBJECT, getOffset(VIEW_SUBJECT), SubjectRepositoryImpl.SELECT_SUBJECT_ALL_BY_TYPE, type));
+			break;
+			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -102,8 +117,7 @@ public class SugangController extends HttpServlet {
 			} catch (NumberFormatException e) {
 				page = 1;
 			}
-			viewSubjectList(request, response, page);
-			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+			viewSubjectList(request, response, page, subjectRepository.selectDtoAll(VIEW_SUBJECT, getOffset(page)));
 			break;
 
 		default:
@@ -171,19 +185,27 @@ public class SugangController extends HttpServlet {
 	 * @author 남철
 	 * @param request
 	 * @param response
+	 * @throws IOException 
+	 * @throws ServletException 
 	 */
-	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page) {
+	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
+		
 		
 		int totalCount = subjectRepository.getTotalBoardCount();
 		int totalPage = totalCount / VIEW_SUBJECT;
-		
-		int offset = VIEW_SUBJECT * (page - 1);
-		List<SubjectFormDto> subjectList = subjectRepository.selectDtoAll(VIEW_SUBJECT, offset);
+		List<SubjectFormDto> subjectList = subjectRepository.selectDtoAll(VIEW_SUBJECT, getOffset(page));
+		System.out.println(subjectList.toString());
 		
 		request.setAttribute("subjectList", subjectList);
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("totalPage", totalPage);
+		request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 		
+	}
+	
+	private int getOffset(int page) {
+		int offset = VIEW_SUBJECT * (page - 1);
+		return offset;
 	}
 
 }
