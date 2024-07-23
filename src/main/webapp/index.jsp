@@ -28,11 +28,11 @@
 	<p>${notice.category} ${notice.title} ${notice.createdTime}</p>
 	</c:forEach>
 </div>
-<div class="notice">
+<div class="schedule">
 	<h2>학사일정</h2>
 	<hr width ="80%" align ="left" color = blue>
 </div>
-<div class="notice">
+<div class="interface">
 	<p>${principal.name}님,환영합니다.</p>
 </div>
 </div>
