@@ -23,6 +23,10 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	public final String LESS_NUM_OF_STUDENT = " SELECT id FROM subject_tb WHERE capacity >= num_of_student ";
 	public final String MORE_NUM_OF_STUDENT = " SELECT id FROM subject_tb WHERE capacity >= num_of_student ";
 	public final String RESET_NUM_OF_STUDENT = " UPDATE subject_tb SET num_of_student = 0\r\n" + " WHERE id = ? ";
+	private static final String SELECT_SUBJECT_ALL = " SELECT * FROM subject_tb ";
+	private static final String SELECT_SUBJECT_ALL_COUNT = " SELECT count(id) as count FROM subject_tb ";
+	private static final String SELECT_SUBJECT_ALL_PAGE = " SELECT * FROM subject_tb LIMIT ? OFFSET ? ";
+	private static final String SELECT_SUBJECT_BY_ID = " SELECT * FROM subject_tb WHERE id = ? ";
 
 	@Override
 	public Integer insert(SubjectFormDto subjectFormDto) {
@@ -68,8 +72,49 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
 	@Override
 	public List<SubjectFormDto> selectDtoAll(int limit, int offset) {
-		// TODO Auto-generated method stub
-		return null;
+		List<SubjectFormDto> subjectList = new ArrayList<>();
+		
+			try (Connection conn = DBUtil.getConnection()){
+			
+				try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT_ALL_PAGE)){
+					
+					pstmt.setInt(1, limit);
+					pstmt.setInt(2, offset);
+				
+					try (ResultSet rs = pstmt.executeQuery()){
+
+						while(rs.next()) {
+							SubjectFormDto subject = SubjectFormDto.builder()
+											.id(rs.getInt("id"))
+											.name(rs.getString("name"))
+											.professorId(rs.getInt("professor_id"))
+											.roomId(rs.getString("room_id"))
+											.deptId(rs.getInt("dept_id"))
+											.type(rs.getString("type"))
+											.subYear(rs.getInt("sub_year"))
+											.semester(rs.getInt("semester"))
+											.subDay(rs.getString("sub_day"))
+											.startTime(rs.getInt("start_time"))
+											.endTime(rs.getInt("end_time"))
+											.grades(rs.getInt("grades"))
+											.capacity(rs.getInt("capacity"))
+											.numOfStudent(rs.getInt("num_of_student"))
+											.build();
+							subjectList.add(subject);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+			return subjectList;
 	}
 
 	@Override
@@ -106,14 +151,89 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
 	@Override
 	public Subject selectSubjectById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		Subject subject = null;
+		
+		try (Connection conn = DBUtil.getConnection()){
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT_ALL)){
+				pstmt.setInt(1, id);
+				
+				try (ResultSet rs = pstmt.executeQuery()){
+
+					while(rs.next()) {
+						subject = Subject.builder()
+											.id(rs.getInt("id"))
+											.name(rs.getString("name"))
+											.professorId(rs.getInt("professor_id"))
+											.roomId(rs.getString("room_id"))
+											.deptId(rs.getInt("dept_id"))
+											.type(rs.getString("type"))
+											.subYear(rs.getInt("sub_year"))
+											.semester(rs.getInt("semester"))
+											.subDay(rs.getString("sub_day"))
+											.startTime(rs.getInt("start_time"))
+											.endTime(rs.getInt("end_time"))
+											.grades(rs.getInt("grades"))
+											.capacity(rs.getInt("capacity"))
+											.numOfStudent(rs.getInt("num_of_student"))
+											.build();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return subject;
 	}
 
 	@Override
 	public List<Subject> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Subject> subjectList = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection()){
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT_ALL)){
+				
+				try (ResultSet rs = pstmt.executeQuery()){
+
+					while(rs.next()) {
+						Subject subject = Subject.builder()
+											.id(rs.getInt("id"))
+											.name(rs.getString("name"))
+											.professorId(rs.getInt("professor_id"))
+											.roomId(rs.getString("room_id"))
+											.deptId(rs.getInt("dept_id"))
+											.type(rs.getString("type"))
+											.subYear(rs.getInt("sub_year"))
+											.semester(rs.getInt("semester"))
+											.subDay(rs.getString("sub_day"))
+											.startTime(rs.getInt("start_time"))
+											.endTime(rs.getInt("end_time"))
+											.grades(rs.getInt("grades"))
+											.capacity(rs.getInt("capacity"))
+											.numOfStudent(rs.getInt("num_of_student"))
+											.build();
+						subjectList.add(subject);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return subjectList;
 	}
 
 	@Override
@@ -173,8 +293,29 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
 	@Override
 	public int getTotalBoardCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		int totalCount = 0;
+		try (Connection conn = DBUtil.getConnection()){
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT_ALL_COUNT)){
+				
+				try (ResultSet rs = pstmt.executeQuery();){
+					
+					if(rs.next()) {
+						totalCount = rs.getInt("count");
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totalCount;
 	}
 
 }
