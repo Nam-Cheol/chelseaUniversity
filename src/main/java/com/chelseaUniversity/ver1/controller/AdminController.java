@@ -20,6 +20,8 @@ public class AdminController extends HttpServlet {
 	
 	CollegeRepository collegeRepository;
        
+    public AdminController() {
+    }
 	@Override
 	public void init() throws ServletException {
 		collegeRepository = new CollegeRepositoryImpl();
