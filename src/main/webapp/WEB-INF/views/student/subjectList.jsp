@@ -39,7 +39,7 @@
 		<div class="split--div"></div>
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="${pageContext.request.contextPath}/sugang/subjectList/search" method="get">
+			<form action="${pageContext.request.contextPath}/sugang/subjectList" method="get">
 				<div>
 					<input type="hidden" name="page" value="1">
 					<!-- 강의구분 콤보박스 -->

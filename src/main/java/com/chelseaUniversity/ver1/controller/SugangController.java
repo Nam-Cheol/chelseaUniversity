@@ -57,7 +57,101 @@ public class SugangController extends HttpServlet {
 			} catch (NumberFormatException e) {
 				page = 1;
 			}
-			viewSubjectList(request, response, page, subjectRepository.selectDtoAll(VIEW_SUBJECT, getOffset(page)));
+			
+			String type = request.getParameter("type");
+			String deptId = request.getParameter("deptId");
+			String name = request.getParameter("name");
+			
+			if(type == null && deptId == null && name == null) {
+				
+				viewSubjectList(request, response, page);
+				
+			} else if("전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
+				
+				viewSubjectList(request, response, page);
+				
+			} else if(!"전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
+				
+				if("전공".equals(type) || "교양".equals(type)) {
+					searchSubjectList(request, response, page, 1, type, null, null);
+				}
+				
+			} else if("전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
+				
+				try {
+					if(Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
+						
+						searchSubjectList(request, response, page, 2, null, deptId, null);
+						
+					} else {
+						viewSubjectList(request, response, page);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					viewSubjectList(request, response, page);
+				}
+				
+			} else if("전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
+				
+				searchSubjectList(request, response, page, 3, null, null, name);
+				
+			} else if(!"전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
+				
+				try {
+					if((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) && ("전공".equals(type) || "교양".equals(type))) {
+						
+						searchSubjectList(request, response, page, 4, type, deptId, null);
+						
+					} else {
+						viewSubjectList(request, response, page);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					viewSubjectList(request, response, page);
+				}
+				
+			} else if("전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
+				
+				try {
+					if(Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
+						
+						searchSubjectList(request, response, page, 5, null, deptId, name);
+						
+					} else {
+						viewSubjectList(request, response, page);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					viewSubjectList(request, response, page);
+				}
+				
+			} else if(!"전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
+				
+				if("전공".equals(type) || "교양".equals(type)) {
+					searchSubjectList(request, response, page, 6, type, null, name);
+				}
+				
+			} else if(!"전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
+				
+				try {
+					if((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) && ("전공".equals(type) || "교양".equals(type))) {
+						
+						searchSubjectList(request, response, page, 7, type, deptId, name);
+						
+					} else {
+						viewSubjectList(request, response, page);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					viewSubjectList(request, response, page);
+				}
+				
+			} else {
+				
+				viewSubjectList(request, response, page);
+				
+			}
+			
 			break;
 			
 		case "/pre":
@@ -77,26 +171,12 @@ public class SugangController extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 			break;
 			
-		case "/subjectList/search":
-			String type = request.getParameter("type");
-			String deptId = request.getParameter("deptId");
-			String name = request.getParameter("name");
-			try {
-				page = Integer.parseInt(request.getParameter("page"));
-			} catch (NumberFormatException e) {
-				page = 1;
-			}
-			System.out.println("type : " + type);
-			System.out.println("page : " + page);
-			viewSubjectList(request, response, page, subjectRepository.selectDtoSearch
-					(VIEW_SUBJECT, getOffset(VIEW_SUBJECT), SubjectRepositoryImpl.SELECT_SUBJECT_ALL_BY_TYPE, type));
-			break;
-			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 	}
+
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +197,7 @@ public class SugangController extends HttpServlet {
 			} catch (NumberFormatException e) {
 				page = 1;
 			}
-			viewSubjectList(request, response, page, subjectRepository.selectDtoAll(VIEW_SUBJECT, getOffset(page)));
+			viewSubjectList(request, response, page);
 			break;
 
 		default:
@@ -190,11 +270,10 @@ public class SugangController extends HttpServlet {
 	 */
 	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page) throws ServletException, IOException {
 		
-		
 		int totalCount = subjectRepository.getTotalBoardCount();
 		int totalPage = totalCount / VIEW_SUBJECT;
-		List<SubjectFormDto> subjectList = subjectRepository.selectDtoAll(VIEW_SUBJECT, getOffset(page));
-		System.out.println(subjectList.toString());
+		int offset = (int) Math.ceil((double)(VIEW_SUBJECT * (page - 1)));
+		List<SubjectFormDto> subjectList = subjectRepository.selectDtoAll(VIEW_SUBJECT, offset);
 		
 		request.setAttribute("subjectList", subjectList);
 		request.setAttribute("totalCount", totalCount);
@@ -203,9 +282,54 @@ public class SugangController extends HttpServlet {
 		
 	}
 	
-	private int getOffset(int page) {
-		int offset = VIEW_SUBJECT * (page - 1);
-		return offset;
+	private void searchSubjectList(HttpServletRequest request, HttpServletResponse response, int page, int checkNum, String typeValue, String deptId, String name) throws ServletException, IOException {
+		
+		int offset = (int) Math.ceil((double)(VIEW_SUBJECT * (page - 1)));
+		List<SubjectFormDto> subjectList = null;
+		
+		String query;
+		String select = SubjectRepositoryImpl.SELECT_SUBJECT_ALL;
+		String where = SubjectRepositoryImpl.ADD_WHERE;
+		String and = SubjectRepositoryImpl.ADD_AND;
+		String type = SubjectRepositoryImpl.ADD_TYPE;
+		String dept = SubjectRepositoryImpl.ADD_DEPT;
+		String subjectName = SubjectRepositoryImpl.ADD_SUBJECT_NAME;
+		String limitAndOffset = SubjectRepositoryImpl.ADD_LIMIT_AND_OFFSET;
+		
+		if(checkNum == 1) {
+//			query = select + where + type + limitAndOffset;
+			query = select + where + type;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, typeValue, null, null, checkNum);
+		} else if(checkNum == 2) {
+			query = select + where + dept + limitAndOffset;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, null, deptId, null, checkNum);
+		} else if(checkNum == 3) {
+			query = select + where + subjectName + limitAndOffset;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, null, null, name, checkNum);
+		} else if(checkNum == 4) {
+			query = select + where + type + and + dept + limitAndOffset;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, typeValue, deptId, null, checkNum);
+		} else if(checkNum == 5) {
+			query = select + where + dept + and + subjectName + limitAndOffset;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, null, deptId, name, checkNum);
+		} else if(checkNum == 6) {
+			query = select + where + type + and + subjectName + limitAndOffset;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, typeValue, null, name, checkNum);
+		} else if(checkNum == 7) {
+			query = select + where + type + and + dept + and + subjectName + limitAndOffset;
+			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, typeValue, deptId, name, checkNum);
+		} else {
+			subjectList = subjectRepository.selectDtoAll(VIEW_SUBJECT, offset);
+		}
+		
+		
+		int totalCount = subjectList.size();
+		int totalPage = totalCount / VIEW_SUBJECT;
+		request.setAttribute("subjectList", subjectList);
+		request.setAttribute("totalCount", totalCount);
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("checkNum", checkNum);
+		request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 	}
-
+	
 }

@@ -26,10 +26,13 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	public static final String SELECT_SUBJECT_ALL_COUNT = " SELECT count(id) as count FROM subject_tb ";
 	public static final String SELECT_SUBJECT_ALL_PAGE = " SELECT * FROM subject_tb LIMIT ? OFFSET ? ";
 	public static final String SELECT_SUBJECT_BY_ID = " SELECT * FROM subject_tb WHERE id = ? ";
+	
 	public static final String SELECT_SUBJECT_ALL = " SELECT * FROM subject_tb ";
+	public static final String ADD_WHERE = " WHERE ";
+	public static final String ADD_AND = " AND ";
 	public static final String ADD_TYPE = " type = ? ";
 	public static final String ADD_DEPT = " dept_id = ? ";
-	public static final String ADD_SUBJECT_NAME = " name = ? ";
+	public static final String ADD_SUBJECT_NAME = " name like ? ";
 	public static final String ADD_LIMIT_AND_OFFSET = " LIMIT ? OFFSET ? ";
 	@Override
 	public Integer insert(SubjectFormDto subjectFormDto) {
@@ -121,16 +124,50 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	}
 
 	@Override
-	public List<SubjectFormDto> selectDtoSearch(int limit, int offset, String query, String setColumn) {
+	public List<SubjectFormDto> selectDtoSearch(int limit, int offset, String query, String type, String deptId, String name, int checkNum) {
 		List<SubjectFormDto> subjectList = new ArrayList<>();
 		
 		try (Connection conn = DBUtil.getConnection()){
 		
 			try (PreparedStatement pstmt = conn.prepareStatement(query)){
 				
-				pstmt.setString(1, setColumn);
-				pstmt.setInt(2, limit);
-				pstmt.setInt(3, offset);
+				if(checkNum == 1) {
+					pstmt.setString(1, type);
+//					pstmt.setInt(2, limit);
+//					pstmt.setInt(3, offset);
+				} else if(checkNum == 2) {
+					pstmt.setString(1, deptId);
+					pstmt.setInt(2, limit);
+					pstmt.setInt(3, offset);
+				} else if(checkNum == 3) {
+					pstmt.setString(1, "%" + name + "%");
+					pstmt.setInt(2, limit);
+					pstmt.setInt(3, offset);
+				} else if(checkNum == 4) {
+					pstmt.setString(1, type);
+					pstmt.setString(2, deptId);
+					pstmt.setInt(3, limit);
+					pstmt.setInt(4, offset);
+				} else if(checkNum == 5) {
+					pstmt.setString(1, deptId);
+					pstmt.setString(2, "%" + name + "%");
+					pstmt.setInt(3, limit);
+					pstmt.setInt(4, offset);
+				} else if(checkNum == 6) {
+					pstmt.setString(1, type);
+					pstmt.setString(2, "%" + name + "%");
+					pstmt.setInt(3, limit);
+					pstmt.setInt(4, offset);
+				} else if(checkNum == 7) {
+					pstmt.setString(1, type);
+					pstmt.setString(2, deptId);
+					pstmt.setString(3, "%" + name + "%");
+					pstmt.setInt(4, limit);
+					pstmt.setInt(5, offset);
+				} else {
+					// TODO - 방어적 코드 생성
+				}
+				
 			
 				try (ResultSet rs = pstmt.executeQuery()){
 
