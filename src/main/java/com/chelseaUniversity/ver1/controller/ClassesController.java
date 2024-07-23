@@ -36,7 +36,7 @@ public class ClassesController extends HttpServlet {
 		case "/list":
 			showLists(request, response, session);
 			break;
-
+			
 		default:
 			break;
 		}
