@@ -4,6 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
+<c:choose>
+<c:when test="${user.userRole eq 'staff'}">
+<%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
+</c:when>
+<c:when test="${user.userRole eq 'professor'}">
+<%@ include file="/WEB-INF/views/home/professorHeader.jsp" %>
+</c:when>
+<c:otherwise>
+<%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
+</c:otherwise>
+</c:choose>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
