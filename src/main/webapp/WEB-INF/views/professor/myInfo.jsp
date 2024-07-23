@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
+<%@ include file="/WEB-INF/views/home/professorHeader.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myinfo.css">
 <!-- 세부 메뉴 + 메인 -->
@@ -14,7 +14,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/student/info" class="selected--menu">내 정보 조회</a></td>
+					<td><a href="/chelseaUniversity/professor/info" class="selected--menu">내 정보 조회</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>

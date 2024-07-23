@@ -20,7 +20,6 @@ public class SubjectController extends HttpServlet {
 	private ClassesRepository classesRepository;
 
 	public SubjectController() {
-		super();
 		classesRepository = new ClassesRepositoryImpl();
 	}
 

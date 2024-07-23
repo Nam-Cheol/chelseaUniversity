@@ -35,7 +35,7 @@
 				</tr>
 				<c:if test="${user.userRole eq 'professor'}">
 				<tr>
-					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">내 강의 조회</a></td>
+					<td><a href="${pageContext.request.contextPath}/professor/subject" class="selected--menu">내 강의 조회</a></td>
 				</tr>
 				<tr>
 					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">내 강의 평가</a></td>

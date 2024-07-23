@@ -45,7 +45,24 @@ public class ClassesRepositoryImpl implements ClassesRepository {
 
 	@Override
 	public List<ClassesDto> getClassesById(int professorId) {
-		return null;
+		List<ClassesDto> allClassesListBySearch = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(GET_CLASSES_BY_PROFESSOR_ID)) {
+			pstmt.setInt(1, professorId);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				allClassesListBySearch.add(ClassesDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.professorId(rs.getInt("professor_id")).roomId(rs.getString("room_id"))
+						.deptId(rs.getInt("dept_id")).type(rs.getString("type")).subYear(rs.getInt("sub_year"))
+						.semester(rs.getInt("semester")).subDay(rs.getString("sub_day"))
+						.startTime(rs.getInt("start_time")).endTime(rs.getInt("end_time")).grades(rs.getInt("grades"))
+						.capacity(rs.getInt("capacity")).numOfStudent(rs.getInt("num_of_student")).build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return allClassesListBySearch;
 	}
 
 	@Override
@@ -78,11 +95,11 @@ public class ClassesRepositoryImpl implements ClassesRepository {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				classDto = ClassesDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
-				.professorId(rs.getInt("professor_id")).roomId(rs.getString("room_id"))
-				.deptId(rs.getInt("dept_id")).type(rs.getString("type")).subYear(rs.getInt("sub_year"))
-				.semester(rs.getInt("semester")).subDay(rs.getString("sub_day"))
-				.startTime(rs.getInt("start_time")).endTime(rs.getInt("end_time")).grades(rs.getInt("grades"))
-				.capacity(rs.getInt("capacity")).numOfStudent(rs.getInt("num_of_student")).build();
+						.professorId(rs.getInt("professor_id")).roomId(rs.getString("room_id"))
+						.deptId(rs.getInt("dept_id")).type(rs.getString("type")).subYear(rs.getInt("sub_year"))
+						.semester(rs.getInt("semester")).subDay(rs.getString("sub_day"))
+						.startTime(rs.getInt("start_time")).endTime(rs.getInt("end_time")).grades(rs.getInt("grades"))
+						.capacity(rs.getInt("capacity")).numOfStudent(rs.getInt("num_of_student")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
