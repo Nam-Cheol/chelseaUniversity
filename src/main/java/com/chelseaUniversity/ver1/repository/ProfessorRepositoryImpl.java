@@ -27,6 +27,7 @@ public class ProfessorRepositoryImpl implements ProfessorRepository{
 	public static final String COUNT_PROFESSOR_BY_DEPT_ID = " SELECT count(*) FROM professor_tb WHERE dept_id = ? " ;
 	public static final String SELECT_PROFESSOR_BY_DEPT_ID = " SELECT * FROM professor_tb WHERE dept_id = ? ";
 	public static final String SELECT_PROFESSOR_BY_ID = " SELECT * FROM professor_tb WHERE id = ? ";
+	public static final String SELECT_PROFESSORDEPT_BYID = " SELECT name FROM department_tb WHERE id = ? ";
 	
 	@Override
 	public int insertToProfessor(CreateProfessorDto createProfessorDto) {
@@ -103,7 +104,6 @@ public class ProfessorRepositoryImpl implements ProfessorRepository{
 	public List<Professor> selectProfessorList(ProfessorListForm professorListForm) {
 		List<Professor> list = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection()){
-			
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_SQL);
 			pstmt.setInt(1, 20);
 			pstmt.setInt(2, professorListForm.getPage());
@@ -187,9 +187,7 @@ public class ProfessorRepositoryImpl implements ProfessorRepository{
 	@Override
 	public Integer selectProfessorAmountByDeptId(Integer deptId) {
 		int totalProfessors = 0;
-
 		try (Connection conn = DBUtil.getConnection()) {
-
 			PreparedStatement pstmt = conn.prepareStatement(COUNT_PROFESSOR_BY_DEPT_ID);
 			pstmt.setInt(1, deptId);
 			ResultSet rs = pstmt.executeQuery();
@@ -201,6 +199,22 @@ public class ProfessorRepositoryImpl implements ProfessorRepository{
 		}
 		
 		return totalProfessors;
+	}
+
+	@Override
+	public String selectProfessorDeptById(int id) {
+		String name = null;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_PROFESSORDEPT_BYID)){
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				name = rs.getString("name");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return name;
 	}
 
 }
