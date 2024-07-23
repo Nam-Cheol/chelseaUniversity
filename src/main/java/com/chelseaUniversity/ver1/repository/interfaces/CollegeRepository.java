@@ -3,7 +3,6 @@ package com.chelseaUniversity.ver1.repository.interfaces;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.College;
-import com.chelseaUniversity.ver1.model.dto.CollegeFormDto;
 
 /*
  *  박성희
