@@ -243,7 +243,6 @@ public class UserController extends HttpServlet {
 			request.setAttribute("allStudentList", allStudentList);
 			request.setAttribute("totalStudents", totalStudents);
 			request.setAttribute("totalPages", totalPages);
-
 			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();

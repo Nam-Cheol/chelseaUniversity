@@ -191,7 +191,12 @@ public class BreakAppRepositoryImpl implements BreakAppRepository {
 
 	@Override
 	public int updateById(Integer id, String status) {
-		// TODO Auto-generated method stub
+		
+		
+		
+		
+		
+		
 		return 0;
 	}
 

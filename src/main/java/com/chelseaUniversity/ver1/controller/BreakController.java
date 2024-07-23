@@ -1,14 +1,22 @@
 package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.BreakApp;
+import com.chelseaUniversity.ver1.model.College;
+import com.chelseaUniversity.ver1.model.Department;
+import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.dto.BreakAppFormDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.BreakAppRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.DepartmentRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.BreakAppRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.DepartmentRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.service.BreakAppService;
 
 import jakarta.servlet.ServletException;
@@ -23,6 +31,9 @@ public class BreakController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BreakAppRepository breakAppRepository;
 	BreakAppService breakAppService;
+	StudentRepository studentRepository;
+	DepartmentRepository departmentRepository;
+	CollegeRepository collegeRepository;
 
 	public BreakController() {
 		super();
@@ -32,6 +43,9 @@ public class BreakController extends HttpServlet {
 	public void init() throws ServletException {
 		breakAppRepository = new BreakAppRepositoryImpl();
 		breakAppService = new BreakAppService();
+		studentRepository = new StudentRepositoryImpl();
+		departmentRepository = new DepartmentRepositoryImpl();
+		collegeRepository = new CollegeRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,6 +80,11 @@ public class BreakController extends HttpServlet {
 
 			case "/list/staff":
 				readBreakList(request, response, session);
+				break;
+
+			case "/breakDetail":
+				readBreakDetail(request, response, session);
+				request.getRequestDispatcher("/WEB-INF/views/staff/breakDetail.jsp").forward(request, response);
 				break;
 
 			case "/detail":
@@ -112,6 +131,30 @@ public class BreakController extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 교직원 -> 휴학 신청 상세보기
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 */
+	private void readBreakDetail(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		int id = Integer.parseInt(request.getParameter("id"));
+		// 휴학신청 상태 받아오기
+		BreakApp breakApp = breakAppRepository.selectById(id);
+		// 학생 정보
+		Student studentInfo = studentRepository.selectByStudentId(breakApp.getStudentId());
+		// 소속 학과 이름
+		Department deptInfo = departmentRepository.selectById(studentInfo.getDeptId());
+		// 소속 단과대 이름
+		College college = collegeRepository.selectCollegeDtoById(deptInfo.getCollegeId());
+		
+		request.setAttribute("breakApp", breakApp);
+		request.setAttribute("studentInfo", studentInfo);
+		request.setAttribute("deptInfo", deptInfo);
+		request.setAttribute("college", college);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -25,7 +25,7 @@
 				<td>${breakAppList.type}휴학</td>
 				<td>${breakAppList.fromYear}년도 ${breakAppList.fromSemester}학기</td>
 				<td>${breakAppList.toYear}년도 ${breakAppList.toSemester}학기</td>
-				<td><a href="/break/detail/${breakApp.id}">Click</a></td>
+				<td><a href="${pageContext.request.contextPath}/break/breakDetail?id=${breakAppList.id}">Click</a></td>
 			</tr>
 		</c:forEach>
 		</tbody>
