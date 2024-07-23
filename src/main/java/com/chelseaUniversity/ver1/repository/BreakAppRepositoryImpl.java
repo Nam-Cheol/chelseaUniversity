@@ -19,6 +19,7 @@ public class BreakAppRepositoryImpl implements BreakAppRepository {
 	public static final String BREAK_SELECT_BY_ID = " SELECT * FROM break_app_tb WHERE id = ? ";
 	public static final String BREAK_CANCLE = " DELETE FROM break_app_tb WHERE id = ? ";
 	public static final String SELECT_STU_BREAK_STA = " SELECT * FROM break_app_tb WHERE status = ? ";
+	public static final String UPDATE_BREAK_BY_ID = " UPDATE break_app_tb SET status = ? WHERE id = ? ";
 
 	@Override
 	public int insert(BreakAppFormDto breakAppFormDto) {
@@ -191,13 +192,22 @@ public class BreakAppRepositoryImpl implements BreakAppRepository {
 
 	@Override
 	public int updateById(Integer id, String status) {
-		
-		
-		
-		
-		
-		
-		return 0;
+		int rsCount = 0;
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(UPDATE_BREAK_BY_ID)){
+				pstmt.setString(1, status);
+				pstmt.setInt(2, id);
+				rsCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rsCount;
 	}
 
 }

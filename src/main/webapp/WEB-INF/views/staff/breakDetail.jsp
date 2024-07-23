@@ -39,11 +39,13 @@
 	</tr>
 </table>
 
-<form action="" method="post">
+<form action="${pageContext.request.contextPath}/break/update?id=${breakApp.id}" method="post">
+	<input type="hidden" name="status" value="승인">
 	<button type=submit>승인하기</button>
 </form>
 
-<form action="" method="post">
+<form action="${pageContext.request.contextPath}/break/update?id=${breakApp.id}" method="post">
+	<input type="hidden" name="status" value="반려">
 	<button type=submit>반려하기</button>
 </form>
 

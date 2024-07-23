@@ -12,10 +12,12 @@ import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.BreakAppRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.DepartmentRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.StuStatRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.BreakAppRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.DepartmentRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.StuStatRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.service.BreakAppService;
 
@@ -34,6 +36,7 @@ public class BreakController extends HttpServlet {
 	StudentRepository studentRepository;
 	DepartmentRepository departmentRepository;
 	CollegeRepository collegeRepository;
+	StuStatRepository stuStatRepository;
 
 	public BreakController() {
 		super();
@@ -46,6 +49,7 @@ public class BreakController extends HttpServlet {
 		studentRepository = new StudentRepositoryImpl();
 		departmentRepository = new DepartmentRepositoryImpl();
 		collegeRepository = new CollegeRepositoryImpl();
+		stuStatRepository = new StuStatRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -150,7 +154,7 @@ public class BreakController extends HttpServlet {
 		Department deptInfo = departmentRepository.selectById(studentInfo.getDeptId());
 		// 소속 단과대 이름
 		College college = collegeRepository.selectCollegeDtoById(deptInfo.getCollegeId());
-		
+
 		request.setAttribute("breakApp", breakApp);
 		request.setAttribute("studentInfo", studentInfo);
 		request.setAttribute("deptInfo", deptInfo);
@@ -179,7 +183,9 @@ public class BreakController extends HttpServlet {
 			case "/list":
 
 				break;
-
+			case "/update":
+				updateBreak(request, response, session);
+				break;
 			case "/delete":
 
 				try {
@@ -201,6 +207,41 @@ public class BreakController extends HttpServlet {
 		} else {
 			response.sendRedirect(request.getContextPath());
 		}
+	}
+
+	/**
+	 * 교직원 -> 휴학 처리 (승인 혹은 반려)
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 */
+	private void updateBreak(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+		String breakStatus = request.getParameter("status");
+		BreakApp breakApp = (BreakApp) request.getAttribute("breakApp");
+		breakAppRepository.updateById(breakApp.getId(), breakStatus);
+
+		if (breakStatus.equals("승인")) {
+			BreakApp breakAppEntity = breakAppRepository.selectById(breakApp.getId());
+			String newToDate = null;
+			if (breakAppEntity.getToSemester() == 1) {
+				newToDate = breakAppEntity.getToYear() + "-08-31";
+			} else {
+				newToDate = (breakAppEntity.getToYear() + 1) + "-02-28";
+			}
+			// 가장 최근 기존 학적 상태 
+			stuStatRepository.selectByStudentIdOrderbyIdDesc(null);
+			// 기존 학적 상태에서 to_date를 now()로 변경
+			int updateRowCount = stuStatRepository.updateOldStatus(null);
+			// 새로운 학적 상태 추가
+			int insertRowCount =stuStatRepository.insert(null, breakStatus, newToDate, null);
+			
+			if(updateRowCount != 1 || insertRowCount != 1) {
+				
+			}
+		}
+
 	}
 
 	private void insertBreakApplication(HttpServletRequest request, HttpServletResponse response,
