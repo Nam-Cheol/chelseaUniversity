@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -34,6 +33,14 @@
 				<tr>
 					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">전체 강의 조회</a></td>
 				</tr>
+				<c:if test="${user.userRole eq 'professor'}">
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">내 강의 조회</a></td>
+				</tr>
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">내 강의 평가</a></td>
+				</tr>
+				</c:if>
 			</table>
 		</div>
 	</div>
