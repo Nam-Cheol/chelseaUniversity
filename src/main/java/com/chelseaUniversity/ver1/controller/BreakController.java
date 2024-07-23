@@ -23,71 +23,72 @@ public class BreakController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BreakAppRepository breakAppRepository;
 	BreakAppService breakAppService;
-       
-    public BreakController() {
-        super();
-    }
-    
-    @Override
-    public void init() throws ServletException {
-    	breakAppRepository = new BreakAppRepositoryImpl();
-    	breakAppService = new BreakAppService();
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public BreakController() {
+		super();
+	}
+
+	@Override
+	public void init() throws ServletException {
+		breakAppRepository = new BreakAppRepositoryImpl();
+		breakAppService = new BreakAppService();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String action = request.getPathInfo();
 		System.out.println(action);
-		
+
 		HttpSession session = request.getSession();
 		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		if(principal == null) {
+		if (principal == null) {
 			response.sendRedirect("index.jsp");
 			return;
 		}
-		
+
 		BreakApp app = breakAppRepository.selectByStudentIdOne(principal.getId());
 		request.setAttribute("app", app);
-		
+
 		boolean application = breakAppRepository.selectByStudentIdOne(principal.getId()) != null ? true : false;
 		request.setAttribute("application", application);
-		
-		
-		if(action != null || action.trim().isEmpty()) {
-			
+
+		if (action != null || action.trim().isEmpty()) {
+
 			switch (action) {
 			case "/application":
 				request.getRequestDispatcher("/WEB-INF/views/student/breakApplication.jsp").forward(request, response);
 				break;
-				
+
 			case "/list":
 				request.getRequestDispatcher("/WEB-INF/views/student/breakHistory.jsp").forward(request, response);
 				break;
-				
+
 			case "/list/staff":
-				readBreakList(request,response,session);
+				readBreakList(request, response, session);
 				break;
-				
+
 			case "/detail":
 				try {
 					int id = Integer.parseInt(request.getParameter("id"));
 					app = breakAppRepository.selectById(id);
 					request.setAttribute("app", app);
 					request.setAttribute("principal", principal);
-					request.getRequestDispatcher("/WEB-INF/views/student/breakHistoryDetail.jsp").forward(request, response);
-					
+					request.getRequestDispatcher("/WEB-INF/views/student/breakHistoryDetail.jsp").forward(request,
+							response);
+
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 					response.sendRedirect("/WEB-INF/views/student/breakHistory.jsp");
 				}
-				
+
 				break;
 
 			default:
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;
 			}
-			
+
 		} else {
 			response.sendRedirect(request.getContextPath());
 		}
@@ -95,13 +96,15 @@ public class BreakController extends HttpServlet {
 
 	/**
 	 * 교직원 -> 휴학 요청 들어왔는지 확인
+	 * 
 	 * @param request
 	 * @param response
 	 * @param session
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void readBreakList(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void readBreakList(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		try {
 			List<BreakApp> breakAppList = breakAppRepository.selectByStatus("처리중");
 			request.setAttribute("breakAppList", breakAppList);
@@ -111,35 +114,36 @@ public class BreakController extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println(action);
 		HttpSession session = request.getSession();
 		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		if(principal == null) {
+		if (principal == null) {
 			response.sendRedirect("index.jsp");
 			return;
 		}
-		
-		if(action != null || action.trim().isEmpty()) {
-			
+
+		if (action != null || action.trim().isEmpty()) {
+
 			switch (action) {
 			case "/application":
 				insertBreakApplication(request, response, principal);
 				response.sendRedirect(request.getContextPath() + "/break/list");
 				break;
-				
+
 			case "/list":
-				
+
 				break;
-			
+
 			case "/delete":
-				
+
 				try {
 					int id = Integer.parseInt(request.getParameter("id"));
 					breakAppRepository.deleteById(id);
 					request.getRequestDispatcher("/WEB-INF/views/student/breakHistory.jsp").forward(request, response);
-					
+
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 					response.sendRedirect("/WEB-INF/views/student/breakHistory.jsp");
@@ -150,7 +154,7 @@ public class BreakController extends HttpServlet {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;
 			}
-			
+
 		} else {
 			response.sendRedirect(request.getContextPath());
 		}
@@ -158,18 +162,13 @@ public class BreakController extends HttpServlet {
 
 	private void insertBreakApplication(HttpServletRequest request, HttpServletResponse response,
 			StudentInfoDto principal) {
-		BreakAppFormDto dto = BreakAppFormDto.builder()
-								.studentId(principal.getId())
-								.studentGrade(principal.getGrade())
-								// TODO - 년도, 학기 하드코딩 중 수정 필
-								.fromYear(2024)
-								.fromSemester(1)
-								.toYear(Integer.parseInt(request.getParameter("toYear")))
-								.toSemester(Integer.parseInt(request.getParameter("toSemester")))
-								.type(request.getParameter("type"))
-								.build();
-		
-		if(dto != null) {
+		BreakAppFormDto dto = BreakAppFormDto.builder().studentId(principal.getId()).studentGrade(principal.getGrade())
+				// TODO - 년도, 학기 하드코딩 중 수정 필
+				.fromYear(2024).fromSemester(1).toYear(Integer.parseInt(request.getParameter("toYear")))
+				.toSemester(Integer.parseInt(request.getParameter("toSemester"))).type(request.getParameter("type"))
+				.build();
+
+		if (dto != null) {
 			breakAppRepository.insert(dto);
 		}
 	}
