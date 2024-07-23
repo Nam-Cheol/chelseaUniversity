@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
@@ -53,15 +52,15 @@
 								<c:out value="상경대학"></c:out>
 							</c:when>
 						</c:choose></td>
-						<td><c:out value="${subject.deptId}"></c:out></td>
+						<td><c:out value="${subject.deptName}"></c:out></td>
 						<td><c:out value="${subject.id}"></c:out></td>
 						<td><c:out value="${subject.type}"></c:out></td>
 						<td><c:out value="${subject.name}"></c:out></td>
-						<td><c:out value="${subject.professorId}"></c:out></td>
+						<td><c:out value="${subject.professorName}"></c:out></td>
 						<td><c:out value="${subject.grades}"></c:out></td>
 						<td><c:out value="${subject.numOfStudent}"></c:out></td>
 						<td><c:out value="${subject.capacity}"></c:out></td>
-						<td><a href="${pageContext.request.contextPath}/subject/syllabus/${subject.id}">강의계획서</a></td>
+						<td><a class="btn" href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}" target="_blank">강의계획서</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

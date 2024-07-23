@@ -2,7 +2,6 @@ package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Notice;
@@ -42,7 +41,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/user/*")
-public class userController extends HttpServlet {
+public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private StudentRepository studentRepository;
