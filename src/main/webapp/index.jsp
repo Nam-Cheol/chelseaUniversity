@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
 <c:choose>
 <c:when test="${user.userRole eq 'staff'}">
 <%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
@@ -19,13 +18,16 @@
 %>
 <div class="media">
 <div class="main">
+<div class="image">
 	<img src="${pageContext.request.contextPath}/resources/img/stampord.jpg" alt="스탬포드 브릿지"
 	class="stampord">
+	</div>
+	<div class="submain">
 <div class="notice">
 	<h2>공지사항</h2>
 	<hr width ="100%" align ="left" color = blue>
 	<c:forEach var="notice" items="${notice}">
-	<b><p>${notice.category} <a href="/schedule/detail?id=${notice.id}" class="title">${notice.title}</a></b> <fmt:formatDate value="${notice.createdTime}" pattern="YYYY-MM-dd" /></p>
+	<b><p>${notice.category} <a href="${pageContext.request.contextPath}/notice/detail?page=${notice.id}" class="title">${notice.title}</a></b> <fmt:formatDate value="${notice.createdTime}" pattern="YYYY-MM-dd" /></p>
 	</c:forEach>
 </div>
 <div class="schedule">
@@ -67,12 +69,15 @@
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/${user.userRole}/info'">마이페이지</button>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/signin?logout=true'">로그아웃</button>
 	</div>
+	</c:when>
+	</c:choose>
+	</div>
+	<c:if test="${user.userRole eq 'staff'}">
 	<div class="alarm">
 	<p><img src="${pageContext.request.contextPath}/resources/img/man2.png"> <b>업무 알림</b>
 	<p>처리해야 할 업무가 없습니다.</p>
 	</div>
-	</c:when>
-	</c:choose>
+	</c:if>
 </div>
 </div>
 </body>

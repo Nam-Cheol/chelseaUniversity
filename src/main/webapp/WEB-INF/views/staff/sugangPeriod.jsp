@@ -22,7 +22,10 @@
 
 	<!-- 수강신청 종료 버튼 눌렀을 때 -->
 	<c:if test="${SUGANG_PERIOD == 2}">
-		<p>이번 학기 수강 신청 기간이 종료되었습니다.</p>
+		<p>이번 학기 수강 신청 기간이 종료되었습니다. 예비 수강신청 기간을 시작하시겠습니까?</p>
+		<form action="${pageContext.request.contextPath}/sugang/updatePeriod0" method="post">
+			<button type="submit">예비수강신청 기간 시작하기</button>
+		</form>
 	</c:if>
 </main>
 
