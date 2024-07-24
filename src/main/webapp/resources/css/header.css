@@ -49,7 +49,6 @@ header{
 	color: #001489;
 }
 
-
 .gnb li a::after{
 	content: "";
     display: block;

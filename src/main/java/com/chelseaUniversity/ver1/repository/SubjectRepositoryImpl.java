@@ -27,7 +27,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	public static final String SELECT_SUBJECT_ALL_PAGE = " SELECT * FROM subject_tb LIMIT ? OFFSET ? ";
 	public static final String SELECT_SUBJECT_BY_ID = " SELECT * FROM subject_tb WHERE id = ? ";
 	
-	public static final String SELECT_SUBJECT_ALL = " SELECT * FROM subject_tb ";
+	public static final String SELECT_SUBJECT_ALL = " SELECT s.*, u.d_name as d_name, u.c_name as c_name, p.name AS p_name FROM subject_tb AS s JOIN (SELECT d.id AS id, d.name AS d_name, c.name AS c_name FROM department_tb AS d JOIN college_tb AS c ON d.college_id = c.id) AS u ON s.dept_id = u.id JOIN professor_tb AS p ON s.professor_id = p.id ";
 	public static final String ADD_WHERE = " WHERE ";
 	public static final String ADD_AND = " AND ";
 	public static final String ADD_TYPE = " type = ? ";
@@ -82,7 +82,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 		
 			try (Connection conn = DBUtil.getConnection()){
 			
-				try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT_ALL_PAGE)){
+				try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT_ALL + ADD_LIMIT_AND_OFFSET)){
 					
 					pstmt.setInt(1, limit);
 					pstmt.setInt(2, offset);
@@ -105,6 +105,9 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 											.grades(rs.getInt("grades"))
 											.capacity(rs.getInt("capacity"))
 											.numOfStudent(rs.getInt("num_of_student"))
+											.collegeName(rs.getString("c_name"))
+											.deptName(rs.getString("d_name"))
+											.professorName(rs.getString("p_name"))
 											.build();
 							subjectList.add(subject);
 						}
@@ -168,6 +171,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 					// TODO - 방어적 코드 생성
 				}
 				
+				
 			
 				try (ResultSet rs = pstmt.executeQuery()){
 
@@ -187,6 +191,9 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 										.grades(rs.getInt("grades"))
 										.capacity(rs.getInt("capacity"))
 										.numOfStudent(rs.getInt("num_of_student"))
+										.collegeName(rs.getString("c_name"))
+										.deptName(rs.getString("d_name"))
+										.professorName(rs.getString("p_name"))
 										.build();
 						subjectList.add(subject);
 					}

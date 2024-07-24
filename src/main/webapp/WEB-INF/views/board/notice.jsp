@@ -23,7 +23,7 @@
 		<!-- 메뉴 -->
 		<!-- 선택된 메뉴에 class="selected--menu" 추가해주세요 -->
 		<div class="sub--menu--mid">
-			<table class="sub--menu--table" border="1">
+			<table class="sub--menu--table" border="0">
 				<tr>
 					<td><a href="/chelseaUniversity/notice/list" class="selected--menu">공지사항</a></td>
 				</tr>
@@ -58,7 +58,7 @@
 						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.id}</td>
 					<td
 						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.category}</td>
-					<td style="border: 1px solid #ddd; padding: 8px;"><a href="${pageContext.request.contextPath}/notice/detail?page="${notice.id}>${notice.title}</a></td>
+					<td style="border: 1px solid #ddd; padding: 8px;"><a href="${pageContext.request.contextPath}/notice/detail?page=${notice.id}">${notice.title}</a></td>
 					<td
 						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.createdTime}</td>
 					<td
