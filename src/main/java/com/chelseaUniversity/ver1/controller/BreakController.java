@@ -216,11 +216,13 @@ public class BreakController extends HttpServlet {
 	 * @param request
 	 * @param response
 	 * @param session
+	 * @throws IOException 
 	 */
-	private void updateBreak(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	private void updateBreak(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 
 		String breakStatus = request.getParameter("status");
-		BreakApp breakApp = (BreakApp) request.getAttribute("breakApp");
+		int breakId = Integer.parseInt(request.getParameter("id"));
+		BreakApp breakApp = breakAppRepository.selectById(breakId);
 		breakAppRepository.updateById(breakApp.getId(), breakStatus);
 
 		if (breakStatus.equals("승인")) {
@@ -233,16 +235,20 @@ public class BreakController extends HttpServlet {
 			}
 			// 가장 최근 기존 학적 상태
 			List<StuStat> stuStatInfo = stuStatRepository.selectByStudentIdOrderbyIdDesc(breakApp.getStudentId());
-			// 기존 학적 상태에서 to_date를 now()로 변경
-			int updateRowCount = stuStatRepository.updateOldStatus(stuStatInfo.get(0).getId());
+			// 기존 학적 상태에서 to_date를 now()로 변경 + 휴학상태로 변경
+			int updateToNowDate = stuStatRepository.updateOldStatus(stuStatInfo.get(0).getId());
+			int updateBreakSta = stuStatRepository.updateStatusToBreak("휴학", stuStatInfo.get(0).getId());
 			// 새로운 학적 상태 추가
-			int insertRowCount = stuStatRepository.insert(null, breakStatus, newToDate, null);
+			int insertRowCount = stuStatRepository.insert(breakAppEntity.getStudentId(), "휴학", newToDate,
+					breakApp.getId());
 
-			if (updateRowCount != 1 || insertRowCount != 1) {
-
+			if (updateToNowDate + updateBreakSta + insertRowCount == 3) {
+				request.setAttribute("acceptBreak", breakApp);
 			}
 		}
 
+		response.sendRedirect(request.getContextPath()+"/break/list/staff");
+		
 	}
 
 	private void insertBreakApplication(HttpServletRequest request, HttpServletResponse response,

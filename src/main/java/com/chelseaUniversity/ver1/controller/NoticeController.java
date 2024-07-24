@@ -37,7 +37,8 @@ public class NoticeController extends HttpServlet {
 			request.setAttribute("noticeList", noticeList);
 			request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
 			break;
-
+		case "/detail":
+			
 		default:
 			break;
 		}

@@ -43,4 +43,6 @@ public interface ProfessorRepository {
 	// 페이징 처리 위한 과 교수 수 조회
 	public Integer selectProfessorAmountByDeptId(Integer deptId);
 
+	// 교수 소속 받아오기
+	public String selectProfessorDeptById(int id);
 }

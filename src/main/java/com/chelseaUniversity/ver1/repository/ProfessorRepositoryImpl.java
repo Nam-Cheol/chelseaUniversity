@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Professor;
-import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.dto.CreateProfessorDto;
 import com.chelseaUniversity.ver1.model.dto.FindIdFormDto;
 import com.chelseaUniversity.ver1.model.dto.FindPasswordFormDto;
 import com.chelseaUniversity.ver1.model.dto.ProfessorListForm;
 import com.chelseaUniversity.ver1.model.dto.UserUpdateDto;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
-import com.chelseaUniversity.ver1.model.dto.response.UserInfoForUpdateDto;
 import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
 import com.chelseaUniversity.ver1.utill.DBUtil;
 
@@ -25,6 +23,7 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 	public static final String COUNT_ALL_PROFESSOR_SQL = " SELECT count(*) FROM professor_tb ";
 	public static final String COUNT_PROFESSOR_BY_DEPT_ID = " SELECT count(*) FROM professor_tb WHERE dept_id = ? ";
 	public static final String SELECT_PROFESSOR_BY_DEPT_ID = " SELECT * FROM professor_tb WHERE dept_id = ? ";
+	public static final String SELECT_PROFESSORDEPT_BYID = " SELECT name FROM department_tb WHERE id = ? ";
 	public static final String SELECT_PROFESSOR_BY_ID = " SELECT * FROM professor_tb AS p LEFT JOIN department_tb AS d ON p.dept_id = d.id WHERE p.id = ?; ";
 
 	@Override
@@ -178,9 +177,7 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 	@Override
 	public Integer selectProfessorAmountByDeptId(Integer deptId) {
 		int totalProfessors = 0;
-
 		try (Connection conn = DBUtil.getConnection()) {
-
 			PreparedStatement pstmt = conn.prepareStatement(COUNT_PROFESSOR_BY_DEPT_ID);
 			pstmt.setInt(1, deptId);
 			ResultSet rs = pstmt.executeQuery();
@@ -192,6 +189,22 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 		}
 
 		return totalProfessors;
+	}
+
+	@Override
+	public String selectProfessorDeptById(int id) {
+		String name = null;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_PROFESSORDEPT_BYID)){
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				name = rs.getString("name");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return name;
 	}
 
 }
