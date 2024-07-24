@@ -5,8 +5,6 @@
 <main>
 	<h1>휴학 처리</h1>
 	
-	<c:choose>
-	<c:when test="test=${breakAppList.size() > 0}">
 	<table>
 		<thead>
 		<tr>
@@ -24,21 +22,15 @@
 			<tr>
 				<td>${breakAppList.appDate}</td>
 				<td>${breakAppList.studentId}</td>
-				<td>${breakAppList.type}</td>
-				<td>${breakAppList.fromYear}</td>
-				<td>${breakAppList.appDate}</td>
-				<td>${breakAppList.toYear}</td>
-				<td><a href="/break/detail/${breakApp.id}">Click</a></td>
+				<td>${breakAppList.type}휴학</td>
+				<td>${breakAppList.fromYear}년도 ${breakAppList.fromSemester}학기</td>
+				<td>${breakAppList.toYear}년도 ${breakAppList.toSemester}학기</td>
+				<td><a href="${pageContext.request.contextPath}/break/breakDetail?id=${breakAppList.id}">Click</a></td>
 			</tr>
 		</c:forEach>
 		</tbody>
 	</table>
 	
-	</c:when>
-	<c:otherwise>
-	<p>대기 중인 신청 내역이 없습니다.</p>
-	</c:otherwise>
-	</c:choose>
 </main>
 
 <%@ include file="/WEB-INF/views/home/footer.jsp"%>
