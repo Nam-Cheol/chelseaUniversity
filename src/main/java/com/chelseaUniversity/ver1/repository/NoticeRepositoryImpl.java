@@ -15,7 +15,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class NoticeRepositoryImpl implements NoticeRepository {
 	
 	private static final String SELECT_NOTICE_ALL_ORDER_BY = " SELECT * FROM notice_tb ORDER BY id DESC ";
-
+	
 	@Override
 	public int insert(NoticeFormDto noticeFormDto) {
 		// TODO Auto-generated method stub
