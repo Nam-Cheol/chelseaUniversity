@@ -1,6 +1,8 @@
+<%@page import="com.chelseaUniversity.ver1.repository.InformationRepositoryImpl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -39,8 +41,9 @@
 		<div class="split--div"></div>
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="/sugang/subjectList/search" method="get">
+			<form action="${pageContext.request.contextPath}/sugang/subjectList" method="get">
 				<div>
+					<input type="hidden" name="page" value="1">
 					<!-- 강의구분 콤보박스 -->
 					<label for="type">강의구분</label> <select name="type" id="type">
 						<option value="전체">전체</option>
@@ -215,15 +218,15 @@
 
 			<tbody>
 			
+			
 				<c:forEach var="subject" items="${subjectList}">
-
 				<tr>
-					<td>서브쿼리필</td>
-					<td>${subject.deptId}</td>
+					<td>${subject.collegeName}</td>
+					<td>${subject.deptName}</td>
 					<td>${subject.id}</td>
 					<td>${subject.type}</td>
 					<td class="sub--list--name">${subject.name}</td>
-					<td>${subject.professorId}</td>
+					<td>${subject.professorName}</td>
 					<td>${subject.grades}</td>
 					<td>${subject.subDay}&nbsp;${subject.startTime}:00-${subject.endTime}:00&nbsp;(${subject.roomId})</td>
 					<td>${subject.capacity}</td>

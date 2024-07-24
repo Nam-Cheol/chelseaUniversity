@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Department {
+public class CollegeAndDeptInfoDTO {
 
-	private Integer id;
-	private String name;
-	private Integer collegeId;
+	String id;
+	String dName;
+	String cName;
+	
 }

@@ -15,7 +15,8 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class NoticeRepositoryImpl implements NoticeRepository {
 	
 	private static final String SELECT_NOTICE_ALL_ORDER_BY = " SELECT * FROM notice_tb ORDER BY id DESC ";
-
+	private static final String SELECT_NOTICE_BYID = " SELECT * FROM notice_tb WHERE id = ? ";
+	
 	@Override
 	public int insert(NoticeFormDto noticeFormDto) {
 		// TODO Auto-generated method stub
@@ -30,8 +31,20 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 
 	@Override
 	public Notice selectById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		Notice notice = null;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYID)){
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				notice = Notice.builder().id(rs.getInt("id")).category(rs.getString("category"))
+				.title(rs.getString("title")).content(rs.getString("content"))
+				.createdTime(rs.getTimestamp("created_time")).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return notice;
 	}
 
 	@Override
