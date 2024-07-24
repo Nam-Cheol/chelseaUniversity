@@ -78,6 +78,8 @@ public class SugangController extends HttpServlet {
 			break;
 		case "/period":
 			sugangStatus.updatePrePeriod("진행");
+			final int SUGANG_PERIOD = 2;
+			request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 			break;
 		default:
@@ -91,6 +93,9 @@ public class SugangController extends HttpServlet {
 		String action = request.getPathInfo();
 		System.out.println("action : " + action);
 		switch (action) {
+		case "/updatePeriod0":
+			updatePeriod0(request, response);
+			break;
 		case "/updatePeriod1":
 			updatePeriod1(request, response);
 			break;
@@ -113,6 +118,23 @@ public class SugangController extends HttpServlet {
 			break;
 		}
 
+	}
+
+	/**
+	 * 교직원 -> 예비 수강신청 기간 시작
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	private void updatePeriod0(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// 예비 수강신청 기간 시작
+		sugangStatus.updatePrePeriod("진행");
+		final int SUGANG_PERIOD = 0;
+		request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
+		request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 	}
 
 	/**
@@ -149,7 +171,8 @@ public class SugangController extends HttpServlet {
 
 		// 수강 신청기간 상태값 변경 (예비수강, 본수강 순서)
 		sugangStatus.updateAllSugangPeriod("종료", "진행");
-
+		final int SUGANG_PERIOD = 1;
+		request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 		request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 //		response.sendRedirect(request.getContextPath()+"/sugang/period");
 	}
@@ -166,7 +189,8 @@ public class SugangController extends HttpServlet {
 			throws ServletException, IOException {
 		// 본수강신청 기간 종료
 		sugangStatus.updateSugangPeriod("종료");
-		
+		final int SUGANG_PERIOD = 2;
+		request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 		request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 	}
 
