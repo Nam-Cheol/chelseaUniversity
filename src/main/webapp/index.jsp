@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
 <c:choose>
 <c:when test="${user.userRole eq 'staff'}">
 <%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
@@ -28,7 +27,7 @@
 	<h2>공지사항</h2>
 	<hr width ="100%" align ="left" color = blue>
 	<c:forEach var="notice" items="${notice}">
-	<b><p>${notice.category} <a href="/schedule/detail?id=${notice.id}" class="title">${notice.title}</a></b> <fmt:formatDate value="${notice.createdTime}" pattern="YYYY-MM-dd" /></p>
+	<b><p>${notice.category} <a href="${pageContext.request.contextPath}/notice/detail?page=${notice.id}" class="title">${notice.title}</a></b> <fmt:formatDate value="${notice.createdTime}" pattern="YYYY-MM-dd" /></p>
 	</c:forEach>
 </div>
 <div class="schedule">
