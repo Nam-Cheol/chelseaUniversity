@@ -89,20 +89,53 @@ public class AdminController extends HttpServlet {
 		case "/edit-college":	
 			editCollege(request, response);
 			break;
+		case "/tuition/edit-tuition":	
+			editTuition(request, response);
+			break;
+		case "/tuition/create-tuition-name":
+			createTuitionName(request, response);
+			break;
+		case "/tuition/create-tuition-amount":
+			createTuitionAmount(request, response);
+			break;
+			
 		default:
 			break;
 		}
+	}
+	
+	private void createTuitionAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		int collegeId = Integer.parseInt(request.getParameter("college-id")); 
+		int collegeAmount = Integer.parseInt(request.getParameter("college-tuition-amount")); 
+		tuitionRepository.insertAmount(collegeId, collegeAmount);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/tuition");
+		
+	}
+	private void createTuitionName(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String collegeName = request.getParameter("college-name");
+		collegeRepository.insert(collegeName);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/tuition");
+	}
+	
+	private void editTuition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("editTuition 성공");
+		int collegeId = Integer.parseInt(request.getParameter("tuition-id"));
+		int collegeAmount = Integer.parseInt(request.getParameter("college-tuition-amount"));
+		tuitionRepository.updateByIdAndAmount(collegeId, collegeAmount);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/tuition");
 	}
 
 	private void editCollege(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String collegeName = request.getParameter("college-name");
 		int collegeId = Integer.parseInt(request.getParameter("college-id")); 
-		System.out.println(collegeName);
 		collegeRepository.updateByNameAndId(collegeName, collegeId);
 		
 		response.sendRedirect(request.getContextPath() + "/admin/college");
-		
 	}
+	
 	private void createCollege(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String collegeName = request.getParameter("college-name");
 		collegeRepository.insert(collegeName);

@@ -27,7 +27,7 @@
 			<tr>	
 				<td><a href="${pageContext.request.contextPath}/admin/subject">강의</a></td>
 			</tr>
-			<tr>
+			<tr>	
 				<td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
 			</tr>
 		</table>
@@ -36,20 +36,28 @@
 	
     <h2 class="college-registration-top">단대별 등록금</h2>
         <br>
-		<form action="${pageContext.request.contextPath}/admin/create-tuition" method="post">
+		<form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-name" method="post">
 	        <label for="college-name">단과이름:</label>
 			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
-	        <label for="college-tuition">금액:</label>
-			<input type="text" id="college-tuition" name="college-tuition" placeholder="4000000">
 			<button type="submit">생성</button>
 		</form>       
+		<br>
+		
+		<form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-amount" method="post">
+			<label for="college-id">id:</label>
+			<input type="text" id="college-id" name="college-id" placeholder="1, 2, 3 .....">
+			<label for="college-tuition-amount">금액:</label>
+			<input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000">
+			<button type="submit">생성</button>
+		</form>
 		
 		<br>
-		<form action="${pageContext.request.contextPath}/admin/edit-tuition" method="post">
-			<label for="college-id">id:</label>
-			<input type="text" id="college-id" name="college-id" placeholder="1,2,3 ....">
-	        <label for="college-tuition">금액:</label>
-			<input type="text" id="college-tuition" name="college-tuition" placeholder="4000000">
+		
+		<form action="${pageContext.request.contextPath}/admin/tuition/edit-tuition" method="post">
+			<label for="tuition-id">id:</label>
+			<input type="text" id="tuition-id" name="tuition-id" placeholder="1, 2, 3 ....">
+	        <label for="college-tuition-amount">금액:</label>
+			<input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000">
 			<button type="submit">수정</button>
 		</form>        
 		<br><br>

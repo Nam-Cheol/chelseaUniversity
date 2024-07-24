@@ -6,7 +6,9 @@ import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 import com.chelseaUniversity.ver1.service.StuStatService;
 import com.chelseaUniversity.ver1.service.TuitionService;
@@ -22,10 +24,12 @@ import jakarta.servlet.http.HttpSession;
 public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	TuitionRepository tuitionRepository;
+	CollegeRepository collegeRepository;
 
 	@Override
 	public void init() throws ServletException {
 		tuitionRepository = new TuitionRepositoryImpl();
+		collegeRepository = new CollegeRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -108,8 +112,6 @@ public class TuitionController extends HttpServlet {
 			editTuition(request, response);
 			break;
 			
-			
-			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -127,9 +129,13 @@ public class TuitionController extends HttpServlet {
 	
 	}
 
-	private void editTuition(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	private void editTuition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("editTuition 성공");
+		int collegeId = Integer.parseInt(request.getParameter("tuition-id"));
+		int collegeAmount = Integer.parseInt(request.getParameter("college-tuition-amount"));
+		tuitionRepository.updateByIdAndAmount(collegeId, collegeAmount);
 		
+		response.sendRedirect(request.getContextPath() + "/admin/tuition");
 	}
 
 

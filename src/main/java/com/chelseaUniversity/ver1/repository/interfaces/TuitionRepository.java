@@ -34,6 +34,9 @@ public interface TuitionRepository {
 	public List<Tuition> selectAmount();
 	
 	// 등록금 금액 생성
-	public int insertAmountByNameAndId(String name, int amount);
+	public int insertAmount(int id, int amount);
+	
+	// 등록금 금약 변경 id --> amount
+	public int updateByIdAndAmount(int id, int amount);
 	
 }
