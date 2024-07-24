@@ -58,7 +58,7 @@
 						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.id}</td>
 					<td
 						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.category}</td>
-					<td style="border: 1px solid #ddd; padding: 8px;">${notice.title}</td>
+					<td style="border: 1px solid #ddd; padding: 8px;"><a href="${pageContext.request.contextPath}/notice/detail?page="${notice.id}>${notice.title}</a></td>
 					<td
 						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.createdTime}</td>
 					<td
@@ -66,7 +66,6 @@
 				</tr>
 			</c:forEach>
 		</table>
-
 
 		<!-- 공지 검색 -->
 		<c:if test="${crud.equals(\"selectKeyword\")}">

@@ -19,8 +19,11 @@
 %>
 <div class="media">
 <div class="main">
+<div class="image">
 	<img src="${pageContext.request.contextPath}/resources/img/stampord.jpg" alt="스탬포드 브릿지"
 	class="stampord">
+	</div>
+	<div class="submain">
 <div class="notice">
 	<h2>공지사항</h2>
 	<hr width ="100%" align ="left" color = blue>
@@ -67,12 +70,15 @@
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/${user.userRole}/info'">마이페이지</button>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/signin?logout=true'">로그아웃</button>
 	</div>
+	</c:when>
+	</c:choose>
+	</div>
+	<c:if test="${user.userRole eq 'staff'}">
 	<div class="alarm">
 	<p><img src="${pageContext.request.contextPath}/resources/img/man2.png"> <b>업무 알림</b>
 	<p>처리해야 할 업무가 없습니다.</p>
 	</div>
-	</c:when>
-	</c:choose>
+	</c:if>
 </div>
 </div>
 </body>

@@ -16,6 +16,8 @@ public class CollegeRepositoryImpl implements CollegeRepository{
 	private static final String SELECT_COLLEGE_ALL_ORDER_BY = " SELECT * FROM college_tb ORDER BY id ASC ";
 	private static final String INSERT_COLLEGE_ORDER_BY_NAME = " INSERT INTO college_tb(name) VALUES (?) ";
 	private static final String UPDATE_COLLEGE_NAME_BY_ID = " UPDATE college_tb SET name = ? WHERE id = ? ";
+	private static final String SELECT_COLLEGE_BY_ID = " SELECT * FROM college_tb WHERE id = ? ";
+	
 	// College -> dto
 	// CollegeRepository -> dao
 	// CollegeRepositoryImpl -> daoImpl
@@ -73,8 +75,18 @@ public class CollegeRepositoryImpl implements CollegeRepository{
 
 	@Override
 	public College selectCollegeDtoById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		College college = null ;
+		try (Connection conn = DBUtil.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_COLLEGE_BY_ID);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				college = College.builder().id(rs.getInt("id")).name(rs.getString("name")).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return college;
 	}
 
 	@Override
