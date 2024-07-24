@@ -2,12 +2,13 @@ package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Notice;
 import com.chelseaUniversity.ver1.model.Professor;
+import com.chelseaUniversity.ver1.model.Schedule;
 import com.chelseaUniversity.ver1.model.Staff;
+import com.chelseaUniversity.ver1.model.StuStat;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.ChangePasswordDto;
@@ -19,10 +20,14 @@ import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.NoticeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.ProfessorRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.ScheuleRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.StuStatRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.UserRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.NoticeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.ScheuleRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.StuStatRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.UserRepository;
 import com.chelseaUniversity.ver1.service.ProfessorService;
@@ -45,6 +50,8 @@ public class UserController extends HttpServlet {
 	private ProfessorListForm professorListForm;
 	private UserRepository userRepository;
 	private NoticeRepository noticeRepository;
+	private ScheuleRepository scheuleRepository;
+	private StuStatRepository stuStatRepository;
 
 	@Override
 	public void init() throws ServletException {
@@ -54,6 +61,8 @@ public class UserController extends HttpServlet {
 		professorListForm = new ProfessorListForm();
 		userRepository = new UserRepositoryImpl();
 		noticeRepository = new NoticeRepositoryImpl();
+		scheuleRepository = new ScheuleRepositoryImpl();
+		stuStatRepository = new StuStatRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -92,9 +101,43 @@ public class UserController extends HttpServlet {
 		case"/password":
 			password(request,response,session);
 			break;
+		case"/home":
+			showHomePage(request,response,session);
+			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
+		}
+	}
+
+	// 홈페이지 페이지 처리
+	private void showHomePage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		User user = (User)session.getAttribute("user");
+		int id = user.getId();
+		if (user != null) {
+			if (user.getUserRole().equals("student")) {
+				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
+				request.setAttribute("notice", noticeList);
+				request.setAttribute("schedule", scheduleList);
+				request.setAttribute("status", stuStat);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			} else if (user.getUserRole().equals("professor")) {
+				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				request.setAttribute("notice", noticeList);
+				request.setAttribute("schedule", scheduleList);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			} else {
+				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				request.setAttribute("notice", noticeList);
+				request.setAttribute("schedule", scheduleList);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}
+		} else {
+			response.sendRedirect(request.getContextPath() + "/user/signin?pass=false");
 		}
 	}
 
@@ -335,8 +378,8 @@ public class UserController extends HttpServlet {
 	private void showSignIn(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		try {
 			if (request.getParameter("logout") != null) {
-				session.setAttribute("principal", null);
-				session.setAttribute("user", null);
+				session.invalidate();
+				session = request.getSession(true);
 			}
 			request.getRequestDispatcher("/WEB-INF/views/sign/signin.jsp").forward(request, response);
 		} catch (ServletException | IOException e) {
@@ -378,10 +421,13 @@ public class UserController extends HttpServlet {
 	 */
 	private void changePasswordHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 		User user = (User)session.getAttribute("user");
+		String original = request.getParameter("original");
 		if(user == null) {
 			response.sendRedirect(request.getContextPath()+"/user/signin");
+		} else if (user.getPassword().equals(original)) {
+			request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp?pass=false").forward(request, response);
 		}
-		String newPassword = request.getParameter("password");
+			String newPassword = request.getParameter("password");
 		String password = user.getPassword();
 		int id = user.getId();
 		if(password.equals(newPassword)) {
@@ -519,7 +565,7 @@ public class UserController extends HttpServlet {
 	 * 로그인 기능 처리
 	 */
 	private void signInHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-			throws IOException {
+			throws IOException, ServletException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
 		String save = request.getParameter("save-login");
@@ -538,27 +584,34 @@ public class UserController extends HttpServlet {
 			if (user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
 				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				session.setAttribute("principal", student);
 				session.setAttribute("user", user);
-				session.setAttribute("notice", noticeList);
-				response.sendRedirect(request.getContextPath());
-				System.out.println("학생으로 로그인");
+				request.setAttribute("notice", noticeList);
+				request.setAttribute("schedule", scheduleList);
+				request.setAttribute("status", stuStat);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else if (user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				String deptname = professorRepository.selectProfessorDeptById(professor.getDeptId());
 				session.setAttribute("principal", professor);
 				session.setAttribute("user", user);
-				session.setAttribute("notice", noticeList);
-				response.sendRedirect(request.getContextPath());
-				System.out.println("교수로 로그인");
+				session.setAttribute("deptname", deptname);
+				request.setAttribute("notice", noticeList);
+				request.setAttribute("schedule", scheduleList);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
 				Staff staff = userRepository.staffById(id);
 				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
 				session.setAttribute("principal", staff);
 				session.setAttribute("user", user);
-				session.setAttribute("notice", noticeList);
-				response.sendRedirect(request.getContextPath());
-				System.out.println("교직원으로 로그인");
+				request.setAttribute("notice", noticeList);
+				request.setAttribute("schedule", scheduleList);
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			}
 		} else {
 			response.sendRedirect(request.getContextPath() + "/user/signin?pass=false");

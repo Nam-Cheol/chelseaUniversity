@@ -14,8 +14,6 @@
 
 <header>
 
-
-
 <p class="h-border-top"></p>
 <div class="header-wrap">
 
@@ -23,7 +21,7 @@
 <div class="user-utils-wrap">
 <ul class="user-utils">
 <li>
-	<a href="${pageContext.request.contextPath}/index.jsp">${principal.name} (${principal.id})</a>
+	<a href="${pageContext.request.contextPath}/user/home">${principal.name} (${principal.id})</a>
 </li>
 <li>
 	<a href="${pageContext.request.contextPath}/user/signin?logout=true">로그아웃</a>
@@ -34,7 +32,7 @@
 
 <nav class="header-nav">
 <h1 class="header-logo">
-<a href="${pageContext.request.contextPath}/index.jsp">
+<a href="${pageContext.request.contextPath}/user/home">
 <picture>
 <source srcset="https://img.chelseafc.com/image/upload/f_auto,c_pad,ar_1,w_140,h_140,q_auto:best/Site%20Chelsea%20Badges/Main_Website_Badge_-_Colour.png" media="(min-width: 400px)" type="image/webp">
 <img alt="첼시대학교" src="${pageContext.request.contextPath}/resources/img/Chelsea_FC_Logo.svg.png" >
@@ -44,7 +42,7 @@
 <!-- s : gnb -->
 <ul class="gnb">
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">홈</a>
+<a href="${pageContext.request.contextPath}/user/home">홈</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/views/my/myDB.jsp">MY</a>
@@ -53,7 +51,7 @@
 <a href="${pageContext.request.contextPath}/index.jsp">수업</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">학사정보</a>
+<a href="${pageContext.request.contextPath}/notice/list">학사정보</a>
 </li>
 </ul>
 <!-- e : gnb -->

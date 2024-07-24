@@ -104,7 +104,7 @@ public class UserRepositoryImpl implements UserRepository{
 				professor = ProfessorInfoDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
 						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
 						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
-						.deptId(rs.getInt("id")).hireDate(rs.getDate("hire_date")).build();
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
