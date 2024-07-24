@@ -29,4 +29,6 @@ public interface StuStatRepository {
 	 */
 	public List<StudentInfoStatListDto> selectStuStatListBystudentId(Integer studentId);
 	
+	// 기존 재학상태 -> 휴학
+	public int updateStatusToBreak(String status, Integer id);
 }
