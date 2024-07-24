@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.College;
+import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,12 +22,14 @@ public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	CollegeRepository collegeRepository;
+	TuitionRepository tuitionRepository;
        
     public AdminController() {
     }
 	@Override
 	public void init() throws ServletException {
 		collegeRepository = new CollegeRepositoryImpl();
+		tuitionRepository = new TuitionRepositoryImpl();
 	}
     
 
@@ -49,7 +54,7 @@ public class AdminController extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationSubject.jsp").forward(request, response);
 			break;
 		case "/tuition":
-			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationTuition.jsp").forward(request, response);
+			showTuitionPage(request, response, session);
 			break;
 		default:
 			break;
@@ -58,14 +63,19 @@ public class AdminController extends HttpServlet {
 		
 	}
 
+	private void showTuitionPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		List<Tuition> tuitionList = tuitionRepository.selectAmount();
+		session.setAttribute("tuitionList", tuitionList);
+		
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationTuition.jsp").forward(request, response);
+	}
+	
 	private void showCollegePage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 		
 		List<College> collegeList = collegeRepository.selectCollegeDto();
 		session.setAttribute("collegeList", collegeList);
 		
-		
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationCollege.jsp").forward(request, response);
-		
 	}
 
 

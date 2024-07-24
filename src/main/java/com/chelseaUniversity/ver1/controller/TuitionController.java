@@ -99,6 +99,17 @@ public class TuitionController extends HttpServlet {
 			paymentTuition(request, response, session);
 			break;
 			
+			// 등록금 금액 생성
+		case "/create-tuition":
+			createTuition(request, response);
+			break;
+			// 등록금 금액 수정
+		case "/edit-tuition":
+			editTuition(request, response);
+			break;
+			
+			
+			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -106,6 +117,20 @@ public class TuitionController extends HttpServlet {
 
 	}
 
+
+	private void createTuition(HttpServletRequest request, HttpServletResponse response) {
+		String collegeName = request.getParameter("college-name");
+		int collegeTuition = Integer.parseInt(request.getParameter("college-tuition"));
+		System.out.println(collegeName);
+		System.out.println(collegeTuition);
+		
+	
+	}
+
+	private void editTuition(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 	/**
