@@ -10,7 +10,13 @@ p {
 }
 
 .content {
+	width: 700px;
 	margin-left: 20px;
 	font-size: 14px;
 	margin-top: 10px;
+}
+
+.list {
+	margin-left: 320px;
+	margin-top: 25px;
 }
