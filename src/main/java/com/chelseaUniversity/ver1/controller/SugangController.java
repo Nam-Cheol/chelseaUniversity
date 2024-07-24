@@ -70,108 +70,6 @@ public class SugangController extends HttpServlet {
 		switch (action) {
 		case "/subjectList":
 			showSubjectList(request, response, "/subjectList");
-			try {
-				page = Integer.parseInt(request.getParameter("page"));
-			} catch (NumberFormatException e) {
-				page = 1;
-			}
-
-			String type = request.getParameter("type");
-			String deptId = request.getParameter("deptId");
-			String name = request.getParameter("name");
-
-			if (type == null && deptId == null && name == null) {
-
-				viewSubjectList(request, response, page);
-
-			} else if ("전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
-
-				viewSubjectList(request, response, page);
-
-			} else if (!"전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
-
-				if ("전공".equals(type) || "교양".equals(type)) {
-					searchSubjectList(request, response, page, 1, type, null, null);
-				}
-
-			} else if ("전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
-
-				try {
-					if (Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
-
-						searchSubjectList(request, response, page, 2, null, deptId, null);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else if ("전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				searchSubjectList(request, response, page, 3, null, null, name);
-
-			} else if (!"전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
-
-				try {
-					if ((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121)
-							&& ("전공".equals(type) || "교양".equals(type))) {
-
-						searchSubjectList(request, response, page, 4, type, deptId, null);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else if ("전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				try {
-					if (Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
-
-						searchSubjectList(request, response, page, 5, null, deptId, name);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else if (!"전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				if ("전공".equals(type) || "교양".equals(type)) {
-					searchSubjectList(request, response, page, 6, type, null, name);
-				}
-
-			} else if (!"전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				try {
-					if ((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121)
-							&& ("전공".equals(type) || "교양".equals(type))) {
-
-						searchSubjectList(request, response, page, 7, type, deptId, name);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else {
-
-				viewSubjectList(request, response, page);
-
-			}
-
 			break;
 
 		case "/pre":
@@ -317,9 +215,6 @@ public class SugangController extends HttpServlet {
 	 */
 	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page, String action) throws ServletException, IOException {
 		
-	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page)
-			throws ServletException, IOException {
-
 		int totalCount = subjectRepository.getTotalBoardCount();
 		int totalPage = totalCount / VIEW_SUBJECT;
 		int offset = (int) Math.ceil((double) (VIEW_SUBJECT * (page - 1)));
@@ -339,13 +234,6 @@ public class SugangController extends HttpServlet {
 	
 	private void searchSubjectList(HttpServletRequest request, HttpServletResponse response, int page, int checkNum, String typeValue, String deptId, String name, String action) throws ServletException, IOException {
 		
-		int offset = (int) Math.ceil((double)(VIEW_SUBJECT * (page - 1)));
-		request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
-	}
-
-	private void searchSubjectList(HttpServletRequest request, HttpServletResponse response, int page, int checkNum,
-			String typeValue, String deptId, String name) throws ServletException, IOException {
-
 		int offset = (int) Math.ceil((double) (VIEW_SUBJECT * (page - 1)));
 		List<SubjectFormDto> subjectList = null;
 
@@ -359,7 +247,6 @@ public class SugangController extends HttpServlet {
 		String limitAndOffset = SubjectRepositoryImpl.ADD_LIMIT_AND_OFFSET;
 
 		if (checkNum == 1) {
-//			query = select + where + type + limitAndOffset;
 			query = select + where + type;
 			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, typeValue, null, null,
 					checkNum);
