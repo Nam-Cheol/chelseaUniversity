@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/media.css">
 </head>
 <body>
-
 <header>
 
 <p class="h-border-top"></p>
@@ -21,7 +21,7 @@
 <div class="user-utils-wrap">
 <ul class="user-utils">
 <li>
-	<a href="${pageContext.request.contextPath}/index.jsp">${principal.name} (${principal.id})</a>
+	<a href="${pageContext.request.contextPath}/user/home">${principal.name} (${principal.id})</a>
 </li>
 <li>
 	<a href="${pageContext.request.contextPath}/user/signin?logout=true">로그아웃</a>
@@ -32,7 +32,7 @@
 
 <nav class="header-nav">
 <h1 class="header-logo">
-<a href="${pageContext.request.contextPath}/index.jsp">
+<a href="${pageContext.request.contextPath}/user/home">
 <picture>
 <source srcset="https://img.chelseafc.com/image/upload/f_auto,c_pad,ar_1,w_140,h_140,q_auto:best/Site%20Chelsea%20Badges/Main_Website_Badge_-_Colour.png" media="(min-width: 400px)" type="image/webp">
 <img alt="첼시대학교" src="${pageContext.request.contextPath}/resources/img/Chelsea_FC_Logo.svg.png" >
@@ -42,7 +42,7 @@
 <!-- s : gnb -->
 <ul class="gnb">
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">홈</a>
+<a href="${pageContext.request.contextPath}/user/home">홈</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/student/info">MY</a>
@@ -51,10 +51,10 @@
 <a href="${pageContext.request.contextPath}/subject/list">수업</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/sugang/list">수강신청</a>
+<a href="${pageContext.request.contextPath}/sugang/subjectList?page=1">수강신청</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">성적</a>
+<a href="${pageContext.request.contextPath}/grade/thisSemester">성적</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/notice/list">학사정보</a>

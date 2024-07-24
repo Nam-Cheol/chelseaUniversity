@@ -2,34 +2,29 @@
 
 /* 타블렛 가로, 노트북 */
 @media (max-width:1280px) {
-	
 	.header-wrap{
 	width: 100%;
 	}
-	
 	.header-toggle{
 		display: block;
 	}
-	
 	.gnb{
 	display: none;
 	}
-	
 	.menu-toggle-wrap{
 	display: block;
 	}
-	
 }
-
 .main {
 	display: flex;
-	justify-content: center;
-	width: 100%;
-	height: 400px;
+	justify-content: space-between;
+	width: 1200px;
+	height: 760px;
 	margin-top: 30px;
+	flex-wrap: wrap;
 }
 .stampord {
-	width: 1200px;
+	width: 100%;
 	height: 400px;
 }
 .media {
@@ -40,9 +35,168 @@
 	flex-wrap: wrap;
 }
 .notice {
-	width: 20%;
-	height: 100vh;
+	width: 490px;
+	height: 300px;
 	margin-top: 30px;
+	margin-bottom: 5px;
+}
+.schedule {
+	width: 330px;
+	height: 300px;
+	margin-top: 30px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	margin-bottom: 10px;
+}
+.title {
+	display: inline-block;
+	width: 330px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	text-overflow:ellipsis;
+  	margin-bottom: -4px;
+}
+.title:hover {
+	color: blue;
+}
+.information {
+	display: inline-block;
+	width: 200px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	text-overflow:ellipsis;
+  	margin-bottom: -4px;
+}
+p {
+	font-size: 14px;
+}
+/* 교직원 status */
+.staff {
+	position: relative;
+	width: 240px;
+	height: 160px;
+	margin-top: 35px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	border: 1px solid blue;
+  	border-radius: 20px;
+  	padding: 20px;
+}
+.staff p {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 5px;
+}
+.staff .status {
+    text-align: left; /* 내부 텍스트 왼쪽 정렬 */
+    min-width: 150px; /* 필요한 경우 최소 너비 설정 */
+    display: block; /* block 요소로 설정하여 텍스트 왼쪽 정렬 유지 */
+    color: #0A6EFF;
+}
+.staff .label {
+            flex-shrink: 0; /* label의 크기가 줄어들지 않도록 설정 */
+            width: 70px;
+}
+.staff .status-container {
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 */
+}
+/* 학생 status */
+.student {
+	position: relative;
+	width: 240px;
+	height: 200px;
+	margin-top: 35px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	border: 1px solid blue;
+  	border-radius: 20px;
+  	padding: 20px;
+}
+.student p {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 5px;
+}
+.student .status {
+    text-align: left; /* 내부 텍스트 왼쪽 정렬 */
+    min-width: 150px; /* 필요한 경우 최소 너비 설정 */
+    display: block; /* block 요소로 설정하여 텍스트 왼쪽 정렬 유지 */
+    color: #0A6EFF;
+}
+.student .label {
+            flex-shrink: 0; /* label의 크기가 줄어들지 않도록 설정 */
+            width: 70px;
+}
+.student .status-container {
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 */
+}
+/* 교수 status */
+.professor {
+	position: relative;
+	width: 240px;
+	height: 160px;
+	margin-top: 35px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	border: 1px solid blue;
+  	border-radius: 20px;
+  	padding: 20px;
+}
+.professor p {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 5px;
+}
+.professor .status {
+    text-align: left; /* 내부 텍스트 왼쪽 정렬 */
+    min-width: 150px; /* 필요한 경우 최소 너비 설정 */
+    display: block; /* block 요소로 설정하여 텍스트 왼쪽 정렬 유지 */
+    color: #0A6EFF;
+}
+.professor .label {
+            flex-shrink: 0; /* label의 크기가 줄어들지 않도록 설정 */
+            width: 70px;
+}
+.professor .status-container {
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 */
+}
+button {
+	width: 80px;
+	margin: 20px;
+	margin-top: 30px;
+	background-color: #78EAFF;
+	border-color: #78EAFF;
+	border-radius: 5px;
+	border: none;
+	padding: 5px;
+}
+button:hover {
+	background-color: #3232FF;
+	color: white;
+}
+button:active {
+  outline: none;
+  box-shadow: none;
+}
+.alarm {
+	position: relative;
+	width: 240px;
+	height: 60px;
+	margin-top: 35px;
+	overflow: hidden;
+  	white-space: nowrap;
+  	border: 1px solid blue;
+  	border-radius: 20px;
+  	padding: 20px;
+  	left: 920px;
+  	bottom: 130px;
+}
+.alarm p{
+	display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
 }
 /* 768px - 모바일 가로, 타블렛 세로 */
 

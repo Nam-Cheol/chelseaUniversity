@@ -1,15 +1,16 @@
 package com.chelseaUniversity.ver1.model.dto;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import com.chelseaUniversity.ver1.utill.DBUtil;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/create-college")
 public class CreateCollege extends HttpServlet {
@@ -22,14 +23,18 @@ public class CreateCollege extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String collegeName = request.getParameter("College-name");
-		
-		// TODO - MYSQL 확인 후 수정 예정
+		String collegeName = request.getParameter("college-name");
 		try (Connection conn = DBUtil.getConnection()){
-			String sql = " INSERT INTO college_tb(id) VALUES (?) ";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, collegeName);
-			pstmt.executeUpdate();
+			conn.setAutoCommit(false);
+			String sql = " INSERT INTO college_tb(name) VALUES(?) ";
+			try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+				pstmt.setString(1, collegeName);
+				pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
 			response.sendRedirect("admintest.jsp?message=create-success");
 		} catch (Exception e) {
 			e.printStackTrace();

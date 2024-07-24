@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository{
 			+ "join staff_tb as t\r\n"
 			+ "on u.id = t.id\r\n"
 			+ "where u.id = ? and t.name = ?";
-
+	private final String SET_PASSWORD_BYID = "UPDATE user_tb SET password = ? WHERE id = ?";
 	
 	// 로그인 검사
 	@Override
@@ -104,7 +104,7 @@ public class UserRepositoryImpl implements UserRepository{
 				professor = ProfessorInfoDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
 						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
 						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
-						.deptId(rs.getInt("id")).hireDate(rs.getDate("hire_date")).build();
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,7 +134,16 @@ public class UserRepositoryImpl implements UserRepository{
 	// 비밀번호 변경
 	@Override
 	public int updatePassword(ChangePasswordDto changePasswordDto) {
-		return 0;
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SET_PASSWORD_BYID)){
+			pstmt.setString(1, changePasswordDto.getAfterPassword());
+			pstmt.setInt(2, changePasswordDto.getId());
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
 	}
 
 	// 회원가입

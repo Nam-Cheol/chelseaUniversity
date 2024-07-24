@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 
 <style>
@@ -54,8 +55,8 @@ h1 {
 			<tr>
 				<td><label>성별</label><span class="essential-sign">&#42;</span></td>
 				<td><label for="male">남성</label> <input type="radio" id="male"
-					name="gender" required> <label for="female">여성</label> <input
-					type="radio" id="female" name="gender"></td>
+					name="gender" value="남성" required> <label for="female">여성</label> <input
+					type="radio" id="female" name="gender" value="여성"></td>
 			</tr>
 
 			<tr>
@@ -84,6 +85,13 @@ h1 {
 		</table>
 		<button type="submit" class="submit-btn">입력하기</button>
 	</form>
+	
+	<c:if test="${not empty createProfessorDto}">
+		<%
+		out.println(
+				"<script>alert('교수 정보 등록에 성공했습니다.'); history.back(); </script>");
+		%>
+	</c:if>
 </main>
 
 <%@ include file="/WEB-INF/views/home/footer.jsp" %>

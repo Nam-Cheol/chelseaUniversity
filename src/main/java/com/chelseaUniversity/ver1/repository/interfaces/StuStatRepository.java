@@ -20,6 +20,9 @@ public interface StuStatRepository {
 	// 학생의 기존 학적 상태의 to_date를 now()로 변경 
 	public int updateOldStatus(Integer id);
 	
+	// 학생 ID 값으로 STATUS 가져오기
+	public StuStat selectStatusByStudentId(int id);
+	
 	/**
 	 * 학생 내정보 조회에 학적변동리스트
 	 * @author 김지현

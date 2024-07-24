@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
 
 <style>
@@ -22,13 +23,15 @@ h1 {
 	padding: 5px;
 	outline: none;
 }
-.essential-sign{
+
+.essential-sign {
 	color: red;
 }
-.submit-btn{
+
+.submit-btn {
 	border: none;
 	padding: 5px 10px;
-	color:#fff;
+	color: #fff;
 	background-color: #001489;
 	border-radius: 5px;
 }
@@ -54,8 +57,8 @@ h1 {
 			<tr>
 				<td><label>성별</label><span class="essential-sign">&#42;</span></td>
 				<td><label for="male">남성</label> <input type="radio" id="male"
-					name="gender" required> <label for="female">여성</label> <input
-					type="radio" id="female" name="gender"></td>
+					name="gender" value="남성" required> <label for="female">여성</label>
+					<input type="radio" id="female" name="gender" value="여성"></td>
 			</tr>
 
 			<tr>
@@ -66,7 +69,7 @@ h1 {
 
 			<tr>
 				<td><label for="tel">전화번호</label><span class="essential-sign">&#42;</span></td>
-				<td><input type="tel" id="tel" name="tel"
+				<td><input type="text" id="tel" name="tel" maxlength="13" pattern="/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/" title="하이픈(-)포함하여 숫자 13자리 입력"
 					placeholder="전화번호를 입력하세요." required></td>
 			</tr>
 
@@ -77,19 +80,28 @@ h1 {
 			</tr>
 
 			<tr>
-				<td><label for="dept-id">학과ID</label><span class="essential-sign">&#42;</span></td>
-				<td><input type="text" id="dept-id" name="deptId"
+				<td><label for="dept-id">학과ID</label><span
+					class="essential-sign">&#42;</span></td>
+				<td><input type="text" id="dept-id" name="deptId" pattern="^[0-9]+$.{3}" title="999 이하 숫자만 입력"
 					placeholder="학과ID를 입력하세요." required></td>
 			</tr>
 
 			<tr>
-				<td><label for="entranceDate">입학일</label><span class="essential-sign">&#42;</span></td>
+				<td><label for="entranceDate">입학일</label><span
+					class="essential-sign">&#42;</span></td>
 				<td><input type="date" id="entranceDate" name="entranceDate"
 					placeholder="이메일을 입력하세요." required></td>
 			</tr>
 		</table>
 		<button type="submit" class="submit-btn">입력하기</button>
 	</form>
+
+	<c:if test="${not empty createStudentDto}">
+		<%
+		out.println(
+				"<script>alert('학생 정보 등록에 성공했습니다.'); history.back(); </script>");
+		%>
+	</c:if>
 </main>
 
 <%@ include file="/WEB-INF/views/home/footer.jsp"%>

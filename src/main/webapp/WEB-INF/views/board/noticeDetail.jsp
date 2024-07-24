@@ -214,7 +214,6 @@
 							<td><textarea rows="20" cols="100" class="textarea"
 									name="content">${notice.content}</textarea></td>
 						</tr>
-
 					</table>
 					<div class="select--button">
 						<input type="submit" value="수정" class="button">
@@ -222,7 +221,6 @@
 				</form>
 			</div>
 		</c:if>
-
 
 		<!-- 공지 등록 -->
 		<c:if test="${crud.equals(\"write\")}">
