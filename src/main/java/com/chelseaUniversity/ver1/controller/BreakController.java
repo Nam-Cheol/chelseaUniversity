@@ -6,6 +6,7 @@ import java.util.List;
 import com.chelseaUniversity.ver1.model.BreakApp;
 import com.chelseaUniversity.ver1.model.College;
 import com.chelseaUniversity.ver1.model.Department;
+import com.chelseaUniversity.ver1.model.StuStat;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.dto.BreakAppFormDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
@@ -230,15 +231,15 @@ public class BreakController extends HttpServlet {
 			} else {
 				newToDate = (breakAppEntity.getToYear() + 1) + "-02-28";
 			}
-			// 가장 최근 기존 학적 상태 
-			stuStatRepository.selectByStudentIdOrderbyIdDesc(null);
+			// 가장 최근 기존 학적 상태
+			List<StuStat> stuStatInfo = stuStatRepository.selectByStudentIdOrderbyIdDesc(breakApp.getStudentId());
 			// 기존 학적 상태에서 to_date를 now()로 변경
-			int updateRowCount = stuStatRepository.updateOldStatus(null);
+			int updateRowCount = stuStatRepository.updateOldStatus(stuStatInfo.get(0).getId());
 			// 새로운 학적 상태 추가
-			int insertRowCount =stuStatRepository.insert(null, breakStatus, newToDate, null);
-			
-			if(updateRowCount != 1 || insertRowCount != 1) {
-				
+			int insertRowCount = stuStatRepository.insert(null, breakStatus, newToDate, null);
+
+			if (updateRowCount != 1 || insertRowCount != 1) {
+
 			}
 		}
 
