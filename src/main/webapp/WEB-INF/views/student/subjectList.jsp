@@ -1,6 +1,8 @@
+<%@page import="com.chelseaUniversity.ver1.repository.InformationRepositoryImpl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -216,15 +218,15 @@
 
 			<tbody>
 			
+			
 				<c:forEach var="subject" items="${subjectList}">
-
 				<tr>
-					<td>서브쿼리필</td>
-					<td>${subject.deptId}</td>
+					<td>${subject.collegeName}</td>
+					<td>${subject.deptName}</td>
 					<td>${subject.id}</td>
 					<td>${subject.type}</td>
 					<td class="sub--list--name">${subject.name}</td>
-					<td>${subject.professorId}</td>
+					<td>${subject.professorName}</td>
 					<td>${subject.grades}</td>
 					<td>${subject.subDay}&nbsp;${subject.startTime}:00-${subject.endTime}:00&nbsp;(${subject.roomId})</td>
 					<td>${subject.capacity}</td>

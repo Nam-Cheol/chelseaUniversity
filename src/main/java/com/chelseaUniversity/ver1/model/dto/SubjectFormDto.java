@@ -26,4 +26,8 @@ public class SubjectFormDto {
 	private Integer grades;
 	private Integer capacity;
 	private Integer numOfStudent;
+	
+	private String collegeName;
+	private String professorName;
+	private String deptName;
 }

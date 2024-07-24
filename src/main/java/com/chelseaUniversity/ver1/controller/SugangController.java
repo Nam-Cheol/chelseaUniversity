@@ -6,12 +6,15 @@ import java.util.List;
 import com.chelseaUniversity.ver1.model.PreStuSub;
 import com.chelseaUniversity.ver1.model.StuSub;
 import com.chelseaUniversity.ver1.model.dto.SubjectFormDto;
+import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.PreStuSubRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.RegistrationRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StuSubDetailRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StuSubRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.SubjectRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.SugangStatusImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.PreStuSubRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.RegistrationRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StuSubDetailRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StuSubRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.SubjectRepository;
@@ -22,6 +25,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/sugang/*")
 public class SugangController extends HttpServlet {
@@ -31,6 +35,8 @@ public class SugangController extends HttpServlet {
 	PreStuSubRepository preStuSubRepository;
 	StuSubRepository stuSubRepository;
 	StuSubDetailRepository stuSubDetailRepository;
+	RegistrationRepository registrationRepository;
+	
 	SugangStatus sugangStatus;
 
 	private static final int VIEW_SUBJECT = 20;
@@ -45,6 +51,7 @@ public class SugangController extends HttpServlet {
 		preStuSubRepository = new PreStuSubRepositoryImpl();
 		stuSubRepository = new StuSubRepositoryImpl();
 		stuSubDetailRepository = new StuSubDetailRepositoryImpl();
+		registrationRepository = new RegistrationRepositoryImpl();
 		sugangStatus = new SugangStatusImpl();
 	}
 
@@ -52,116 +59,21 @@ public class SugangController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println("action : " + action);
-		int page;
+		
+		HttpSession session = request.getSession();
+		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
+		if(principal == null) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
 
 		switch (action) {
 		case "/subjectList":
-			try {
-				page = Integer.parseInt(request.getParameter("page"));
-			} catch (NumberFormatException e) {
-				page = 1;
-			}
-
-			String type = request.getParameter("type");
-			String deptId = request.getParameter("deptId");
-			String name = request.getParameter("name");
-
-			if (type == null && deptId == null && name == null) {
-
-				viewSubjectList(request, response, page);
-
-			} else if ("전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
-
-				viewSubjectList(request, response, page);
-
-			} else if (!"전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
-
-				if ("전공".equals(type) || "교양".equals(type)) {
-					searchSubjectList(request, response, page, 1, type, null, null);
-				}
-
-			} else if ("전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
-
-				try {
-					if (Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
-
-						searchSubjectList(request, response, page, 2, null, deptId, null);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else if ("전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				searchSubjectList(request, response, page, 3, null, null, name);
-
-			} else if (!"전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
-
-				try {
-					if ((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121)
-							&& ("전공".equals(type) || "교양".equals(type))) {
-
-						searchSubjectList(request, response, page, 4, type, deptId, null);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else if ("전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				try {
-					if (Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
-
-						searchSubjectList(request, response, page, 5, null, deptId, name);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else if (!"전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				if ("전공".equals(type) || "교양".equals(type)) {
-					searchSubjectList(request, response, page, 6, type, null, name);
-				}
-
-			} else if (!"전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
-
-				try {
-					if ((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121)
-							&& ("전공".equals(type) || "교양".equals(type))) {
-
-						searchSubjectList(request, response, page, 7, type, deptId, name);
-
-					} else {
-						viewSubjectList(request, response, page);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					viewSubjectList(request, response, page);
-				}
-
-			} else {
-
-				viewSubjectList(request, response, page);
-
-			}
-
+			showSubjectList(request, response, "/subjectList");
 			break;
 
 		case "/pre":
-			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+			showSubjectList(request, response, "/pre");
 			break;
 
 		case "/preAppList":
@@ -177,12 +89,22 @@ public class SugangController extends HttpServlet {
 			request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 			break;
+		
+		case "/regist":
+			List<Integer> subjectList = registrationRepository.selectSubjectRegistration(principal.getId());
+			request.setAttribute("subjectList", subjectList);
+			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+			break;
+			
 
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 	}
+
+
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -199,13 +121,6 @@ public class SugangController extends HttpServlet {
 			updatePeriod2(request, response);
 			break;
 		case "/subjectList":
-			int page;
-			try {
-				page = Integer.parseInt(request.getParameter("page"));
-			} catch (NumberFormatException e) {
-				page = 1;
-			}
-			viewSubjectList(request, response, page);
 			break;
 
 		default:
@@ -298,9 +213,8 @@ public class SugangController extends HttpServlet {
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page)
-			throws ServletException, IOException {
-
+	private void viewSubjectList(HttpServletRequest request, HttpServletResponse response, int page, String action) throws ServletException, IOException {
+		
 		int totalCount = subjectRepository.getTotalBoardCount();
 		int totalPage = totalCount / VIEW_SUBJECT;
 		int offset = (int) Math.ceil((double) (VIEW_SUBJECT * (page - 1)));
@@ -309,12 +223,17 @@ public class SugangController extends HttpServlet {
 		request.setAttribute("subjectList", subjectList);
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("totalPage", totalPage);
-		request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+		
+		if("/subjectList".equals(action)) {
+			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+		} else if ("/pre".equals(action)) {
+			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+		}
+		
 	}
-
-	private void searchSubjectList(HttpServletRequest request, HttpServletResponse response, int page, int checkNum,
-			String typeValue, String deptId, String name) throws ServletException, IOException {
-
+	
+	private void searchSubjectList(HttpServletRequest request, HttpServletResponse response, int page, int checkNum, String typeValue, String deptId, String name, String action) throws ServletException, IOException {
+		
 		int offset = (int) Math.ceil((double) (VIEW_SUBJECT * (page - 1)));
 		List<SubjectFormDto> subjectList = null;
 
@@ -328,7 +247,6 @@ public class SugangController extends HttpServlet {
 		String limitAndOffset = SubjectRepositoryImpl.ADD_LIMIT_AND_OFFSET;
 
 		if (checkNum == 1) {
-//			query = select + where + type + limitAndOffset;
 			query = select + where + type;
 			subjectList = subjectRepository.selectDtoSearch(VIEW_SUBJECT, offset, query, typeValue, null, null,
 					checkNum);
@@ -363,7 +281,115 @@ public class SugangController extends HttpServlet {
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("checkNum", checkNum);
-		request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+		if("/subjectList".equals(action)) {
+			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
+		} else if ("/pre".equals(action)) {
+			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+		}
+	}
+	
+	private void showSubjectList(HttpServletRequest request, HttpServletResponse response, String action) throws ServletException, IOException {
+		int page;
+		try {
+			page = Integer.parseInt(request.getParameter("page"));
+		} catch (NumberFormatException e) {
+			page = 1;
+		}
+		
+		String type = request.getParameter("type");
+		String deptId = request.getParameter("deptId");
+		String name = request.getParameter("name");
+		
+		if(type == null && deptId == null && name == null) {
+			
+			viewSubjectList(request, response, page, action);
+			
+		} else if("전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
+			
+			viewSubjectList(request, response, page, action);
+			
+		} else if(!"전체".equals(type) && "-1".equals(deptId) && name.trim().isEmpty()) {
+			
+			if("전공".equals(type) || "교양".equals(type)) {
+				searchSubjectList(request, response, page, 1, type, null, null, action);
+			}
+			
+		} else if("전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
+			
+			try {
+				if(Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
+					
+					searchSubjectList(request, response, page, 2, null, deptId, null, action);
+					
+				} else {
+					viewSubjectList(request, response, page, action);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				viewSubjectList(request, response, page, action);
+			}
+			
+		} else if("전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
+			
+			searchSubjectList(request, response, page, 3, null, null, name, action);
+			
+		} else if(!"전체".equals(type) && !"-1".equals(deptId) && name.trim().isEmpty()) {
+			
+			try {
+				if((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) && ("전공".equals(type) || "교양".equals(type))) {
+					
+					searchSubjectList(request, response, page, 4, type, deptId, null, action);
+					
+				} else {
+					viewSubjectList(request, response, page, action);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				viewSubjectList(request, response, page, action);
+			}
+			
+		} else if("전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
+			
+			try {
+				if(Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) {
+					
+					searchSubjectList(request, response, page, 5, null, deptId, name, action);
+					
+				} else {
+					viewSubjectList(request, response, page, action);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				viewSubjectList(request, response, page, action);
+			}
+			
+		} else if(!"전체".equals(type) && "-1".equals(deptId) && !name.trim().isEmpty()) {
+			
+			if("전공".equals(type) || "교양".equals(type)) {
+				searchSubjectList(request, response, page, 6, type, null, name, action);
+			}
+			
+		} else if(!"전체".equals(type) && !"-1".equals(deptId) && !name.trim().isEmpty()) {
+			
+			try {
+				if((Integer.parseInt(deptId) >= 101 && Integer.parseInt(deptId) < 121) && ("전공".equals(type) || "교양".equals(type))) {
+					
+					searchSubjectList(request, response, page, 7, type, deptId, name, action);
+					
+				} else {
+					viewSubjectList(request, response, page, action);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				viewSubjectList(request, response, page, action);
+			}
+			
+		} else {
+			
+			viewSubjectList(request, response, page, action);
+			
+		}
+		
 	}
 
 }
