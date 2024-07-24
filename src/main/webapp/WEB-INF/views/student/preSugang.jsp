@@ -21,7 +21,7 @@
 							시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/pre"
+					<td><a href="/chelseaUniversity/sugang/pre?page=1"
 						class="selected--menu">예비 수강 신청</a></td>
 				</tr>
 				<tr>
@@ -210,7 +210,7 @@
 							<th>요일시간 (강의실)</th>
 							<th>현재인원</th>
 							<th>정원</th>
-							<th>강의계획서</th>
+							<th>수강신청</th>
 						</tr>
 					</thead>
 		
@@ -230,9 +230,25 @@
 							<td>${subject.capacity}</td>
 							<td>${subject.numOfStudent}</td>
 							<td>
-								<form action="/chelseaUniversity/sugang/regist">
-								<button name="id" value="${subject.id}">신청</button>
-								</form>
+								 <c:set var="isEnrolled" value="false" />
+								    <c:forEach var="subjectId" items="${subjectIdList}">
+								        <c:if test="${subjectId == subject.id}">
+								            <c:set var="isEnrolled" value="true" />
+								        </c:if>
+								    </c:forEach>
+								
+								    <c:choose>
+								        <c:when test="${isEnrolled}">
+								            <form action="/chelseaUniversity/sugang/delete" method="get">
+								                <button name="id" value="${subject.id}">취소</button>
+								            </form>
+								        </c:when>
+								        <c:otherwise>
+								            <form action="/chelseaUniversity/sugang/regist" method="get">
+								                <button name="id" value="${subject.id}">신청</button>
+								            </form>
+								        </c:otherwise>
+								    </c:choose>
 							</td>
 						</tr>
 						</c:forEach>
@@ -246,13 +262,15 @@
 						int totalPage = (int)request.getAttribute("totalPage");
 					for(int i = 1; i <= totalPage; i++) {%>
 					<%
+						if(request.getParameter("page") != null) {
 						if(Integer.parseInt(request.getParameter("page")) == i) {%>
-							<li><a href="${pageContext.request.contextPath}/sugang/subjectList?page=<%=i%>"
+							<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"
 								style="font-weight: 700; color: #007bff"><%=i%></a>
 							
 						<%} else { %>
-					<li><a href="${pageContext.request.contextPath}/sugang/subjectList?page=<%=i%>"><%=i%></a>
+					<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"><%=i%></a>
 					<%
+								}
 							}
 						} 
 					%>

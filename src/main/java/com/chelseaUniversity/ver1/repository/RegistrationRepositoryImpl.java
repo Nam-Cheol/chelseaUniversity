@@ -11,10 +11,12 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class RegistrationRepositoryImpl implements RegistrationRepository {
 	
-	private static final String insertRegistration = " INSERT INTO sub_registration VALUES (?, ?) ";
-	private static final String deleteRegistration = " DELETE FROM sub_registration WHERE stu_id = ? AND sub_id = ? ";
-	private static final String selectRegistration = " SELECT * from sub_registration WHERE stu_id = ? ";
-
+	private static final String INSERT_Registration = " INSERT INTO sub_registration VALUES (?, ?) ";
+	private static final String DELETE_Registration = " DELETE FROM sub_registration WHERE stu_id = ? AND sub_id = ? ";
+	private static final String SELECT_Registration = " SELECT * from sub_registration WHERE stu_id = ? ";
+	private static final String UPDATE_NUM_OF_STUDENT = " UPDATE subject_tb SET num_of_student = (num_of_student) + 1 WHERE id = ? ";
+	private static final String DELETE_NUM_OF_STUDENT = " UPDATE subject_tb SET num_of_student = (num_of_student) - 1 WHERE id = ? ";
+	
 	@Override
 	public void insertSubjectRegistration(int stuId, int subId) {
 		
@@ -22,7 +24,7 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 			
 			conn.setAutoCommit(false);
 			
-			try (PreparedStatement pstmt = conn.prepareStatement(insertRegistration)){
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_Registration)){
 				
 				pstmt.setInt(1, stuId);
 				pstmt.setInt(2, subId);
@@ -47,7 +49,7 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 					
 					conn.setAutoCommit(false);
 					
-					try (PreparedStatement pstmt = conn.prepareStatement(deleteRegistration)){
+					try (PreparedStatement pstmt = conn.prepareStatement(DELETE_Registration)){
 						
 						pstmt.setInt(1, stuId);
 						pstmt.setInt(2, subId);
@@ -70,7 +72,7 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 		List<Integer> subjectList = new ArrayList<>();
 		
 		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(selectRegistration)){
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_Registration)){
 			
 			pstmt.setInt(1, stuId);
 			
@@ -88,6 +90,54 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 		}
 		
 		return subjectList;
+	}
+
+	@Override
+	public void addNumOfStudent(int id) {
+		
+		try (Connection conn = DBUtil.getConnection()){
+			
+			conn.setAutoCommit(false);
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(UPDATE_NUM_OF_STUDENT)){
+				
+				pstmt.setInt(1, id);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void deleteNumOfStudent(int id) {
+		
+		try (Connection conn = DBUtil.getConnection()){
+			
+			conn.setAutoCommit(false);
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(DELETE_NUM_OF_STUDENT)){
+				
+				pstmt.setInt(1, id);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

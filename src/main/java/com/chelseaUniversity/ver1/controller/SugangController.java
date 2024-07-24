@@ -3,6 +3,8 @@ package com.chelseaUniversity.ver1.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.catalina.util.Introspection;
+
 import com.chelseaUniversity.ver1.model.PreStuSub;
 import com.chelseaUniversity.ver1.model.StuSub;
 import com.chelseaUniversity.ver1.model.dto.SubjectFormDto;
@@ -62,10 +64,14 @@ public class SugangController extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
+		
 		if(principal == null) {
 			response.sendRedirect("index.jsp");
 			return;
 		}
+		
+		List<Integer> subjectIdList = registrationRepository.selectSubjectRegistration(principal.getId());
+		request.setAttribute("subjectIdList", subjectIdList);
 
 		switch (action) {
 		case "/subjectList":
@@ -91,10 +97,36 @@ public class SugangController extends HttpServlet {
 			break;
 		
 		case "/regist":
-			List<Integer> subjectList = registrationRepository.selectSubjectRegistration(principal.getId());
-			request.setAttribute("subjectList", subjectList);
-			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+			
+			String registSubIdStr = request.getParameter("id");
+			
+			try {
+				int subId = Integer.parseInt(registSubIdStr);
+				
+				registrationRepository.insertSubjectRegistration(principal.getId(), subId);
+				registrationRepository.addNumOfStudent(subId);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			
+			showSubjectList(request, response, "/pre");
 			break;
+		case "/delete":
+			
+			String deleteSubIdStr = request.getParameter("id");
+			
+			try {
+				int subId = Integer.parseInt(deleteSubIdStr);
+				
+				registrationRepository.deleteSubjectRegistration(principal.getId(), subId);
+				registrationRepository.deleteNumOfStudent(subId);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			
+			showSubjectList(request, response, "/pre");
+			break;
+		
 			
 
 		default:
@@ -275,6 +307,8 @@ public class SugangController extends HttpServlet {
 			subjectList = subjectRepository.selectDtoAll(VIEW_SUBJECT, offset);
 		}
 
+		System.out.println(subjectList.toString());
+		
 		int totalCount = subjectList.size();
 		int totalPage = totalCount / VIEW_SUBJECT;
 		request.setAttribute("subjectList", subjectList);
@@ -289,17 +323,32 @@ public class SugangController extends HttpServlet {
 	}
 	
 	private void showSubjectList(HttpServletRequest request, HttpServletResponse response, String action) throws ServletException, IOException {
-		int page;
+		int page = 1;
 		try {
-			page = Integer.parseInt(request.getParameter("page"));
+			if(request.getParameter("page") != null) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
 		} catch (NumberFormatException e) {
 			page = 1;
 		}
 		
-		String type = request.getParameter("type");
-		String deptId = request.getParameter("deptId");
-		String name = request.getParameter("name");
+		String type = null;
+		String deptId = null;
+		String name = null;
 		
+		if(request.getParameter("type") != null) {
+			type = request.getParameter("type");
+		}
+		
+		if(request.getParameter("deptId") != null) {
+			deptId = request.getParameter("deptId");
+		}
+		
+		if(request.getParameter("name") != null) {
+			name = request.getParameter("name");
+		}
+		
+		// TODO - 학과 코드 변동 코드 작성 - 수정예정
 		if(type == null && deptId == null && name == null) {
 			
 			viewSubjectList(request, response, page, action);

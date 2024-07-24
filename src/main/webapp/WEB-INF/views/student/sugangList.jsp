@@ -21,7 +21,7 @@
 							시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/pre">예비 수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강 신청</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/sugang/preAppList"

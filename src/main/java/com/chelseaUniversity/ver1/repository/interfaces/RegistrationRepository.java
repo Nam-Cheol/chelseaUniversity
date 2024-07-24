@@ -13,4 +13,10 @@ public interface RegistrationRepository {
 	// 수강신청 했는 지 확인 여부
 	List<Integer> selectSubjectRegistration(int stuId);
 	
+	// 수강 정원 추가 기능
+	void addNumOfStudent(int id);
+	
+	// 수강 정원 삭제 기능
+	void deleteNumOfStudent(int id);
+	
 }
