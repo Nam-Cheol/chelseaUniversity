@@ -49,6 +49,34 @@
 		<div class="split--div"></div>
 
 		<p class="no--list--p">강의 신청 및 수강 이력 확인 바랍니다.</p>
+		
+		<!-- <h1>총 누계 성적</h1>
+		<div class="split--div"></div>
+		
+			
+				<h4 style="font-weight: 600">평점 평균</h4>
+				<table border="1" class="sub--list--table">
+					<thead>
+						<tr>
+							<th>연도</th>
+							<th>학기</th>
+							<th>신청학점</th>
+							<th>취득학점</th>
+							<th>평점평균</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+							<tr>
+								<td>2023년</td>
+								<td>1학기</td>
+								<td>14</td>
+								<td></td>
+								<td>0.00</td>
+							</tr>
+						
+					</tbody>
+				</table> -->
 
 	</main>
 </div>

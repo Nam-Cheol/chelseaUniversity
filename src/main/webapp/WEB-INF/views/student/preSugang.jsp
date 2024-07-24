@@ -5,6 +5,13 @@
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/subject.css">
+	
+	<c:if test="${not empty message}">
+        <script type="text/javascript">
+            alert("${message}");
+        </script>
+    </c:if>
+	
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -216,7 +223,6 @@
 		
 					<tbody>
 					
-					
 						<c:forEach var="subject" items="${subjectList}">
 						<tr>
 							<td>${subject.collegeName}</td>
@@ -227,8 +233,8 @@
 							<td>${subject.professorName}</td>
 							<td>${subject.grades}</td>
 							<td>${subject.subDay}&nbsp;${subject.startTime}:00-${subject.endTime}:00&nbsp;(${subject.roomId})</td>
-							<td>${subject.capacity}</td>
 							<td>${subject.numOfStudent}</td>
+							<td>${subject.capacity}</td>
 							<td>
 								 <c:set var="isEnrolled" value="false" />
 								    <c:forEach var="subjectId" items="${subjectIdList}">
@@ -240,13 +246,18 @@
 								    <c:choose>
 								        <c:when test="${isEnrolled}">
 								            <form action="/chelseaUniversity/sugang/delete" method="get">
-								                <button name="id" value="${subject.id}">취소</button>
-								            </form>
+												<button type="submit" name="id" value="${subject.id}" onclick="return confirm('수강신청을 취소하시겠습니까?');" style="background-color: #a7a7a7;">취소</button>
+											</form>
 								        </c:when>
 								        <c:otherwise>
 								            <form action="/chelseaUniversity/sugang/regist" method="get">
-								                <button name="id" value="${subject.id}">신청</button>
-								            </form>
+								            	<input type="hidden" name="subId" value="${subject.id}">
+								            	<input type="hidden" name="subType" value="${subject.type}">
+								            	<input type="hidden" name="subDay" value="${subject.subDay}">
+								            	<input type="hidden" name="startTime" value="${subject.startTime}">
+								            	<input type="hidden" name="endTime" value="${subject.endTime}">
+												<button type="submit" name="id" value="${subject.id}" onclick="return confirm('해당 강의를 수강신청하시겠습니까?');" style="background-color: #548AC2;">신청</button>
+											</form>
 								        </c:otherwise>
 								    </c:choose>
 							</td>
@@ -283,7 +294,6 @@
 		<footer>
 			<!-- 필요 시 -->
 		</footer>
-
 
 </div>
 </body>
