@@ -292,6 +292,25 @@ public class UserController extends HttpServlet {
 		System.out.println("deptId : " + deptId);
 		System.out.println("stuId : " + stuId);
 
+//		try {
+//			int offset = (page - 1) * limit;
+//
+//			// 전체 학생 수
+//			int totalStudents = studentRepository.selectStudentAmount();
+//
+//			// 총 페이지 수 계산
+//			int totalPages = (int) Math.ceil((double) totalStudents / limit);
+//
+//			List<Student> allStudentList = studentRepository.selectStudentList(studentListForm, limit, offset);
+//
+//			request.setAttribute("allStudentList", allStudentList);
+//			request.setAttribute("totalStudents", totalStudents);
+//			request.setAttribute("totalPages", totalPages);
+//			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
 		request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 	}
 
