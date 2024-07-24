@@ -8,10 +8,12 @@ import com.chelseaUniversity.ver1.model.dto.UpdateStudentGradeDto;
 public interface StuSubDetailRepository {
 
 	// 학생 성적 업데이트
-	int updateGrade(UpdateStudentGradeDto updateStudentGradeDto);
+	int updateGrade(StuSubDetail stuSubDetail);
 
 	int insert(Integer id, Integer studentId, Integer subjectId);
+
+	List<StuSubDetail> selectListById(Integer id);
 	
-	List<StuSubDetail> selectById(Integer id);
+	StuSubDetail selectById(Integer id);
 
 }

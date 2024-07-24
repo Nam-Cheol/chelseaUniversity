@@ -70,16 +70,14 @@
 						<td><c:out value="${student.midExam}"></c:out></td>
 						<td><c:out value="${student.finalExam}"></c:out></td>
 						<td><c:out value="${student.convertedMark}"></c:out></td>
-						<td><form action="${pageContext.request.contextPath}/professor/manageStudent?id=${student.id}" method="post">
-							<button class="btn btn-edit" type="submit">점수 기입</button>
-						</form></td>
+						<td><a href="${pageContext.request.contextPath}/professor/manageStudent?id=${student.id}" >점수 기입</a></td>
 				</tr>
 			</c:forEach>
 			
 					</tbody>
 				</table>
 			</c:when>
-			<c:when test="${empty studentList}">
+ 			<c:when test="${empty studentList}">
 				<h3 style="color: grey;">해당 강의를 수강하는 학생이 존재하지 않습니다.</h3>
 			</c:when>
 		</c:choose>
