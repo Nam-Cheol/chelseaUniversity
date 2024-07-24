@@ -67,6 +67,10 @@ public class ProfessorController extends HttpServlet {
 				showStudentList(request, response);
 				break;
 
+			case "/evaluationList":
+				showEvaluationList(request, response);
+				break;
+
 			case "/manageStudent":
 				showUpdateJsp(request, response);
 				break;
@@ -80,6 +84,12 @@ public class ProfessorController extends HttpServlet {
 			response.sendRedirect(request.getContextPath());
 		}
 
+	}
+
+	private void showEvaluationList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		request.getRequestDispatcher("/WEB-INF/views/professor/evaluationList.jsp").forward(request, response);
 	}
 
 	private void showUpdateJsp(HttpServletRequest request, HttpServletResponse response)

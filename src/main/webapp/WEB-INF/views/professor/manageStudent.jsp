@@ -26,7 +26,7 @@
 							class="selected--menu">내 강의 조회</a></td>
 					</tr>
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/subject/list"
+						<td><a href="${pageContext.request.contextPath}/professor/evaluationList"
 							class="selected--menu">내 강의 평가</a></td>
 					</tr>
 			</table>

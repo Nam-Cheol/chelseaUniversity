@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/home/professorHeader.jsp"%>
 <link rel="stylesheet"
@@ -35,39 +35,38 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>내 강의 조회</h1>
+		<h1><c:out value="내 강의 평가"></c:out></h1>
 		<div class="split--div"></div>
 		<!-- 여기에 내용 넣기 -->
 
 		<!-- 필터 및 검색 -->
-
-		<h4>
-			<span style="font-weight: 600;">강의 목록</span>
-		</h4>
+		<c:choose>
+		<c:when test="${not empty evaluationList}">
 		<table border="1" class="sub--list--table">
 			<thead>
 				<tr>
-					<th>학수번호</th>
-					<th style="width: 200px;">강의명</th>
-					<th>강의시간</th>
-					<th>강의계획서</th>
-					<th>학생 목록</th>
+					<th>과목 이름</th>
+					<th>총 평가 점수</th>
+					<th>건의 사항</th>
 				</tr>
 			</thead>
 
 			<tbody>
-
-				<c:forEach var="subject" items="${classesList}">
-					<tr>
-						<td><c:out value="${subject.id}"></c:out></td>
-						<td><c:out value="${subject.name}"></c:out></td>
-						<td><c:out value="${subject.subDay} ${subject.startTime}:00-${subject.endTime}:00 (${subject.roomId})"></c:out></td>
-						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}">강의계획서</a></td>
-						<td><a href="${pageContext.request.contextPath}/professor/studentList?id=${subject.id}">학생 목록</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+			<c:forEach var="evaluation" items="${evaluationList}">
+				<tr>
+						<td><c:out value="${evaluation.name}"></c:out></td>
+						<td><c:out value="${evaluation.score}"></c:out></td>
+						<td><c:out value="${evaluation.suggestions}"></c:out></td>
+				</tr>
+			</c:forEach>
+			
+					</tbody>
+				</table>
+			</c:when>
+ 			<c:when test="${empty evaluationList}">
+				<h3 style="color: grey;">조회할 강의 평가가 존재하지 않습니다.</h3>
+			</c:when>
+		</c:choose> 
 	</main>
 </div>
 </body>
