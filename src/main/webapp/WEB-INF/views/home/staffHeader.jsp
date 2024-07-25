@@ -50,7 +50,7 @@
 <a href="${pageContext.request.contextPath}/views/my/myDB.jsp">MY</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/index.jsp">학사관리</a>
+<a href="${pageContext.request.contextPath}/user/studentList">학사관리</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/index.jsp">등록</a>

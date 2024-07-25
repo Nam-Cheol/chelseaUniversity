@@ -7,8 +7,10 @@ import org.apache.catalina.util.Introspection;
 
 import com.chelseaUniversity.ver1.model.CheckSubjectTime;
 import com.chelseaUniversity.ver1.model.PreStuSub;
+import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.StuSub;
 import com.chelseaUniversity.ver1.model.SubjectHistory;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.SubjectFormDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.PreStuSubRepositoryImpl;
@@ -64,15 +66,20 @@ public class SugangController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
-		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-
-		if (principal == null) {
-			response.sendRedirect("index.jsp");
-			return;
+		StudentInfoDto principalStu = null;
+		Staff principalSta = null;
+		User userRole = (User) session.getAttribute("user");
+		if("student".equalsIgnoreCase(userRole.getUserRole())) {
+			principalStu = (StudentInfoDto) session.getAttribute("principal");
+		} else if("staff".equalsIgnoreCase(userRole.getUserRole())) {
+			principalSta = (Staff) session.getAttribute("principal");
 		}
 
-		List<Integer> subjectIdList = registrationRepository.selectSubjectRegistration(principal.getId());
-		request.setAttribute("subjectIdList", subjectIdList);
+		if(principalStu != null) {
+			List<Integer> subjectIdList = registrationRepository.selectSubjectRegistration(principalStu.getId());
+			request.setAttribute("subjectIdList", subjectIdList);
+		}
+		
 		int totalGrade;
 		List<SubjectHistory> historyList;
 
@@ -86,8 +93,8 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/preAppList":
-			totalGrade = registrationRepository.totalGrades(principal.getId());
-			historyList = registrationRepository.resistrationHistory(principal.getId());
+			totalGrade = registrationRepository.totalGrades(principalStu.getId());
+			historyList = registrationRepository.resistrationHistory(principalStu.getId());
 
 			request.setAttribute("totalGrade", totalGrade);
 			request.setAttribute("historyList", historyList);
@@ -95,8 +102,8 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/list":
-			totalGrade = registrationRepository.totalGrades(principal.getId());
-			historyList = registrationRepository.resistrationHistory(principal.getId());
+			totalGrade = registrationRepository.totalGrades(principalStu.getId());
+			historyList = registrationRepository.resistrationHistory(principalStu.getId());
 
 			request.setAttribute("totalGrade", totalGrade);
 			request.setAttribute("historyList", historyList);
@@ -110,11 +117,11 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/regist":
-			registrationSubject(request, response, principal);
+			registrationSubject(request, response, principalStu);
 			break;
 
 		case "/delete":
-			deleteSubject(request, response, principal);
+			deleteSubject(request, response, principalStu);
 			break;
 
 		case "/application":
