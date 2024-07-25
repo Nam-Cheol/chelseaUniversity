@@ -6,8 +6,10 @@ import java.util.List;
 import com.chelseaUniversity.ver1.model.BreakApp;
 import com.chelseaUniversity.ver1.model.College;
 import com.chelseaUniversity.ver1.model.Department;
+import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.StuStat;
 import com.chelseaUniversity.ver1.model.Student;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.BreakAppFormDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.BreakAppRepositoryImpl;
@@ -60,17 +62,24 @@ public class BreakController extends HttpServlet {
 		System.out.println(action);
 
 		HttpSession session = request.getSession();
-		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		if (principal == null) {
-			response.sendRedirect("index.jsp");
-			return;
+		StudentInfoDto principalStu = null;
+		Staff principalSta = null;
+		User userRole = (User) session.getAttribute("user");
+		if("student".equalsIgnoreCase(userRole.getUserRole())) {
+			principalStu = (StudentInfoDto) session.getAttribute("principal");
+		} else if("staff".equalsIgnoreCase(userRole.getUserRole())) {
+			principalSta = (Staff) session.getAttribute("principal");
+		}
+		
+		BreakApp app = null;
+		if(principalStu != null) {
+			app = breakAppRepository.selectByStudentIdOne(principalStu.getId());
+			request.setAttribute("app", app);
+			
+			boolean application = breakAppRepository.selectByStudentIdOne(principalStu.getId()) != null ? true : false;
+			request.setAttribute("application", application);
 		}
 
-		BreakApp app = breakAppRepository.selectByStudentIdOne(principal.getId());
-		request.setAttribute("app", app);
-
-		boolean application = breakAppRepository.selectByStudentIdOne(principal.getId()) != null ? true : false;
-		request.setAttribute("application", application);
 
 		if (action != null || action.trim().isEmpty()) {
 
@@ -97,7 +106,7 @@ public class BreakController extends HttpServlet {
 					int id = Integer.parseInt(request.getParameter("id"));
 					app = breakAppRepository.selectById(id);
 					request.setAttribute("app", app);
-					request.setAttribute("principal", principal);
+					request.setAttribute("principal", principalStu);
 					request.getRequestDispatcher("/WEB-INF/views/student/breakHistoryDetail.jsp").forward(request,
 							response);
 
