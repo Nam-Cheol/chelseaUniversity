@@ -23,8 +23,7 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 			+ "		WHERE student_id = ? AND subject_id = ? ";
 	public final String INSERT = " INSERT INTO stu_sub_tb (student_id, subject_id)\r\n"
 			+ "		VALUES (?, ?) ";
-	public final String INSERT_FAIL_SUB = " INSERT INTO over_subject (student_id, subject_id) "
-			+ "		VALUES (?, ?) ";
+	public final String INSERT_FAIL_SUB = " INSERT INTO over_subject (student_id, subject_id) VALUES (?, ?) ";
 	private final String UPDATE_BY_ID = " UPDATE stu_sub_tb SET GRADE = ? WHERE student_id = ? AND subject_id = ? ";
 
 	@Override
