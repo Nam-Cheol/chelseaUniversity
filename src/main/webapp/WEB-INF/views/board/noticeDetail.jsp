@@ -41,6 +41,7 @@
 		<p> &nbsp;제목&emsp; ${notice.category} ${notice.title}</p>
 		<hr style="border-color:#F4FFFF; height:1px; width:85%">
 		<div class="contentBox"><p> &nbsp;내용</p><div class="content">${notice.content}</div></div>
+		<div class="list"><button onclick="location=`${pageContext.request.contextPath}/notice/list`">목록</button></div>
 		</main>
 		</div>
 </body>

@@ -27,12 +27,12 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	public static final String SELECT_SUBJECT_ALL_PAGE = " SELECT * FROM subject_tb LIMIT ? OFFSET ? ";
 	public static final String SELECT_SUBJECT_BY_ID = " SELECT * FROM subject_tb WHERE id = ? ";
 	
-	public static final String SELECT_SUBJECT_ALL = " SELECT s.*, u.d_name as d_name, u.c_name as c_name, p.name AS p_name FROM subject_tb AS s JOIN (SELECT d.id AS id, d.name AS d_name, c.name AS c_name FROM department_tb AS d JOIN college_tb AS c ON d.college_id = c.id) AS u ON s.dept_id = u.id JOIN professor_tb AS p ON s.professor_id = p.id ";
+	public static final String SELECT_SUBJECT_ALL = " SELECT *, u.d_name as d_name, u.c_name as c_name, p.name AS p_name FROM subject_tb AS s JOIN (SELECT d.id AS id, d.name AS d_name, c.name AS c_name FROM department_tb AS d JOIN college_tb AS c ON d.college_id = c.id) AS u ON s.dept_id = u.id JOIN professor_tb AS p ON s.professor_id = p.id ";
 	public static final String ADD_WHERE = " WHERE ";
 	public static final String ADD_AND = " AND ";
 	public static final String ADD_TYPE = " type = ? ";
-	public static final String ADD_DEPT = " dept_id = ? ";
-	public static final String ADD_SUBJECT_NAME = " name like ? ";
+	public static final String ADD_DEPT = " s.dept_id = ? ";
+	public static final String ADD_SUBJECT_NAME = " s.name like ? ";
 	public static final String ADD_LIMIT_AND_OFFSET = " LIMIT ? OFFSET ? ";
 	@Override
 	public Integer insert(SubjectFormDto subjectFormDto) {
@@ -181,7 +181,7 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 										.name(rs.getString("name"))
 										.professorId(rs.getInt("professor_id"))
 										.roomId(rs.getString("room_id"))
-										.deptId(rs.getInt("dept_id"))
+										.deptId(rs.getInt("s.dept_id"))
 										.type(rs.getString("type"))
 										.subYear(rs.getInt("sub_year"))
 										.semester(rs.getInt("semester"))
