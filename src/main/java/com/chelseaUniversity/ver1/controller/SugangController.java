@@ -111,6 +111,24 @@ public class SugangController extends HttpServlet {
 				
 				request.setAttribute("totalGrade", totalGrade);
 				request.setAttribute("historyList", historyList);
+				request.getRequestDispatcher("/WEB-INF/views/student/preSugangList.jsp").forward(request, response);
+			} else {
+				String message = "예비 수강신청 기간이 아닙니다.";
+				int page = 1;
+				
+		        request.setAttribute("message", message);
+		        request.setAttribute("page", page);
+		        viewSubjectList(request, response, page,"/subjectList");
+			}
+			break;
+			
+		case "/appList":
+			if(season) {
+				totalGrade = registrationRepository.totalGrades(principalStu.getId());
+				historyList = registrationRepository.resistrationHistory(principalStu.getId());
+				
+				request.setAttribute("totalGrade", totalGrade);
+				request.setAttribute("historyList", historyList);
 				request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
 			} else {
 				String message = "수강신청 기간이 아닙니다.";
@@ -152,16 +170,18 @@ public class SugangController extends HttpServlet {
 
 		case "/delete":
 			deleteSubject(request, response, principalStu);
+			response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 			break;
 
 		case "/application":
 			showSubjectList(request, response, "/application");
 			break;
-			
-		case "/test":
-			response.sendRedirect(request.getContextPath() + "sugang/subjectList?subId=10001&subType=전공&subDay=수&startTime=9&endTime=12&id=10001");
+		
+		case "/deleteList":
+			deleteSubject(request, response, principalStu);
+			response.sendRedirect(request.getContextPath() + "/sugang/preAppList");
 			break;
-
+			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -501,6 +521,20 @@ public class SugangController extends HttpServlet {
 		List<CheckSubjectTime> checkTimeList = registrationRepository.registSubjectTime(principal.getId());
 
 		if (!checkTimeList.isEmpty()) {
+
+			int totalGrades = registrationRepository.totalGrades(principal.getId());
+			int subGrade = Integer.parseInt(request.getParameter("subGrade"));
+			if((totalGrades+subGrade) > 18) {
+				
+				String message = "최대 수강학점을 넘습니다.";
+
+				// 메시지를 요청 속성으로 설정
+				request.setAttribute("message", message);
+				showSubjectList(request, response, "/pre");
+				return;
+				
+			}
+			
 			String subDay = request.getParameter("subDay");
 			String startTimeStr = request.getParameter("startTime");
 			String endTimeStr = request.getParameter("endTime");
@@ -575,7 +609,6 @@ public class SugangController extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-		response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 	}
 
 }

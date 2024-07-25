@@ -32,7 +32,7 @@
 						class="selected--menu">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList?page=1">수강
+					<td><a href="/chelseaUniversity/sugang/appList?page=1">수강
 							신청</a></td>
 				</tr>
 				<tr>
@@ -259,6 +259,7 @@
 								<c:otherwise>
 									<form action="/chelseaUniversity/sugang/regist" method="get">
 										<input type="hidden" name="subId" value="${subject.id}">
+										<input type="hidden" name="subGrade" value="${subject.grades}">
 										<input type="hidden" name="subType" value="${subject.type}">
 										<input type="hidden" name="subDay" value="${subject.subDay}">
 										<input type="hidden" name="startTime"

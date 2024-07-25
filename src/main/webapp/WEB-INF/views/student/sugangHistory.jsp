@@ -24,7 +24,7 @@
 					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList?page=1">수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/appList?page=1">수강 신청</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/sugang/list?page=1"

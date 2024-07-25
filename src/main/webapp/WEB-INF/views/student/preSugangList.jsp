@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -22,20 +22,21 @@
 							시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강
+					<td><a href="/chelseaUniversity/sugang/pre?page=1"
+						class="selected--menu">예비 수강 신청</a></td>
+				</tr>
+				<tr>
+					<td><a href="/chelseaUniversity/sugang/appList?page=1">수강
 							신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/appList?page=1"
-						class="selected--menu">수강 신청</a></td>
-				</tr>
-				<tr>
-					<td><a href="/chelseaUniversity/sugang/list?page=1">수강 신청 내역 조회</a></td>
+					<td><a href="/chelseaUniversity/sugang/list?page=1">수강 신청
+							내역 조회</a></td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	
+
 	<!-- 메인 div -->
 	<main>
 		<h1>수강 신청</h1>
@@ -112,24 +113,23 @@
 
 					<tbody>
 						<c:forEach var="history" items="${historyList}">
-						<tr>
-							<td>${history.id}</td>
-							<td class="sub--list--name">${history.title}</td>
-							<td>${history.professorName}</td>
-							<td>${history.grades}</td>
-							<td>${history.subDay}&nbsp;${history.startTime}:00-${history.endTime}:00&nbsp;(${history.roomId})</td>
-							<td>${history.numOfStudent}</td>
-							<td>${history.capacity}</td>
-							<td class="sub--list--button--row">
-								<form action="/chelseaUniversity/sugang/delete" method="get">
-									<button type="submit"
-										value="${history.id}"
-										name="id"
-										onclick="return confirm('수강신청을 취소하시겠습니까?');"
-										style="background-color: #a7a7a7;">취소</button>
-								</form>
-							</td>
-						</tr>
+							<tr>
+								<td>${history.id}</td>
+								<td class="sub--list--name">${history.title}</td>
+								<td>${history.professorName}</td>
+								<td>${history.grades}</td>
+								<td>${history.subDay}&nbsp;${history.startTime}:00-${history.endTime}:00&nbsp;(${history.roomId})</td>
+								<td>${history.numOfStudent}</td>
+								<td>${history.capacity}</td>
+								<td class="sub--list--button--row">
+									<form action="/chelseaUniversity/sugang/deleteList"
+										method="get">
+										<button type="submit" value="${history.id}" name="id"
+											onclick="return confirm('수강신청을 취소하시겠습니까?');"
+											style="background-color: #a7a7a7;">취소</button>
+									</form>
+								</td>
+							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -138,8 +138,8 @@
 
 			<!-- 강의 검색으로 가기 -->
 
-			<a href="/chelseaUniversity/sugang/application">
-			<button class="preStuSubList--button">강의 검색</button>
+			<a href="/chelseaUniversity/sugang/pre?page=1">
+				<button class="preStuSubList--button">강의 검색</button>
 			</a>
 		</div>
 
