@@ -129,7 +129,7 @@
 
 		<h4>
 			<span style="font-weight: 600;">강의 목록</span>&nbsp; <span
-				style="color: gray; font-size: 18px;">[총 80건]</span>
+				style="color: gray; font-size: 18px;"><c:out value="[총 ${rowCount}건]"/></span>
 		</h4>
 		<table border="1" class="sub--list--table">
 			<thead>
@@ -642,7 +642,7 @@
 
 			</tbody>
 		</table>
-
+	<c:if test="${isSearch ne true}">
 		<ul class="page--list">
 
 
@@ -653,6 +653,7 @@
 			<li><a href="${pageContext.request.contextPath}/subject/list?page=3">3</a>
 			<li><a href="${pageContext.request.contextPath}/subject/list?page=4">4</a>
 		</ul>
+	</c:if>
 
 
 

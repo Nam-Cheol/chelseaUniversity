@@ -67,7 +67,10 @@ public class SubjectController extends HttpServlet {
 		} else {
 
 		}
+		int rowCount = classesList.size();
 		request.setAttribute("classesList", classesList);
+		request.setAttribute("rowCount", rowCount);
+		request.setAttribute("isSearch", "true");
 
 		request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
 	}
@@ -99,6 +102,7 @@ public class SubjectController extends HttpServlet {
 		int totalPages = (int) Math.ceil((double) totalBoards / pageSize);
 
 		request.setAttribute("classesList", classesList);
+		request.setAttribute("rowCount", totalBoards);
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("currentPage", page);
 

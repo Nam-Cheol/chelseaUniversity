@@ -54,7 +54,7 @@ public class ClassesRepositoryImpl implements ClassesRepository {
 			pstmt.setInt(1, professorId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				allClassesListBySearch.add(ClassesDto.builder().id(rs.getInt("id")).name(rs.getString("s.name"))
+				allClassesListBySearch.add(ClassesDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
 						.professorId(rs.getInt("professor_id")).roomId(rs.getString("room_id"))
 						.deptId(rs.getInt("dept_id")).type(rs.getString("type")).subYear(rs.getInt("sub_year"))
 						.semester(rs.getInt("semester")).subDay(rs.getString("sub_day"))
