@@ -45,11 +45,11 @@
 			style="width: 100%">
 			<div>
 
+				<c:if test="${!failCheck}">
 				<h4>
 					<span style="font-weight: 600;"> 신청 미완료 강의 목록 </span>&nbsp;
 				</h4>
-				<!-- 
-						 수강신청 해야되는 과목
+				 
 				<table border="1" class="sub--list--table">
 					<thead>
 						<tr>
@@ -65,33 +65,32 @@
 					</thead>
 
 					<tbody>
-
+						<c:forEach var="failSub" items="${failSubList}">
 						<tr>
-							<td>10000</td>
-							<td class="sub--list--name">데이터통신</td>
-							<td>김근호</td>
-							<td>3</td>
-							<td>월 14:00-17:00&nbsp;(E601)</td>
-							<td>0</td>
-							<td>5</td>
+							<td>${failSub.id}</td>
+							<td class="sub--list--name">${failSub.title}</td>
+							<td>${failSub.professorName}</td>
+							<td>${failSub.grades}</td>
+							<td>${failSub.subDay}&nbsp;${failSub.startTime}:00-${failSub.endTime}:00&nbsp;(${failSub.roomId})</td>
+							<td>${failSub.numOfStudent}</td>
+							<td>${failSub.capacity}</td>
 							<td class="sub--list--button--row">
-
-
-
-								<form action="/sugang/insertApp/10000?type=1" method="post">
-									<button type="submit" style="background-color: #548AC2;">신청</button>
+								<form action="/chelseaUniversity/sugang/delete" method="get">
+									<button type="submit"
+										value="${failSub.id}"
+										name="id"
+										onclick="return confirm('수강신청을 하시겠습니까?');"
+										style="background-color: #a7a7a7;">신청</button>
 								</form>
-
-
 							</td>
 						</tr>
-
+						</c:forEach>
 					</tbody>
 				</table>
 				<br>
-				<br> -->
-
-
+				<br>
+				</c:if>
+				<c:if test="${!successCheck}">
 				<h4>
 					<span style="font-weight: 600;">신청 내역</span>&nbsp; <span
 						style="color: gray; font-size: 18px;">[총 ${totalGrade}학점]</span>
@@ -111,19 +110,19 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="history" items="${historyList}">
+						<c:forEach var="successSub" items="${successSubList}">
 						<tr>
-							<td>${history.id}</td>
-							<td class="sub--list--name">${history.title}</td>
-							<td>${history.professorName}</td>
-							<td>${history.grades}</td>
-							<td>${history.subDay}&nbsp;${history.startTime}:00-${history.endTime}:00&nbsp;(${history.roomId})</td>
-							<td>${history.numOfStudent}</td>
-							<td>${history.capacity}</td>
+							<td>${successSub.id}</td>
+							<td class="sub--list--name">${successSub.title}</td>
+							<td>${successSub.professorName}</td>
+							<td>${successSub.grades}</td>
+							<td>${successSub.subDay}&nbsp;${successSub.startTime}:00-${successSub.endTime}:00&nbsp;(${successSub.roomId})</td>
+							<td>${successSub.numOfStudent}</td>
+							<td>${successSub.capacity}</td>
 							<td class="sub--list--button--row">
 								<form action="/chelseaUniversity/sugang/delete" method="get">
 									<button type="submit"
-										value="${history.id}"
+										value="${successSub.id}"
 										name="id"
 										onclick="return confirm('수강신청을 취소하시겠습니까?');"
 										style="background-color: #a7a7a7;">취소</button>
@@ -133,7 +132,10 @@
 						</c:forEach>
 					</tbody>
 				</table>
-
+				</c:if>
+					<c:if test="${failCheck&&successCheck}">
+					<p>수강 신청 내역이 존재하지 않습니다.</p>
+					</c:if>
 			</div>
 
 			<!-- 강의 검색으로 가기 -->

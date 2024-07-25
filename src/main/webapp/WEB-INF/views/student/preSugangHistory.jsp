@@ -39,7 +39,7 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>수강 신청</h1>
+		<h1>예비 수강 신청 내역</h1>
 		<div class="split--div"></div>
 		<!-- 여기에 내용 넣기 -->
 		<div class="d-flex justify-content-between align-items-start"

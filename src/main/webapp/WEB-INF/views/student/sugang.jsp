@@ -44,16 +44,16 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>예비 수강 신청</h1>
+		<h1>수강 신청</h1>
 		<div class="split--div"></div>
 		
-		<a href="/chelseaUniversity/sugang/preAppList">
+		<a href="/chelseaUniversity/sugang/appList">
 			<button class="preStuSubList--button">신청 내역</button>
 			</a>
 		
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="${pageContext.request.contextPath}/sugang/pre"
+			<form action="${pageContext.request.contextPath}/sugang/application"
 				method="get">
 				<div>
 					<input type="hidden" name="page" value="1">

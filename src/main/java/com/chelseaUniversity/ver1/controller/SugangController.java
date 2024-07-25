@@ -1,6 +1,7 @@
 package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.catalina.util.Introspection;
@@ -106,12 +107,12 @@ public class SugangController extends HttpServlet {
 
 		case "/preAppList":
 			if(season) {
-				totalGrade = registrationRepository.totalGrades(principalStu.getId());
+				totalGrade = registrationRepository.preTotalGrades(principalStu.getId());
 				historyList = registrationRepository.resistrationHistory(principalStu.getId());
 				
 				request.setAttribute("totalGrade", totalGrade);
 				request.setAttribute("historyList", historyList);
-				request.getRequestDispatcher("/WEB-INF/views/student/preSugangList.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/student/preSugangHistory.jsp").forward(request, response);
 			} else {
 				String message = "예비 수강신청 기간이 아닙니다.";
 				int page = 1;
@@ -125,10 +126,27 @@ public class SugangController extends HttpServlet {
 		case "/appList":
 			if(season) {
 				totalGrade = registrationRepository.totalGrades(principalStu.getId());
-				historyList = registrationRepository.resistrationHistory(principalStu.getId());
+				List<SubjectHistory> failSubList = new ArrayList<>();
+				List<SubjectHistory> successSubList = new ArrayList<>();
+				List<Integer> failList = registrationRepository.failResistration(principalStu.getId());
+				List<Integer> successList = registrationRepository.successResistration(principalStu.getId());
 				
+				for (int failNum : failList) {
+					failSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), failNum));
+				}
+				
+				for (int successNum : successList) {
+					successSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), successNum));
+				}
+				
+				boolean failCheck = failSubList.isEmpty();
+				boolean successCheck = successSubList.isEmpty();
+				
+				request.setAttribute("failCheck", failCheck);
+				request.setAttribute("successCheck", successCheck);
+				request.setAttribute("failSubList", failSubList);
+				request.setAttribute("successSubList", successSubList);
 				request.setAttribute("totalGrade", totalGrade);
-				request.setAttribute("historyList", historyList);
 				request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
 			} else {
 				String message = "수강신청 기간이 아닙니다.";
@@ -143,10 +161,17 @@ public class SugangController extends HttpServlet {
 		case "/list":
 			if(season) {
 				totalGrade = registrationRepository.totalGrades(principalStu.getId());
-				historyList = registrationRepository.resistrationHistory(principalStu.getId());
+				List<SubjectHistory> successSubList = new ArrayList<>();
+				List<Integer> successList = registrationRepository.successResistration(principalStu.getId());
 				
+				for (int successNum : successList) {
+					successSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), successNum));
+				}
+				
+				boolean successCheck = successSubList.isEmpty();
+				request.setAttribute("successCheck", successCheck);
+				request.setAttribute("successSubList", successSubList);
 				request.setAttribute("totalGrade", totalGrade);
-				request.setAttribute("historyList", historyList);
 				request.getRequestDispatcher("/WEB-INF/views/student/sugangHistory.jsp").forward(request, response);
 			} else {
 				String message = "수강신청 기간이 아닙니다.";
@@ -165,11 +190,11 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/regist":
-			registrationSubject(request, response, principalStu);
+			registrationPreSubject(request, response, principalStu);
 			break;
 
 		case "/delete":
-			deleteSubject(request, response, principalStu);
+			deletePreSubject(request, response, principalStu);
 			response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 			break;
 
@@ -178,8 +203,16 @@ public class SugangController extends HttpServlet {
 			break;
 		
 		case "/deleteList":
-			deleteSubject(request, response, principalStu);
+			deletePreSubject(request, response, principalStu);
 			response.sendRedirect(request.getContextPath() + "/sugang/preAppList");
+			break;
+			
+		case "/deleteSugang":
+			deleteSubject(request, response, principalStu);
+			break;
+			
+		case "/registrationSugang":
+			registrationSubject(request, response, principalStu);
 			break;
 			
 		default:
@@ -187,6 +220,8 @@ public class SugangController extends HttpServlet {
 			break;
 		}
 	}
+
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -382,7 +417,6 @@ public class SugangController extends HttpServlet {
 		if("/subjectList".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 		} else if ("/pre".equals(action)) {
-			System.out.println("pre로 들어옴.");
 			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
 		} else if ("/application".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
@@ -515,14 +549,14 @@ public class SugangController extends HttpServlet {
 
 	}
 
-	private void registrationSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
+	private void registrationPreSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
 			throws ServletException, IOException {
 
 		List<CheckSubjectTime> checkTimeList = registrationRepository.registSubjectTime(principal.getId());
 
 		if (!checkTimeList.isEmpty()) {
 
-			int totalGrades = registrationRepository.totalGrades(principal.getId());
+			int totalGrades = registrationRepository.preTotalGrades(principal.getId());
 			int subGrade = Integer.parseInt(request.getParameter("subGrade"));
 			if((totalGrades+subGrade) > 18) {
 				
@@ -594,7 +628,7 @@ public class SugangController extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 	}
 
-	private void deleteSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
+	private void deletePreSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
 			throws ServletException, IOException {
 		String deleteSubIdStr = request.getParameter("id");
 
@@ -610,5 +644,15 @@ public class SugangController extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	// TODO - 본 수강신청 자유롭게 신청 취소
+	private void registrationSubject(HttpServletRequest request, HttpServletResponse response,
+			StudentInfoDto principalStu) {
+		
+	}
 
+	private void deleteSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principalStu) {
+		
+	}
+	
 }

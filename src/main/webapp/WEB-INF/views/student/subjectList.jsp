@@ -33,7 +33,7 @@
 					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList?page=1">수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/appList?page=1">수강 신청</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/sugang/list?page=1">수강 신청 내역 조회</a></td>
@@ -236,8 +236,8 @@
 					<td>${subject.professorName}</td>
 					<td>${subject.grades}</td>
 					<td>${subject.subDay}&nbsp;${subject.startTime}:00-${subject.endTime}:00&nbsp;(${subject.roomId})</td>
-					<td>${subject.capacity}</td>
 					<td>${subject.numOfStudent}</td>
+					<td>${subject.capacity}</td>
 					<td>
 						<ul class="d-flex justify-content-center sub--plan--view"
 							style="margin: 0;">
