@@ -68,9 +68,15 @@
 					<td>${app.type}휴학</td>
 					<td>${app.fromYear}년도&nbsp;${app.fromSemester}학기</td>
 					<td>${app.toYear}년도&nbsp;${app.toSemester}학기</td>
-					<td><a href="/chelseaUniversity/break/detail?id=${app.id}">Click</a></td>
+					<td><a href="/chelseaUniversity/break/detail?id=${app.id}&status=${status}">Click</a></td>
+					<c:choose>
+					<c:when test="${status}">
+					<td><span style="color: #000; font-weight: 600">승인</span>
+					</c:when>
+					<c:otherwise>
 					<td><span style="color: #767676; font-weight: 600">처리중</span>
-
+					</c:otherwise>
+					</c:choose>
 
 
 					</td>

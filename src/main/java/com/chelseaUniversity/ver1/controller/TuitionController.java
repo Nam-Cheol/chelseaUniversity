@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Tuition;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
@@ -40,8 +42,18 @@ public class TuitionController extends HttpServlet {
 
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
-		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		List<Tuition> tuitionList = checkTuitionList(principal.getId());
+		StudentInfoDto principalStu = null;
+		Staff principalSta = null;
+		List<Tuition> tuitionList = null;
+		User userRole = (User) session.getAttribute("user");
+		if("student".equalsIgnoreCase(userRole.getUserRole())) {
+			principalStu = (StudentInfoDto) session.getAttribute("principal");
+			tuitionList = checkTuitionList(principalStu.getId());
+		} else if("staff".equalsIgnoreCase(userRole.getUserRole())) {
+			principalSta = (Staff) session.getAttribute("principal");
+		}
+		
+		
 		
 		switch (action) {
 
@@ -51,22 +63,26 @@ public class TuitionController extends HttpServlet {
 			break;
 
 		case "/list":
-			boolean checkList = !tuitionList.isEmpty();
-			request.setAttribute("tuitionList", tuitionList);
-			request.setAttribute("checkList", checkList);
-			request.getRequestDispatcher("/WEB-INF/views/student/tuitionHistory.jsp").forward(request, response);
+			if(tuitionList != null) {
+				boolean checkList = !tuitionList.isEmpty();
+				request.setAttribute("tuitionList", tuitionList);
+				request.setAttribute("checkList", checkList);
+				request.getRequestDispatcher("/WEB-INF/views/student/tuitionHistory.jsp").forward(request, response);
+			}
 			break;
 
 		case "/payment":
-			tuitionList = tuitionRepository.selectByStudentId(principal.getId());
-			boolean checkTuition = false;
-			if(tuitionList.isEmpty() == false) {
-				Tuition tuition = tuitionList.get(0);
-				checkTuition = tuition != null ? true : false;
-				request.setAttribute("tuition", tuition);
+			if(principalStu != null) {
+				tuitionList = tuitionRepository.selectByStudentId(principalStu.getId());
+				boolean checkTuition = false;
+				if(tuitionList.isEmpty() == false) {
+					Tuition tuition = tuitionList.get(0);
+					checkTuition = tuition != null ? true : false;
+					request.setAttribute("tuition", tuition);
+				}
+				request.setAttribute("checkTuition", checkTuition);
+				request.getRequestDispatcher("/WEB-INF/views/student/tuitionBill.jsp").forward(request, response);
 			}
-			request.setAttribute("checkTuition", checkTuition);
-			request.getRequestDispatcher("/WEB-INF/views/student/tuitionBill.jsp").forward(request, response);
 			break;
 			
 		default:

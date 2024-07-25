@@ -40,6 +40,8 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 															+ "    professor_tb AS p ON s.professor_id = p.id "
 															+ "    WHERE "
 															+ "    stu_id = ? ";
+	private static final String IS_PRE_SUGANG_SEASON = " SELECT status FROM sugang WHERE name = 'pre_sugang' ";
+	private static final String IS_SUGANG_SEASON = " SELECT status FROM sugang WHERE name = 'sugang' ";
 	
 	@Override
 	public void insertSubjectRegistration(int stuId, int subId) {
@@ -286,6 +288,54 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 		}
 		
 		return historyList;
+	}
+
+	@Override
+	public String isSugangSeason() {
+		String season = null;
+		
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(IS_SUGANG_SEASON)){
+			
+			try (ResultSet rs = pstmt.executeQuery()){
+				
+				if(rs.next()) {
+					season = rs.getString("status");
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return season;
+	}
+
+	@Override
+	public String isPreSugangSeason() {
+		String preSeason = null;
+		
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(IS_PRE_SUGANG_SEASON)){
+			
+			try (ResultSet rs = pstmt.executeQuery()){
+				
+				if(rs.next()) {
+					preSeason = rs.getString("status");
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return preSeason;
 	}
 
 }

@@ -21,8 +21,8 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 
 	// TODO - Define 클래스로 이동 쿼리문
 	public final String LESS_NUM_OF_STUDENT = " SELECT id FROM subject_tb WHERE capacity >= num_of_student ";
-	public final String MORE_NUM_OF_STUDENT = " SELECT id FROM subject_tb WHERE capacity >= num_of_student ";
-	public final String RESET_NUM_OF_STUDENT = " UPDATE subject_tb SET num_of_student = 0\r\n" + " WHERE id = ? ";
+	public final String MORE_NUM_OF_STUDENT = " SELECT id FROM subject_tb WHERE capacity < num_of_student ";
+	public final String RESET_NUM_OF_STUDENT = " UPDATE subject_tb SET num_of_student = 0 WHERE id = ? ";
 	public static final String SELECT_SUBJECT_ALL_COUNT = " SELECT count(id) as count FROM subject_tb ";
 	public static final String SELECT_SUBJECT_ALL_PAGE = " SELECT * FROM subject_tb LIMIT ? OFFSET ? ";
 	public static final String SELECT_SUBJECT_BY_ID = " SELECT * FROM subject_tb WHERE id = ? ";

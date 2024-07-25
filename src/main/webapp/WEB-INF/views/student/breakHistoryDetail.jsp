@@ -89,13 +89,14 @@
 			</div>
 
 
-
-
+			
+			<c:if test="${status == false}">
 			<form action="/chelseaUniversity/break/delete?id=${app.id}" method="post"
 				class="d-flex flex-column align-items-center">
 				<button type="submit" class="btn btn-dark"
 					onclick="return confirm('신청을 취소하시겠습니까?')">취소하기</button>
 			</form>
+			</c:if>
 
 
 
