@@ -10,27 +10,29 @@ import java.io.IOException;
 @WebServlet("/grade/*")
 public class GradeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public GradeController() {
-    }
 
-    @Override
-    public void init() throws ServletException {
-    }
-    
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public GradeController() {
+	}
+
+	@Override
+	public void init() throws ServletException {
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println("action : " + action);
-		
+
 		switch (action) {
 		case "/thisSemester":
-			request.getRequestDispatcher("/WEB-INF/views/student/thisSemester.jsp").forward(request, response);
+			showThisSemester(request, response);
+
 			break;
-			
+
 		case "/semester":
 			request.getRequestDispatcher("/WEB-INF/views/student/semester.jsp").forward(request, response);
 			break;
-			
+
 		case "/total":
 			request.getRequestDispatcher("/WEB-INF/views/student/total.jsp").forward(request, response);
 			break;
@@ -41,7 +43,15 @@ public class GradeController extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showThisSemester(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		request.getRequestDispatcher("/WEB-INF/views/student/thisSemester.jsp").forward(request, response);
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 	}
 
 }

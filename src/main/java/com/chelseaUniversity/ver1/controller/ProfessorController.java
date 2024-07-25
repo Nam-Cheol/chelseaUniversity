@@ -188,8 +188,8 @@ public class ProfessorController extends HttpServlet {
 				.subjectId(Integer.parseInt(request.getParameter("subjectId"))).absent(absent).lateness(lateness)
 				.homework(homework).midExam(midExam).finalExam(finalExam).convertedMark(convertedMark)
 				.grade(request.getParameter("grade")).build();
-		stuSubDetailRepository.updateGrade(stuSubDetail);
 		stuSubRepository.updateGradeByStudentIdAndSubjectId(stuSubDetail);
+		stuSubDetailRepository.updateGrade(stuSubDetail);
 		showPossessive(request, response);
 	}
 

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -46,9 +47,36 @@
 	<main>
 		<h1>금학기 성적 조회</h1>
 		<div class="split--div"></div>
+		<!-- 여기에 내용 넣기 -->
 
-		<p class="no--list--p">강의 신청 및 수강 이력 확인 바랍니다.</p>
+		<!-- 필터 및 검색 -->
+		<c:choose>
+		<c:when test="${not empty evaluationList}">
+		<table border="1" class="sub--list--table">
+			<thead>
+				<tr>
+					<th>과목 이름</th>
+					<th>총 평가 점수</th>
+					<th>건의 사항</th>
+				</tr>
+			</thead>
 
+			<tbody>
+			<c:forEach var="evaluation" items="${evaluationList}">
+				<tr>
+						<td><c:out value="${evaluation.subjectName}"></c:out></td>
+						<td><fmt:formatNumber value="${evaluation.totalScore/7}" type="number" maxFractionDigits="1" /></td>
+						<td><c:out value="${evaluation.suggestions}"></c:out></td>
+				</tr>
+			</c:forEach>
+			
+					</tbody>
+				</table>
+			</c:when>
+ 			<c:when test="${empty evaluationList}">
+				<p class="no--list--p">강의 신청 및 수강 이력 확인 바랍니다.</p>
+			</c:when>
+		</c:choose> 
 	</main>
 </div>
 
