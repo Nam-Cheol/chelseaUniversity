@@ -17,7 +17,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/student/info">내 정보 조회</a></td>
+					<td><a href="/chelseaUniversity/user/myinfo">내 정보 조회</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/password">비밀번호 변경</a></td>
@@ -89,13 +89,14 @@
 			</div>
 
 
-
-
+			
+			<c:if test="${status == false}">
 			<form action="/chelseaUniversity/break/delete?id=${app.id}" method="post"
 				class="d-flex flex-column align-items-center">
 				<button type="submit" class="btn btn-dark"
 					onclick="return confirm('신청을 취소하시겠습니까?')">취소하기</button>
 			</form>
+			</c:if>
 
 
 

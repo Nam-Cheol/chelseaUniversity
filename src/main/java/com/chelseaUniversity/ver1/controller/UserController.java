@@ -101,10 +101,30 @@ public class UserController extends HttpServlet {
 		case "/home":
 			showHomePage(request, response, session);
 			break;
+		case"/check":
+			showCheckPage(request,response,session);
+			break;
+		case"/myinfo":
+			showMyinfoPage(request,response,session);
+			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
+	}
+
+	/*
+	 * 인포 페이지 처리
+	 */
+	private void showMyinfoPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/views/user/myInfo.jsp").forward(request, response);
+	}
+
+	/*
+	 * 유저 체크
+	 */
+	private void showCheckPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/views/user/checkUser.jsp").forward(request, response);
 	}
 
 	// 홈페이지 페이지 처리
@@ -433,9 +453,66 @@ public class UserController extends HttpServlet {
 		case "/changepassword":
 			changePasswordHandler(request, response, session);
 			break;
+		case"/update":
+			updateHandler(request,response,session);
+			break;
+		case"/check":
+			checkHandler(request,response,session);
 		default:
 			break;
 		}
+	}
+
+	/*
+	 * 회원 정보 유효 확인 처리
+	 */
+	private void checkHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("id"));
+		String password = request.getParameter("password");
+		User user = (User)session.getAttribute("user");
+		if(user.getId().equals(id) && user.getPassword().equals(password)) {
+			System.out.println("보안검사 성공");
+			request.getRequestDispatcher("/WEB-INF/views/user/checkUser.jsp?check=success").forward(request, response);
+		} else {
+			System.out.println("보안검사 실패");
+			request.getRequestDispatcher("/WEB-INF/views/user/checkUser.jsp?check=fail").forward(request, response);
+		}
+	}
+
+	/*
+	 * 회원 정보 수정 처리
+	 */
+	private void updateHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		String address = request.getParameter("address");
+		String tel = request.getParameter("tel");
+		String email = request.getParameter("email");
+		User user = (User)session.getAttribute("user");
+		System.out.println(tel);
+			if(user.getUserRole().equals("student")) {
+				StudentInfoDto student = (StudentInfoDto)session.getAttribute("principal");
+				student.setAddress(address);
+				student.setTel(tel);
+				student.setEmail(email);
+				userRepository.updateStudent(student);
+				session.setAttribute("principal",student);
+				response.sendRedirect(request.getContextPath()+"/user/myinfo");
+			} else if (user.getUserRole().equals("staff")) {
+				Staff staff = (Staff)session.getAttribute("principal");
+				staff.setAddress(address);
+				staff.setTel(tel);
+				staff.setEmail(email);
+				userRepository.updateStaff(staff);
+				session.setAttribute("principal",staff);
+				response.sendRedirect(request.getContextPath()+"/user/myinfo");
+			} else {
+				ProfessorInfoDto professor = (ProfessorInfoDto)session.getAttribute("principal");
+				professor.setAddress(address);
+				professor.setTel(tel);
+				professor.setEmail(email);
+				userRepository.updateProfessor(professor);
+				session.setAttribute("principal",professor);
+				response.sendRedirect(request.getContextPath()+"/user/myinfo");
+			}
 	}
 
 	/*

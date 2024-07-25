@@ -33,4 +33,10 @@ public interface RegistrationRepository {
 	
 	// 신청한 수강과목 내역에 올리기 위한 리스트
 	List<SubjectHistory> resistrationHistory(int studentId);
+	
+	// 수강신청 상태 확인
+	String isSugangSeason();
+	
+	// 예비 수강신청 상태 확인
+	String isPreSugangSeason();
 }

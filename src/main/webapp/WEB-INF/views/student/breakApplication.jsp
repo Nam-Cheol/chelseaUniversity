@@ -29,7 +29,7 @@
 				<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tbody><tr>
-					<td><a href="/chelseaUniversity/student/info">내 정보 조회</a></td>
+					<td><a href="/chelseaUniversity/user/myinfo">내 정보 조회</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>
@@ -54,6 +54,13 @@
 			
 			<c:when test="${application}">
 			
+				<c:if test="${not empty message}">
+        			<script type="text/javascript">
+            			alert("${message}");
+					     window.location.href = 'list';
+			        </script>
+			    </c:if>
+				
 				 <script type='text/javascript'>
 				 	 alert('이미 휴학 신청 내역이 존재합니다');
 				     window.location.href = 'list';

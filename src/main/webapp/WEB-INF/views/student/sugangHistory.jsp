@@ -21,13 +21,13 @@
 							시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/pre">예비 수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList">수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/preAppList?page=1">수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/list"
+					<td><a href="/chelseaUniversity/sugang/list?page=1"
 						class="selected--menu">수강 신청 내역 조회</a></td>
 				</tr>
 			</table>
@@ -43,7 +43,7 @@
 
 				<h4>
 					<span style="font-weight: 600;">신청 내역</span>&nbsp; <span
-						style="color: gray; font-size: 18px;">[총 14학점]</span>
+						style="color: gray; font-size: 18px;">[총 ${totalGrade}학점]</span>
 				</h4>
 				<table border="1" class="sub--list--table">
 					<thead>
@@ -70,7 +70,7 @@
 							<td>${hitory.numOfStudent}</td>
 							<td>${hitory.capacity}</td>
 							<td class="sub--list--button--row">
-								<form action="/sugang/deleteApp/10001?type=1" method="post">
+								<form action="/chelseaUniversity/sugang/delete" method="get">
 									<input type="hidden" name="_method" value="delete">
 									<button type="submit"
 										onclick="return confirm('수강신청을 취소하시겠습니까?');"

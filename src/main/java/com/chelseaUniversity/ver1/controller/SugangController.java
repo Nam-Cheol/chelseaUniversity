@@ -82,6 +82,9 @@ public class SugangController extends HttpServlet {
 		
 		int totalGrade;
 		List<SubjectHistory> historyList;
+		
+		boolean preSeason = "진행".equals(registrationRepository.isPreSugangSeason()) ? true : false;
+		boolean season = "진행".equals(registrationRepository.isSugangSeason()) ? true : false;
 
 		switch (action) {
 		case "/subjectList":
@@ -89,25 +92,52 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/pre":
-			showSubjectList(request, response, "/pre");
+			if(preSeason) {
+				showSubjectList(request, response, "/pre");
+			} else {
+				String message = "예비수강신청 기간이 아닙니다.";
+				int page = 1;
+
+		        request.setAttribute("message", message);
+		        request.setAttribute("page", page);
+		        showSubjectList(request, response, "/subjectList");
+			}
 			break;
 
 		case "/preAppList":
-			totalGrade = registrationRepository.totalGrades(principalStu.getId());
-			historyList = registrationRepository.resistrationHistory(principalStu.getId());
-
-			request.setAttribute("totalGrade", totalGrade);
-			request.setAttribute("historyList", historyList);
-			request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
+			if(season) {
+				totalGrade = registrationRepository.totalGrades(principalStu.getId());
+				historyList = registrationRepository.resistrationHistory(principalStu.getId());
+				
+				request.setAttribute("totalGrade", totalGrade);
+				request.setAttribute("historyList", historyList);
+				request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
+			} else {
+				String message = "수강신청 기간이 아닙니다.";
+				int page = 1;
+				
+		        request.setAttribute("message", message);
+		        request.setAttribute("page", page);
+		        viewSubjectList(request, response, page,"/subjectList");
+			}
 			break;
 
 		case "/list":
-			totalGrade = registrationRepository.totalGrades(principalStu.getId());
-			historyList = registrationRepository.resistrationHistory(principalStu.getId());
+			if(season) {
+				totalGrade = registrationRepository.totalGrades(principalStu.getId());
+				historyList = registrationRepository.resistrationHistory(principalStu.getId());
+				
+				request.setAttribute("totalGrade", totalGrade);
+				request.setAttribute("historyList", historyList);
+				request.getRequestDispatcher("/WEB-INF/views/student/sugangHistory.jsp").forward(request, response);
+			} else {
+				String message = "수강신청 기간이 아닙니다.";
+				int page = 1;
 
-			request.setAttribute("totalGrade", totalGrade);
-			request.setAttribute("historyList", historyList);
-			request.getRequestDispatcher("/WEB-INF/views/student/sugangHistory.jsp").forward(request, response);
+		        request.setAttribute("message", message);
+		        request.setAttribute("page", page);
+		        showSubjectList(request, response, "/subjectList");
+			}
 			break;
 		case "/period":
 			sugangStatus.updatePrePeriod("진행");
@@ -126,6 +156,10 @@ public class SugangController extends HttpServlet {
 
 		case "/application":
 			showSubjectList(request, response, "/application");
+			break;
+			
+		case "/test":
+			response.sendRedirect(request.getContextPath() + "sugang/subjectList?subId=10001&subType=전공&subDay=수&startTime=9&endTime=12&id=10001");
 			break;
 
 		default:
@@ -267,6 +301,8 @@ public class SugangController extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 		} else if ("/pre".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
+		} else if ("/application".equals(action)) {
+			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
 		}
 
 	}
@@ -321,25 +357,31 @@ public class SugangController extends HttpServlet {
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("checkNum", checkNum);
-
-		if ("/subjectList".equals(action)) {
+		request.setAttribute("page", page);
+		
+		if("/subjectList".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 		} else if ("/pre".equals(action)) {
+			System.out.println("pre로 들어옴.");
 			request.getRequestDispatcher("/WEB-INF/views/student/preSugang.jsp").forward(request, response);
 		} else if ("/application".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
 		}
 	}
-
-	private void showSubjectList(HttpServletRequest request, HttpServletResponse response, String action)
-			throws ServletException, IOException {
+	
+	private void showSubjectList(HttpServletRequest request, HttpServletResponse response, String action) throws ServletException, IOException {
 		int page = 1;
 		try {
 			if (request.getParameter("page") != null) {
 				page = Integer.parseInt(request.getParameter("page"));
+			} else {
+				page = 1;
+				request.setAttribute("page", page);
 			}
 		} catch (NumberFormatException e) {
+			e.printStackTrace();
 			page = 1;
+			request.setAttribute("page", page);
 		}
 
 		String type = null;
@@ -515,7 +557,7 @@ public class SugangController extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-		showSubjectList(request, response, "/pre");
+		response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 	}
 
 	private void deleteSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
@@ -533,7 +575,7 @@ public class SugangController extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-		showSubjectList(request, response, "/pre");
+		response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 	}
 
 }
