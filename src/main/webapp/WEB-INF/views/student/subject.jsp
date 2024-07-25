@@ -53,7 +53,7 @@
 
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="/subject/list/search" method="get">
+			<form action="${pageContext.request.contextPath}/subject/search?" method="get">
 				<div>
 					<!-- 개설연도 숫자 -->
 					<label for="subYear">연도 </label> <input type="number" value="2023"

@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -55,18 +54,28 @@
 		<table border="1" class="sub--list--table">
 			<thead>
 				<tr>
-					<th>과목 이름</th>
-					<th>총 평가 점수</th>
-					<th>건의 사항</th>
+					<th>연도</th>
+					<th>학기</th>
+					<th>과목번호</th>
+					<th>과목명</th>
+					<th>강의구분</th>
+					<th>이수학점</th>
+					<th>성적</th>
+					<th>강의평가</th>
 				</tr>
 			</thead>
 
 			<tbody>
-			<c:forEach var="evaluation" items="${evaluationList}">
+			<c:forEach var="list" items="${stuSubDetail}">
 				<tr>
-						<td><c:out value="${evaluation.subjectName}"></c:out></td>
-						<td><fmt:formatNumber value="${evaluation.totalScore/7}" type="number" maxFractionDigits="1" /></td>
-						<td><c:out value="${evaluation.suggestions}"></c:out></td>
+						<td><c:out value="${list.subYear}"></c:out></td>
+						<td><c:out value="${list.semester}"></c:out></td>
+						<td><c:out value="${list.subjectId}"></c:out></td>
+						<td><c:out value="${list.subjectName}"></c:out></td>
+						<td><c:out value="${list.type}"></c:out></td>
+						<td><c:out value="${list.grades}"></c:out></td>
+						<td><c:out value="${list.grade}"></c:out></td>
+						<td><a href="강의평가"></a></td>
 				</tr>
 			</c:forEach>
 			
@@ -84,6 +93,5 @@
 	<!-- 필요 시 -->
 </footer>
 
-</div>
 </body>
 </html>
