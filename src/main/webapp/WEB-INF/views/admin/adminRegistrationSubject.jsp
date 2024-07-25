@@ -38,7 +38,7 @@
         <br>
         
         
-		<form action="${pageContext.request.contextPath}/admin/tuition/create-subject" method="post">
+		<form action="${pageContext.request.contextPath}/admin/subject/create-subject" method="post">
 			<table border=1 class="create-subjet-table">
 				<tr>
 					<th>강의이름:</th>
@@ -46,15 +46,15 @@
 				</tr>
 				<tr>
 					<th>교수id:</th>
-					<th><input type="text" id="professor-id" name="professor-id" placeholder="23000001"></th>
+					<th><input type="text" id="professor-id" name="professor-id" placeholder="23000001  foreign key"></th>
 				</tr>
 				<tr>
 					<th>강의실id:</th>
-					<th><input type="text" id="romm-id" name="romm-id" placeholder="E601"></th>
+					<th><input type="text" id="romm-id" name="romm-id" placeholder="E601  foreign key"></th>
 				</tr>
 				<tr>
 					<th>학과id:</th>
-					<th><input type="text" id="dept-id" name="dept-id" placeholder="101"></th>
+					<th><input type="text" id="dept-id" name="dept-id" placeholder="101  foreign key"></th>
 				</tr>
 				<tr>
 					<th>구분:</th>

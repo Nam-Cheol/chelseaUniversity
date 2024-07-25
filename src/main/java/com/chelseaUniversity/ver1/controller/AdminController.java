@@ -117,7 +117,7 @@ public class AdminController extends HttpServlet {
 		}
 	}
 	
-	private void createSubject(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void createSubject(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String subjectName = request.getParameter("subject-name");
 		int professorId = Integer.parseInt(request.getParameter("professor-id")); 
 		String roomId = request.getParameter("romm-id");
@@ -133,7 +133,7 @@ public class AdminController extends HttpServlet {
 		int numOfStudent = Integer.parseInt(request.getParameter("number-of-student"));
 		
 		subjectRepository.insert(subjectName, professorId, roomId, deptId, type, subYear, semester, subDay, startTime, endTime, grades, capacity, numOfStudent);
-		
+		System.out.println("sdss");
 		response.sendRedirect(request.getContextPath() + "/admin/subject");
 	}
 	
