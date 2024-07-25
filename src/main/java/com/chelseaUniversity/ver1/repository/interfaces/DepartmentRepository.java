@@ -21,4 +21,8 @@ public interface DepartmentRepository {
 	public int updateDepartment(int id, String name, int collegeId);
 	public int insert(String name, int collegeId);
 	
+	// 페이징 전체 리스트
+	public List<Department> getAllDepartment(int limit, int offset);
+	public int getTotalDepartmentCount();
+	
 }

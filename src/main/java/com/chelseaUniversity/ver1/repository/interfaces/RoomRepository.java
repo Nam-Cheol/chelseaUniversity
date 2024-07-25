@@ -19,4 +19,8 @@ public interface RoomRepository {
 	public int insertRoom(String roomId, int collegeId);
 	public int updateRoom(String roomId, int collegeId);
 	
+	// 페이징 전체 리스트
+	public List<Room> getAllRoom(int limit, int offset);
+	public int getTotalRoomCount();
+	
 }

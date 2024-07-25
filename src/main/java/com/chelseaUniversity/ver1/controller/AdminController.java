@@ -80,14 +80,14 @@ public class AdminController extends HttpServlet {
 	private void showDepartment(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 		List<Department> departmentList = departmentRepository.selectAll();
 		session.setAttribute("departmentList", departmentList);
-		
+		handleListDepartment(request, response);
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
-		
 	}
+	
 	private void showRoom(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 		List<Room> roomList = roomRepository.selectRoom();
 		session.setAttribute("roomList", roomList);
-		
+		handleListRoom(request, response);
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationRoom.jsp").forward(request, response);
 	}
 	
@@ -178,10 +178,12 @@ public class AdminController extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/admin/tuition");
 	}
 	
-	private void createDepartment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void createDepartment(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String departmentName = request.getParameter("college-name");
 		int collegeId = Integer.parseInt(request.getParameter("college-id"));
 		departmentRepository.insert(departmentName, collegeId);
+		
+		
 		response.sendRedirect(request.getContextPath() + "/admin/department");
 	}
 	
@@ -242,5 +244,64 @@ public class AdminController extends HttpServlet {
 		
 		response.sendRedirect(request.getContextPath() + "/admin/college");
 	}
+	
+	private void handleListDepartment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int page = 1; // 기본 페이지 번호 
+		int pageSize = 10; // 한 페이지당 보여질 게시글에 수  
+		
+		try {
+			 String pageStr = request.getParameter("page");
+			 if(pageStr != null ) {
+				 page = Integer.parseInt(pageStr);
+			 }
+		} catch (Exception e) {
+			page = 1; 
+		}
+		
+		int offset = (page - 1) * pageSize; // 시작 위치 계산( offset 값 계산)
+ 		List<Department> departmentList =  departmentRepository.getAllDepartment(pageSize, offset);
+		
+		// 전체 게시글 수 조회 
+		int totalBoards = departmentRepository.getTotalDepartmentCount();
+		// 총 페이지 수 계산 -->  [1][2][3][...]
+		int totalPages = (int) Math.ceil((double)totalBoards / pageSize);
+		
+		request.setAttribute("departmentList", departmentList);
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("currentPage", page);
+		
+		// 중복이라 주석처리 
+		// request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
+	}
+	
+	private void handleListRoom(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int page = 1; // 기본 페이지 번호 
+		int pageSize = 10; // 한 페이지당 보여질 게시글에 수  
+		
+		try {
+			 String pageStr = request.getParameter("page");
+			 if(pageStr != null ) {
+				 page = Integer.parseInt(pageStr);
+			 }
+		} catch (Exception e) {
+			page = 1; 
+		}
+		
+		int offset = (page - 1) * pageSize; // 시작 위치 계산( offset 값 계산)
+ 		List<Room> roomList =  roomRepository.getAllRoom(pageSize, offset);
+		
+		// 전체 게시글 수 조회 
+		int totalBoards = roomRepository.getTotalRoomCount();
+		// 총 페이지 수 계산 -->  [1][2][3][...]
+		int totalPages = (int) Math.ceil((double)totalBoards / pageSize);
+		
+		request.setAttribute("roomList", roomList);
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("currentPage", page);
+		
+		// 중복이라 주석처리 
+		// request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
+	}
+
 
 }

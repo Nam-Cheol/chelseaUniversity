@@ -72,20 +72,33 @@
 	
         <p>학과 목록</p>
         <br>
-        <table border="1" class="college-list">
-                <tr>
-                    <th>id</th>
-                    <th>학과이름</th>
-                    <th>단과id</th>
-                </tr>
-                <c:forEach var="department" items="${departmentList}">
-                <tr>
-                    <th>${department.id}</th>
-                    <th>${department.name}</th>
-                    <th>${department.collegeId}</th>
-                </tr>
-                </c:forEach>
-        </table>
+        
+	   	<div>
+		        <table border="1" class="college-list">
+		                <tr>
+		                    <th>id</th>
+		                    <th>학과이름</th>
+		                    <th>단과id</th>
+		                </tr>
+		                <c:forEach var="department" items="${departmentList}">
+		                <tr>
+		                    <th>${department.id}</th>
+		                    <th>${department.name}</th>
+		                    <th>${department.collegeId}</th>
+		                </tr>
+		                </c:forEach>
+		        </table>
+		   		<c:forEach begin="1" end="${totalPages}"  var="i" >
+					<c:choose>
+						<c:when test="${ i == currentPage }">
+							<span class="current-page" >${i}</span>
+						</c:when>
+						<c:otherwise>
+							<span><a href="${pageContext.request.contextPath}/admin/department?page=${i}">${i}</a></span>	
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+	   	</div>
 
 </div>
 </div>

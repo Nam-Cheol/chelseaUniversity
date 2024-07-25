@@ -19,6 +19,8 @@ public class DepartmentRepositoryImpl implements DepartmentRepository{
 	public final String SELECT_ALL = " SELECT * FROM department_tb ";
 	public final String UPDATE_DEPARTMENT = " UPDATE department_tb SET name = ? , college_id = ? where id = ? ";
 	public final String INSERT_DEPARTMENT = " INSERT INTO department_tb( name, college_id ) VALUES ( ? , ? ) ";
+	public final String SELECT_ALL_DEPARTMENT = " SELECT * FROM department_tb ORDER BY id ASC LIMIT ? OFFSET ? ";
+	public final String COUNT_ALL_DEPARTMENT = " SELECT count(*) AS count FROM department_tb ";
 	
 	@Override
 	public int insert(DepartmentFormDto departmentFormDto) {
@@ -143,6 +145,50 @@ public class DepartmentRepositoryImpl implements DepartmentRepository{
 			e.printStackTrace();
 			}
 		return rowCount;
+	}
+
+	@Override
+	public List<Department> getAllDepartment(int limit, int offset) {
+	List<Department> departmentList = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_DEPARTMENT)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				departmentList.add(
+						Department
+						.builder()
+						.id(rs.getInt("id"))
+						.name(rs.getString("name"))
+						.collegeId(rs.getInt("college_id"))
+						.build());
+			}
+			System.out.println("BoardRepositoryImpl - 로깅 : count " + departmentList.size());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return departmentList;
+	}
+
+	@Override
+	public int getTotalDepartmentCount() {
+		int count = 0; 
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(COUNT_ALL_DEPARTMENT)){
+ 			ResultSet rs = pstmt.executeQuery();
+ 			if(rs.next()) {
+ 				count = rs.getInt("count");
+ 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(" 로깅 totalCount : " + count);
+		
+		return count;
 	}
 
 }
