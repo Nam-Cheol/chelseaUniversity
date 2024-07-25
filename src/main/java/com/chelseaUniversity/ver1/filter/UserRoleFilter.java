@@ -35,7 +35,7 @@ public class UserRoleFilter extends HttpFilter implements Filter {
             	chain.doFilter(httpRequest, httpResponse);
             	return;
             }
-        	if (action.startsWith(httpRequest.getContextPath() + "/resources/")) {
+        	if (action.startsWith(httpRequest.getContextPath() + "/resources/") || action.startsWith(httpRequest.getContextPath() + "/user/find")) {
         		// 필터링을 생략하고 다음 필터 또는 서블릿으로 요청을 전달
         		chain.doFilter(request, response);
         		return;

@@ -45,7 +45,7 @@
 <a href="${pageContext.request.contextPath}/user/home">홈</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/student/info">MY</a>
+<a href="${pageContext.request.contextPath}/user/myinfo">MY</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/subject/list">수업</a>

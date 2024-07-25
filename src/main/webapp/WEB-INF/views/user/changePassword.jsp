@@ -1,6 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
+<c:choose>
+<c:when test="${user.userRole eq 'staff'}">
+<%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
+</c:when>
+<c:when test="${user.userRole eq 'professor'}">
+<%@ include file="/WEB-INF/views/home/professorHeader.jsp" %>
+</c:when>
+<c:otherwise>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
+</c:otherwise>
+</c:choose>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/password.css">
 <c:choose>
@@ -17,12 +29,20 @@
 		<!-- 메뉴 -->
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
+				<c:if test="${user.userRole ne 'professor'}">
 				<tr>
 					<td><a href="/chelseaUniversity/student/info" >내 정보 조회</a></td>
 				</tr>
+				</c:if>
+				<c:if test="${user.userRole eq 'professor'}">
+				<tr>
+					<td><a href="/chelseaUniversity/professor/info" >내 정보 조회</a></td>
+				</tr>
+				</c:if>
 				<tr>
 					<td><a href="/chelseaUniversity/user/password" class="selected--menu">비밀번호 변경</a></td>
 				</tr>
+				<c:if test="${user.userRole ne 'professor'}">
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
 				</tr>
@@ -35,6 +55,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/tuition/payment">등록금 납부 고지서</a></td>
 				</tr>
+				</c:if>
 			</table>
 		</div>
 	</div>

@@ -48,6 +48,9 @@ public class UserRepositoryImpl implements UserRepository{
 			+ "on u.id = t.id\r\n"
 			+ "where u.id = ? and t.name = ?";
 	private final String SET_PASSWORD_BYID = "UPDATE user_tb SET password = ? WHERE id = ?";
+	private final String UPDATE_STUDENT_BYID = " UPDATE student_tb SET address = ? ,tel = ? ,email = ? WHERE id = ? ";
+	private final String UPDATE_PROFESSOR_BYID = " UPDATE professor_tb SET address = ? ,tel = ? ,email = ? WHERE id = ? ";
+	private final String UPDATE_STAFF_BYID = " UPDATE staff_tb SET address = ? ,tel = ? ,email = ? WHERE id = ? ";
 	
 	// 로그인 검사
 	@Override
@@ -195,6 +198,55 @@ public class UserRepositoryImpl implements UserRepository{
 				e.printStackTrace();
 			}
 		return password;
+	}
+
+	// 학생 정보 변경
+	@Override
+	public int updateStudent(StudentInfoDto student) {
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(UPDATE_STUDENT_BYID)){
+			pstmt.setString(1, student.getAddress());
+			pstmt.setString(2, student.getTel());
+			pstmt.setString(3, student.getEmail());
+			pstmt.setInt(4, student.getId());
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
+	}
+	// 교수 정보 변경
+	@Override
+	public int updateProfessor(ProfessorInfoDto professor) {
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(UPDATE_STUDENT_BYID)){
+			pstmt.setString(1, professor.getAddress());
+			pstmt.setString(2, professor.getTel());
+			pstmt.setString(3, professor.getEmail());
+			pstmt.setInt(4, professor.getId());
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
+	}
+    // 교직원 정보 변경
+	@Override
+	public int updateStaff(Staff staff) {
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(UPDATE_STUDENT_BYID)){
+			pstmt.setString(1, staff.getAddress());
+			pstmt.setString(2, staff.getTel());
+			pstmt.setString(3, staff.getEmail());
+			pstmt.setInt(4, staff.getId());
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
 	}
 
 	

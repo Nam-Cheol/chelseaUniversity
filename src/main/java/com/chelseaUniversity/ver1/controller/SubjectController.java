@@ -1,10 +1,10 @@
 package com.chelseaUniversity.ver1.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.dto.response.ClassesDto;
-import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.ClassesRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.ClassesRepository;
 
@@ -20,30 +20,62 @@ public class SubjectController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ClassesRepository classesRepository;
 
-    public SubjectController() {
-        super();
-        classesRepository = new ClassesRepositoryImpl();
-    }
+	public SubjectController() {
+		classesRepository = new ClassesRepositoryImpl();
+	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		System.out.println("action : " + action);
 		HttpSession session = request.getSession();
-		
+
 		switch (action) {
 		case "/list":
 			showLists(request, response, session);
 			break;
 
+		case "/search":
+			showSearch(request, response, session);
+			break;
+
 		default:
-			
+
 			break;
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showSearch(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		List<ClassesDto> classesList = new ArrayList<>();
+		int year = Integer.parseInt(request.getParameter("subYear"));
+		int semester = Integer.parseInt(request.getParameter("semester"));
+		int deptId = Integer.parseInt(request.getParameter("deptId"));
+		String name = request.getParameter("name");
+		if (!name.isEmpty() && deptId != -1) {
+			System.out.println("search - id and name");
+			classesList = classesRepository.getClassesBySearchIdName(year, semester, deptId, name);
+		} else if (!name.isEmpty() && deptId == -1) {
+			System.out.println("search - name");
+			classesList = classesRepository.getClassesBySearchName(year, semester, name);
+		} else if (name.isEmpty() && deptId != -1) {
+			System.out.println("search - id");
+			classesList = classesRepository.getClassesBySearchId(year, semester, deptId);
+		} else if (name.isEmpty() && deptId == -1) {
+			System.out.println("search - null");
+			classesList = classesRepository.getClassesBySearch(year, semester);
+		} else {
+
+		}
+		request.setAttribute("classesList", classesList);
+
+		request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
 	}
-	
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+
 	private void showLists(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 		int page = 1;
@@ -70,13 +102,17 @@ public class SubjectController extends HttpServlet {
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("currentPage", page);
 
-		// 현재 로그인한 사용자 ID 설정
-		if (session != null) {
-			StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-			if (principal != null) {
-				request.setAttribute("userId", principal.getId());
-			}
-		}
+//		// 현재 로그인한 사용자 ID 설정
+//		if (session != null) {
+//			try {
+//				StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
+//				if (principal != null) {
+//					request.setAttribute("userId", principal.getId());
+//				}			
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 		request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
 	}
 
