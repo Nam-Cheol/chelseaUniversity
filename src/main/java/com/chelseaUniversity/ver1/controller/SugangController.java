@@ -47,6 +47,8 @@ public class SugangController extends HttpServlet {
 	RegistrationRepository registrationRepository;
 
 	SugangStatus sugangStatus;
+	
+	StuSub stuSub;
 
 	public SugangController() {
 		super();
@@ -60,6 +62,7 @@ public class SugangController extends HttpServlet {
 		stuSubDetailRepository = new StuSubDetailRepositoryImpl();
 		registrationRepository = new RegistrationRepositoryImpl();
 		sugangStatus = new SugangStatusImpl();
+		stuSub = new StuSub();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -69,20 +72,20 @@ public class SugangController extends HttpServlet {
 		StudentInfoDto principalStu = null;
 		Staff principalSta = null;
 		User userRole = (User) session.getAttribute("user");
-		if("student".equalsIgnoreCase(userRole.getUserRole())) {
+		if ("student".equalsIgnoreCase(userRole.getUserRole())) {
 			principalStu = (StudentInfoDto) session.getAttribute("principal");
-		} else if("staff".equalsIgnoreCase(userRole.getUserRole())) {
+		} else if ("staff".equalsIgnoreCase(userRole.getUserRole())) {
 			principalSta = (Staff) session.getAttribute("principal");
 		}
 
-		if(principalStu != null) {
+		if (principalStu != null) {
 			List<Integer> subjectIdList = registrationRepository.selectSubjectRegistration(principalStu.getId());
 			request.setAttribute("subjectIdList", subjectIdList);
 		}
-		
+
 		int totalGrade;
 		List<SubjectHistory> historyList;
-		
+
 		boolean preSeason = "진행".equals(registrationRepository.isPreSugangSeason()) ? true : false;
 		boolean season = "진행".equals(registrationRepository.isSugangSeason()) ? true : false;
 
@@ -92,41 +95,41 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/pre":
-			if(preSeason) {
+			if (preSeason) {
 				showSubjectList(request, response, "/pre");
 			} else {
 				String message = "예비수강신청 기간이 아닙니다.";
 				int page = 1;
 
-		        request.setAttribute("message", message);
-		        request.setAttribute("page", page);
-		        showSubjectList(request, response, "/subjectList");
+				request.setAttribute("message", message);
+				request.setAttribute("page", page);
+				showSubjectList(request, response, "/subjectList");
 			}
 			break;
 
 		case "/preAppList":
-			if(season) {
+			if (season) {
 				totalGrade = registrationRepository.totalGrades(principalStu.getId());
 				historyList = registrationRepository.resistrationHistory(principalStu.getId());
-				
+
 				request.setAttribute("totalGrade", totalGrade);
 				request.setAttribute("historyList", historyList);
 				request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
 			} else {
 				String message = "수강신청 기간이 아닙니다.";
 				int page = 1;
-				
-		        request.setAttribute("message", message);
-		        request.setAttribute("page", page);
-		        viewSubjectList(request, response, page,"/subjectList");
+
+				request.setAttribute("message", message);
+				request.setAttribute("page", page);
+				viewSubjectList(request, response, page, "/subjectList");
 			}
 			break;
 
 		case "/list":
-			if(season) {
+			if (season) {
 				totalGrade = registrationRepository.totalGrades(principalStu.getId());
 				historyList = registrationRepository.resistrationHistory(principalStu.getId());
-				
+
 				request.setAttribute("totalGrade", totalGrade);
 				request.setAttribute("historyList", historyList);
 				request.getRequestDispatcher("/WEB-INF/views/student/sugangHistory.jsp").forward(request, response);
@@ -134,9 +137,9 @@ public class SugangController extends HttpServlet {
 				String message = "수강신청 기간이 아닙니다.";
 				int page = 1;
 
-		        request.setAttribute("message", message);
-		        request.setAttribute("page", page);
-		        showSubjectList(request, response, "/subjectList");
+				request.setAttribute("message", message);
+				request.setAttribute("page", page);
+				showSubjectList(request, response, "/subjectList");
 			}
 			break;
 		case "/period":
@@ -157,9 +160,10 @@ public class SugangController extends HttpServlet {
 		case "/application":
 			showSubjectList(request, response, "/application");
 			break;
-			
+
 		case "/test":
-			response.sendRedirect(request.getContextPath() + "sugang/subjectList?subId=10001&subType=전공&subDay=수&startTime=9&endTime=12&id=10001");
+			response.sendRedirect(request.getContextPath()
+					+ "sugang/subjectList?subId=10001&subType=전공&subDay=수&startTime=9&endTime=12&id=10001");
 			break;
 
 		default:
@@ -233,14 +237,14 @@ public class SugangController extends HttpServlet {
 					// 수강확정
 					int rsCount = stuSubRepository.insert(preSutSub.getStudentId(), preSutSub.getSubjectId());
 					System.out.println("수강확정된 행 개수 : " + rsCount);
-					StuSub stuSub = stuSubRepository.selectByStudentIdAndSubjectId(preSutSub.getStudentId(),
+					stuSub = stuSubRepository.selectByStudentIdAndSubjectId(preSutSub.getStudentId(),
 							preSutSub.getSubjectId());
 					System.out.println("입력한 정보 : " + stuSub);
-					// 수강 디테일
-					int rscount2 = stuSubDetailRepository.insert(stuSub.getId(), preSutSub.getStudentId(),
-							preSutSub.getSubjectId());
-					System.err.println("preSutSub.getSubjectId() : " + preSutSub.getSubjectId());
-					System.out.println("수강디테일 입력성공 행 개수 : " + rscount2);
+//					// 수강 디테일
+//					int rscount2 = stuSubDetailRepository.insert(stuSub.getId(), preSutSub.getStudentId(),
+//							preSutSub.getSubjectId());
+//					System.err.println("preSutSub.getSubjectId() : " + preSutSub.getSubjectId());
+//					System.out.println("수강디테일 입력성공 행 개수 : " + rscount2);
 				}
 			}
 		}
@@ -249,6 +253,12 @@ public class SugangController extends HttpServlet {
 		List<Integer> moreIdList = subjectRepository.selectIdByMoreNumOfStudent();
 		for (Integer subjectId : moreIdList) {
 			subjectRepository.updateNumOfStudent(subjectId, "초기화");
+			// 예비 수강신청 과목id와 학생 id 받아오기
+			List<PreStuSub> preAppList = preStuSubRepository.selectBySubjectId(subjectId);
+			for (PreStuSub preSutSub : preAppList) {
+				// 수강실패 테이블에 입력
+				stuSubRepository.insertFailSub(preSutSub.getStudentId(), preSutSub.getSubjectId());
+			}
 		}
 
 		// 수강 신청기간 상태값 변경 (예비수강, 본수강 순서)
@@ -269,9 +279,16 @@ public class SugangController extends HttpServlet {
 	 */
 	private void updatePeriod2(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// 수강 디테일
+		int rscount2 = stuSubDetailRepository.insert(stuSub.getId(), stuSub.getStudentId(),
+				stuSub.getSubjectId());
+		System.err.println("preSutSub.getSubjectId() : " + stuSub.getSubjectId());
+		System.out.println("수강디테일 입력성공 행 개수 : " + rscount2);
+		
 		// 본수강신청 기간 종료
 		sugangStatus.updateSugangPeriod("종료");
 		final int SUGANG_PERIOD = 2;
+		
 		request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 		request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 	}
@@ -358,8 +375,8 @@ public class SugangController extends HttpServlet {
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("checkNum", checkNum);
 		request.setAttribute("page", page);
-		
-		if("/subjectList".equals(action)) {
+
+		if ("/subjectList".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 		} else if ("/pre".equals(action)) {
 			System.out.println("pre로 들어옴.");
@@ -368,8 +385,9 @@ public class SugangController extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/student/sugang.jsp").forward(request, response);
 		}
 	}
-	
-	private void showSubjectList(HttpServletRequest request, HttpServletResponse response, String action) throws ServletException, IOException {
+
+	private void showSubjectList(HttpServletRequest request, HttpServletResponse response, String action)
+			throws ServletException, IOException {
 		int page = 1;
 		try {
 			if (request.getParameter("page") != null) {

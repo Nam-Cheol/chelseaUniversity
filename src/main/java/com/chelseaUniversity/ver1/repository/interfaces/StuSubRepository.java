@@ -57,4 +57,7 @@ public interface StuSubRepository {
 
 	// 성적 입력 시 취득 학점 컬럼도 추가
 	int updateCompleteGradeByStudentIdAndSubjectId(Integer studentId, Integer subjectId, Integer completeGrade);
+
+	// 예비 수강신청 실패한 과목
+	int insertFailSub(Integer studentId, Integer subjectId);
 }
