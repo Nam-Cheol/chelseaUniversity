@@ -41,55 +41,55 @@
 		<form action="${pageContext.request.contextPath}/admin/subject/create-subject" method="post">
 			<table border=1 class="create-subjet-table">
 				<tr>
-					<th>강의이름:</th>
+					<th>강의이름 : </th>
 					<th><input type="text" id="subject-name" name="subject-name" placeholder="데이터통신"></th>
 				</tr>
 				<tr>
-					<th>교수id:</th>
+					<th>교수id : </th>
 					<th><input type="text" id="professor-id" name="professor-id" placeholder="23000001  foreign key"></th>
 				</tr>
 				<tr>
-					<th>강의실id:</th>
+					<th>강의실id : </th>
 					<th><input type="text" id="romm-id" name="romm-id" placeholder="E601  foreign key"></th>
 				</tr>
 				<tr>
-					<th>학과id:</th>
+					<th>학과id : </th>
 					<th><input type="text" id="dept-id" name="dept-id" placeholder="101  foreign key"></th>
 				</tr>
 				<tr>
-					<th>구분:</th>
+					<th>구분 : </th>
 					<th><input type="text" id="type" name="type" placeholder="전공 or 교양"></th>
 				</tr>
 				<tr>
-					<th>강의연도:</th>
+					<th>강의연도 : </th>
 					<th><input type="text" id="subject-year" name="subject-year" placeholder="2024"></th>
 				</tr>
 				<tr>
-					<th>학기:</th>
+					<th>학기 : </th>
 					<th><input type="text" id="semester" name="semester" placeholder="1 or 2"></th>
 				</tr>
 				<tr>
-					<th>요일:</th>
+					<th>요일 : </th>
 					<th><input type="text" id="subject-day" name="subject-day" placeholder="월 <--- 요일을 빼고 입력해주세요"></th>
 				</tr>
 				<tr>
-					<th>시작시간:</th>
+					<th>시작시간 : </th>
 					<th><input type="text" id="start-time" name="start-time" placeholder="9 <--- 09:00 시작"></th>
 				</tr>
 				<tr>
-					<th>종료시간:</th>
+					<th>종료시간 : </th>
 					<th><input type="text" id="end-time" name="end-time" placeholder="12 <--- 12:00 종료"></th>
 				</tr>
 				<tr>
-					<th>학년:</th>
+					<th>학년 : </th>
 					<th><input type="text" id="grades" name="grades" placeholder="1,2,3,4"></th>
 				</tr>
 				<tr>
-					<th>최대정원:</th>
+					<th>최대정원 : </th>
 					<th><input type="text" id="capacity" name="capacity" placeholder="20"></th>
 				</tr>
 				<tr>
-					<th>현재인원:</th>
+					<th>현재인원 : </th>
 					<th><input type="text" id="number-of-student" name="number-of-student" placeholder="5"></th>
 				</tr>
 			</table>

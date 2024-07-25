@@ -36,33 +36,45 @@
 	
     <h2 class="college-registration-top">강의실 등록</h2>
         <br>
-		<form action="${pageContext.request.contextPath}/admin/create-college" method="post">
-	        <label for="college-name">강의실번호:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="A001">
+		<form action="${pageContext.request.contextPath}/admin/room/create-room" method="post">
+				<table border=1 class="create-room-table">
+					<tr>
+						<th>강의실id : </th>
+						<th><input type="text" id="room-id" name="room-id" placeholder="A001"></th>
+					</tr>
+					<tr>
+						<th>단과대id : </th>
+						<th><input type="text" id="college-id" name="college-id" placeholder="1, 2, 3, 4 ..."></th>
+					</tr>
+				</table>
 			<button type="submit">생성</button>
-		</form>       
+		</form>
 		
-		<br>
-		<form action="${pageContext.request.contextPath}/admin/edit-college" method="post">
-			<label for="college-id">id:</label>
-			<input type="text" id="college-id" name="college-id" placeholder="1,2,3 ....">
-	        <label for="college-name">단과이름:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+		<form action="${pageContext.request.contextPath}/admin/room/edit-room" method="post">
+				<table border=1 class="edit-room-table">
+					<tr>
+						<th>강의실id : </th>
+						<th><input type="text" id="room-id" name="room-id" placeholder="A001"></th>
+					</tr>
+					<tr>
+						<th>단과대id : </th>
+						<th><input type="text" id="college-id" name="college-id" placeholder="1, 2, 3, 4 ..."></th>
+					</tr>
+				</table>
 			<button type="submit">수정</button>
-		</form>        
-		<br><br>
-	
+		</form>      
+		
         <p>강의실 목록</p>
         <br>
-        <table border="1" class="college-list">
+        <table border="1" class="room-list">
                 <tr>
-                    <th>id</th>
-                    <th>단과이름</th>
+                    <th>강의실id</th>
+                    <th>단과대id</th>
                 </tr>
-                <c:forEach var="college" items="${collegeList}">
+                <c:forEach var="room" items="${roomList}">
                 <tr>
-                    <th>${college.id}</th>
-                    <th>${college.name}</th>
+                    <th>${room.id}</th>
+                    <th>${room.collegeId}</th>
                 </tr>
                 </c:forEach>
         </table>

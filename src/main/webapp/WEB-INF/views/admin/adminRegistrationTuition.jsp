@@ -37,27 +37,43 @@
     <h2 class="college-registration-top">단대별 등록금</h2>
         <br>
 		<form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-name" method="post">
-	        <label for="college-name">단과이름:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+			<table border=1 class="create-tuition-college-table">
+				<tr>
+					<th>단과이름 : </th>
+					<th><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></th>
+				</tr>
+			</table>
 			<button type="submit">생성</button>
 		</form>       
 		<br>
 		
 		<form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-amount" method="post">
-			<label for="college-id">id:</label>
-			<input type="text" id="college-id" name="college-id" placeholder="1, 2, 3 .....">
-			<label for="college-tuition-amount">금액:</label>
-			<input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000">
+			<table border=1 class="create-tuition-amount-table">
+				<tr>
+					<th>id : </th>
+					<th><input type="text" id="college-id" name="college-id" placeholder="1, 2, 3 ....."></th>
+				</tr>
+				<tr>
+					<th>금액 : </th>
+					<th><input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000"></th>
+				</tr>
+			</table>
 			<button type="submit">생성</button>
 		</form>
 		
 		<br>
 		
 		<form action="${pageContext.request.contextPath}/admin/tuition/edit-tuition" method="post">
-			<label for="tuition-id">id:</label>
-			<input type="text" id="tuition-id" name="tuition-id" placeholder="1, 2, 3 ....">
-	        <label for="college-tuition-amount">금액:</label>
-			<input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000">
+			<table border=1 class="edit-tuition-table">
+				<tr>
+					<th>id : </th>
+					<th><input type="text" id="tuition-id" name="tuition-id" placeholder="1, 2, 3 ...."></th>
+				</tr>
+				<tr>
+					<th>금액 : </th>
+					<th><input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000"></th>
+				</tr>
+			</table>
 			<button type="submit">수정</button>
 		</form>        
 		<br><br>

@@ -34,35 +34,55 @@
 	</div>
 	<div class="college-registration-right-container">
 	
-    <h2 class="college-registration-top">단과대학 등록</h2>
+    <h2 class="college-registration-top">학과 등록</h2>
         <br>
-		<form action="${pageContext.request.contextPath}/admin/create-college" method="post">
-	        <label for="college-name">단과이름:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+		<form action="${pageContext.request.contextPath}/admin/department/create-department" method="post">
+			<table border=1 class="create-department-table">
+				<tr>
+					<th>학과이름 : </th>
+					<th><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ학과"></th>
+				</tr>
+				<tr>
+					<th>단과id : </th>
+					<th><input type="text" id="college-id" name="college-id" placeholder=" 1 , 2 , 3 , 4 ...."></th>
+				</tr>
+			</table>
 			<button type="submit">생성</button>
-		</form>       
+		</form>
 		
 		<br>
-		<form action="${pageContext.request.contextPath}/admin/edit-college" method="post">
-			<label for="college-id">id:</label>
-			<input type="text" id="college-id" name="college-id" placeholder="1,2,3 ....">
-	        <label for="college-name">단과이름:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+		<form action="${pageContext.request.contextPath}/admin/department/edit-department" method="post">
+			<table border=1 class="edit-department-table">
+				<tr>
+					<th>id : </th>
+					<th><input type="text" id="department-id" name="department-id" placeholder=" 1,2,3 .... "></th>
+				</tr>
+				<tr>
+					<th>학과이름 : </th>
+					<th><input type="text" id="department-name" name="department-name" placeholder="ㅇㅇ학과"></th>
+				</tr>
+				<tr>
+					<th>단과id : </th>
+					<th><input type="text" id="college-id" name="college-id" placeholder=" 1,2,3 .... "></th>
+				</tr>
+			</table>
 			<button type="submit">수정</button>
 		</form>        
 		<br><br>
 	
-        <p>단과 대학 리스트</p>
+        <p>학과 목록</p>
         <br>
         <table border="1" class="college-list">
                 <tr>
                     <th>id</th>
-                    <th>단과이름</th>
+                    <th>학과이름</th>
+                    <th>단과id</th>
                 </tr>
-                <c:forEach var="college" items="${collegeList}">
+                <c:forEach var="department" items="${departmentList}">
                 <tr>
-                    <th>${college.id}</th>
-                    <th>${college.name}</th>
+                    <th>${department.id}</th>
+                    <th>${department.name}</th>
+                    <th>${department.collegeId}</th>
                 </tr>
                 </c:forEach>
         </table>

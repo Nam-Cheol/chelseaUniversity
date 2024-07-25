@@ -37,17 +37,27 @@
     <h2 class="college-registration-top">단과대학 등록</h2>
         <br>
 		<form action="${pageContext.request.contextPath}/admin/create-college" method="post">
-	        <label for="college-name">단과이름:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+			<table border=1 class="college-create-table">
+				<tr>
+					<th>단과이름 : </th>
+					<th><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></th>
+				</tr>
+			</table>
 			<button type="submit">생성</button>
 		</form>       
 		
 		<br>
 		<form action="${pageContext.request.contextPath}/admin/edit-college" method="post">
-			<label for="college-id">id:</label>
-			<input type="text" id="college-id" name="college-id" placeholder="1,2,3 ....">
-	        <label for="college-name">단과이름:</label>
-			<input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학">
+				<table border=1 class="college-update-table">
+					<tr>
+						<th>id : </th>
+						<th><input type="text" id="college-id" name="college-id" placeholder="1 , 2 , 3 ...."></th>
+					</tr>
+					<tr>
+						<th>단과이름 : </th>
+						<th><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></th>
+					</tr>
+				</table>
 			<button type="submit">수정</button>
 		</form>        
 		<br><br>
