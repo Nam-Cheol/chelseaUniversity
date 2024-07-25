@@ -107,7 +107,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+				<c:if test="${not empty app}">
+					<tr>
+						<td>${app.appDateFormat()}</td>
+						<td>휴학</td>
+						<td>${app.type}휴학</td>
+						<td>${app.status}</td>
+						<td>${app.toYear}년&nbsp;${app.toSemester}학기&nbsp;이후</td>
+					</tr>
+				</c:if>
 				</tbody>
 			</table>
 			

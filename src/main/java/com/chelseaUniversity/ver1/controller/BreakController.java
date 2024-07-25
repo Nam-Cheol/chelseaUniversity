@@ -76,19 +76,33 @@ public class BreakController extends HttpServlet {
 			app = breakAppRepository.selectByStudentIdOne(principalStu.getId());
 			request.setAttribute("app", app);
 			
-			boolean application = breakAppRepository.selectByStudentIdOne(principalStu.getId()) != null ? true : false;
-			request.setAttribute("application", application);
 		}
-
+		
+		boolean status = false;
+		
+		if(app != null) {
+			request.setAttribute("app", app);
+			status = "승인".equals(app.getStatus()) ? true : false;
+			request.setAttribute("status", status);
+		}
+		
+		boolean application = app != null ? true : false;
+		request.setAttribute("application", application);
 
 		if (action != null || action.trim().isEmpty()) {
 
 			switch (action) {
 			case "/application":
+				if(status) {
+					String message = "휴학 상태입니다.";
+			        request.setAttribute("message", message);
+				}
+				request.setAttribute("application", application);
 				request.getRequestDispatcher("/WEB-INF/views/student/breakApplication.jsp").forward(request, response);
 				break;
 
 			case "/list":
+				request.setAttribute("application", application);
 				request.getRequestDispatcher("/WEB-INF/views/student/breakHistory.jsp").forward(request, response);
 				break;
 
@@ -103,6 +117,7 @@ public class BreakController extends HttpServlet {
 
 			case "/detail":
 				try {
+					boolean check;  
 					int id = Integer.parseInt(request.getParameter("id"));
 					app = breakAppRepository.selectById(id);
 					request.setAttribute("app", app);
