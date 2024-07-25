@@ -77,7 +77,7 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 		int rsCount = 0;
 		try (Connection conn = DBUtil.getConnection()) {
 			conn.setAutoCommit(false);
-			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_STUID_AND_SUBID)) {
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT)) {
 				pstmt.setInt(1, studentId);
 				pstmt.setInt(2, subjectId);
 				rsCount = pstmt.executeUpdate();

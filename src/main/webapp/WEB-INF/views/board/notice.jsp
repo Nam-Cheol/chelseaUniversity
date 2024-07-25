@@ -23,18 +23,13 @@
 		<!-- 메뉴 -->
 		<!-- 선택된 메뉴에 class="selected--menu" 추가해주세요 -->
 		<div class="sub--menu--mid">
-			<table class="sub--menu--table" border="1">
+			<table class="sub--menu--table" border="0">
 				<tr>
 					<td><a href="/chelseaUniversity/notice/list" class="selected--menu">공지사항</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
 				</tr>
-				<%-- <c:if test="${principal.userRole.equals(\"staff\") }">
-					<tr>
-						<td><a href="/schedule/list"> 학사일정 등록</a></td>
-					</tr>
-				</c:if> --%>
 			</table>
 		</div>
 	</div>
@@ -43,6 +38,16 @@
 	<main>
 		<h1>공지사항</h1>
 		<div class="split--div"></div>
+		<form action="${pageContext.request.contextPath}/notice/search" method="post">
+		<div class="search">
+			<select name="type">
+			<option value="title">제목</option>
+			<option value="title+content">제목+내용</option>
+			</select>
+			<input type="text" name="order" id="searchInput">
+			<input type="submit" value="검색" style="width:40px;">
+		</div>
+		</form>
 		<table
 			style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
 			<tr style="background-color: #f2f2f2;">
@@ -55,82 +60,27 @@
 			<c:forEach var="notice" items="${noticeList}">
 				<tr style="border: 1px solid #ddd;">
 					<td
-						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.id}</td>
+						style="border: 1px solid #ddd; padding: 8px; text-align: center;"class="noticeEM">${notice.id}</td>
 					<td
-						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.category}</td>
-					<td style="border: 1px solid #ddd; padding: 8px;">${notice.title}</td>
+						style="border: 1px solid #ddd; padding: 8px; text-align: center;"class="noticeEM">${notice.category}</td>
+					<td style="border: 1px solid #ddd; padding: 8px;"class="noticeEM"><a href="${pageContext.request.contextPath}/notice/detail?page=${notice.id}">${notice.title}</a></td>
 					<td
-						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.createdTime}</td>
+						style="border: 1px solid #ddd; padding: 8px; text-align: center;"class="noticeEM">${notice.createdTime}</td>
 					<td
-						style="border: 1px solid #ddd; padding: 8px; text-align: center;">${notice.views}</td>
+						style="border: 1px solid #ddd; padding: 8px; text-align: center;"class="noticeEM">${notice.views}</td>
 				</tr>
 			</c:forEach>
 		</table>
 
-
-		<!-- 공지 검색 -->
-		<c:if test="${crud.equals(\"selectKeyword\")}">
-			<form action="/notice/search" method="get" class="form--container">
-				<select class="input--box" name="type">
-					<option value="title">제목</option>
-					<option value="keyword">제목+내용</option>
-				</select> <input type="text" name="keyword" class="input--box"
-					placeholder="검색어를 입력하세요"> <input type="submit"
-					class="button" value="검색">
-			</form>
-
-			<table class="table">
-				<c:choose>
-					<c:when test="${fn:length(noticeList) != 0}">
-						<tr class="first--tr">
-							<td>번호</td>
-							<td>말머리</td>
-							<td>제목</td>
-							<td>작성일</td>
-							<td>조회수</td>
-						</tr>
-						<c:forEach var="notice" items="${noticeList}">
-							<tr class="second--tr"
-								onclick="location.href='/notice/read?id=${notice.id}';">
-								<td>${notice.id}</td>
-								<td>${notice.category}</td>
-								<td>${notice.title}</td>
-								<td>${notice.timeFormat()}</td>
-								<td>${notice.views}</td>
-							</tr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<h5>해당 키워드로 작성된 공지글이 없습니다.</h5>
-					</c:otherwise>
-				</c:choose>
-			</table>
-			<div class="paging--container">
-				<c:forEach var="index" begin="1" end="${listCount}">
-					<c:choose>
-						<c:when test="${keyword != null}">
-							<a href="/notice/search/${index}?keyword=${keyword}">
-								${index}</a> &nbsp;&nbsp;
-					</c:when>
-						<c:otherwise>
-							<a href="/notice/list/${index}"> ${index}</a> &nbsp;&nbsp;
-					</c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</div>
-
-		</c:if>
-
-
 		<!-- 공지 조회 -->
 		<c:if test="${crud.equals(\"select\")}">
-			<form action="/notice/search" method="get" class="form--container">
+			<form action="/notice/search" method="post" class="form--container">
 				<select class="input--box" name="type">
 					<option value="title">제목</option>
 					<option value="keyword">제목+내용</option>
-				</select> <input type="text" name="keyword" class="input--box"
-					placeholder="검색어를 입력하세요"> <input type="submit"
-					class="button" value="검색">
+				</select> 
+				<input type="text" name="keyword" class="input--box"placeholder="검색어를 입력하세요"> 
+				<input type="submit"class="button" value="검색">
 			</form>
 			<table class="table">
 				<c:choose>
@@ -160,7 +110,7 @@
 			</table>
 			<div class="paging--container">
 				<c:forEach var="index" begin="1" end="${listCount}">
-					<a href="/notice/list/${index}"> ${index}</a> &nbsp;&nbsp;
+					<a href="/notice/list/${index}">${index}</a> &nbsp;&nbsp;
 			</c:forEach>
 				<c:if test="${principal.userRole.equals(\"staff\")}">
 					<a href="/notice?crud=write" class="button">등록</a>

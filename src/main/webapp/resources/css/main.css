@@ -123,13 +123,16 @@ header {
 }
 
 .sub--menu--table {
-	border-color: #D1D5D4;
-	
+	border-color: #d2d2d2;
+	border-top: hidden;
+	border-left: hidden;
+	border-right: hidden;
 }
 
 .sub--menu--table td {
 	border-left: hidden;
 	border-right: hidden;
+	border-bottom: hidden;
 	width: 200px;
 	height: 71px;
 	padding: 20px 0;
@@ -138,6 +141,7 @@ header {
 
 .sub--menu--table td a{
 	padding: 20px 10px;
+	border-bottom: hidden;
 }
 
 .sub--menu--table tr:nth-last-of-type(1) td {

@@ -16,11 +16,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class PreStuSubRepositoryImpl implements PreStuSubRepository {
 
 	// TODO - Define 클래스로 이동 쿼리문
-	public final String SELECT_BY_SUB_ID = " SELECT ss.id, ss.student_id, s.name AS student_name, d.name AS dept_name, ssd.homework, ssd.absent, ssd.lateness, ssd.mid_exam, ssd.final_exam, ssd.converted_mark\r\n"
-			+ "		FROM stu_sub_tb AS ss\r\n" + "		LEFT JOIN student_tb AS s\r\n"
-			+ "		ON ss.student_id = s.id\r\n" + "		LEFT JOIN department_tb AS d\r\n"
-			+ "		ON s.dept_id = d.id\r\n" + "		LEFT JOIN stu_sub_detail_tb AS ssd\r\n"
-			+ "		ON ss.id = ssd.id\r\n" + "		WHERE ss.subject_id = ?  ";
+	public final String SELECT_BY_SUB_ID = " SELECT * FROM sub_registration WHERE sub_id = ? ";
 
 	@Override
 	public PreStuSub selectByStudentIdAndSubjectId(Integer studentId, Integer subjectId) {
@@ -48,8 +44,22 @@ public class PreStuSubRepositoryImpl implements PreStuSubRepository {
 
 	@Override
 	public int insert(Integer studentId, Integer subjectId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rsCount = 0;
+		
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(null)
+					){
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
+		return rsCount;
 	}
 
 	@Override
@@ -66,7 +76,7 @@ public class PreStuSubRepositoryImpl implements PreStuSubRepository {
 			pstmt.setInt(1, subjectId);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				list.add(PreStuSub.builder().studentId(rs.getInt("student_id")).subjectId(rs.getInt("subject_id"))
+				list.add(PreStuSub.builder().studentId(rs.getInt("stu_id")).subjectId(rs.getInt("sub_id"))
 						.build());
 			}
 		} catch (Exception e) {
