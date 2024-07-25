@@ -17,6 +17,9 @@ public class StuSubDetailRepositoryImpl implements StuSubDetailRepository {
 	private static final String SELECT_STUDENT_BY_ID = " SELECT s.id, s.name, d.name, sd.* FROM student_tb as s LEFT JOIN department_tb as d ON s.dept_id = d.id LEFT JOIN stu_sub_detail_tb as sd ON s.id = sd.student_id LEFT JOIN subject_tb as su on sd.subject_id = su.id WHERE s.id = ? ";
 	private static final String UPDATE_STUDENT_BY_ID = " UPDATE stu_sub_detail_tb SET absent = ?, lateness = ?, homework = ?, mid_exam = ?, final_exam = ?, converted_mark = ? where student_id = ? ";
 
+	// TODO - define 클래스 이동 쿼리문
+	public final String INSERT_PRE_INFO = "INSERT stu_sub_detail_tb(id, student_id, subject_id) VALUE (?, ?, ?)";
+
 	@Override
 	public int updateGrade(StuSubDetail stuSubDetail) {
 		try (Connection conn = DBUtil.getConnection()) {
@@ -43,8 +46,23 @@ public class StuSubDetailRepositoryImpl implements StuSubDetailRepository {
 
 	@Override
 	public int insert(Integer id, Integer studentId, Integer subjectId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rsCount = 0;
+		try (Connection conn = DBUtil.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_PRE_INFO)) {
+				pstmt.setInt(1, id);
+				pstmt.setInt(2, studentId);
+				pstmt.setInt(3, subjectId);
+				rsCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rsCount;
 	}
 
 	@Override

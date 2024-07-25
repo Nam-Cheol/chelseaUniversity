@@ -75,7 +75,7 @@ public class UserController extends HttpServlet {
 			showSignIn(request, response, session);
 			break;
 		case "/studentList":
-			showStudentListPage(request, response, session);
+			showStudentListPage(request, response, session, "/studentList");
 			break;
 		case "/professorList":
 			showProfessorListPage(request, response, session);
@@ -98,11 +98,11 @@ public class UserController extends HttpServlet {
 		case "/searchStudent":
 			searchStudentList(request, response, session);
 			break;
-		case"/password":
-			password(request,response,session);
+		case "/password":
+			password(request, response, session);
 			break;
-		case"/home":
-			showHomePage(request,response,session);
+		case "/home":
+			showHomePage(request, response, session);
 			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -111,27 +111,28 @@ public class UserController extends HttpServlet {
 	}
 
 	// 홈페이지 페이지 처리
-	private void showHomePage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
-		User user = (User)session.getAttribute("user");
+	private void showHomePage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		User user = (User) session.getAttribute("user");
 		int id = user.getId();
 		if (user != null) {
 			if (user.getUserRole().equals("student")) {
-				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
-				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.setAttribute("status", stuStat);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else if (user.getUserRole().equals("professor")) {
-				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
-				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
-				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
-				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -142,13 +143,14 @@ public class UserController extends HttpServlet {
 	}
 
 	// 비밀번호 변경 페이지 처리
-	private void password(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void password(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp").forward(request, response);
 	}
 
-	private void showProfessorListByPage(HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) throws IOException {
-		
+	private void showProfessorListByPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
+
 		try {
 			ProfessorService professorService = new ProfessorService();
 			if (request.getAttribute("pro_deptId") != null) {
@@ -157,12 +159,12 @@ public class UserController extends HttpServlet {
 			professorListForm.setPage((Integer.parseInt((String) request.getAttribute("page")) - 1) * 20);
 			Integer amount = professorService.readProfessorAmount(professorListForm);
 			List<Professor> list = professorService.readProfessorList(professorListForm);
-			
+
 			request.setAttribute("listCount", Math.ceil(amount / 20.0));
 			request.setAttribute("professorList", list);
 			request.setAttribute("page", professorListForm.getPage());
-			
-			response.sendRedirect(request.getContextPath()+"/user/professorList");
+
+			response.sendRedirect(request.getContextPath() + "/user/professorList");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -201,12 +203,12 @@ public class UserController extends HttpServlet {
 		String deptId = request.getParameter("dept_id").trim();
 		String stuId = request.getParameter("stu_id").trim();
 		String limit = request.getParameter("limit");
-		
-		if(deptId != null) {
+
+		if (deptId != null) {
 			studentListForm.setDeptId(Integer.parseInt(deptId));
-		}else if(stuId != null) {
+		} else if (stuId != null) {
 			studentListForm.setStudentId(Integer.parseInt(stuId));
-		}else if(limit != null) {
+		} else if (limit != null) {
 			studentListForm.setPage(Integer.parseInt(limit));
 		}
 
@@ -226,20 +228,20 @@ public class UserController extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 
 			}
-			
+
 			if (request.getParameter("stu_id") != null) {
-				
+
 				studentListForm.setDeptId(Integer.parseInt(stuId));
 				studentListForm.setPage(Integer.parseInt(limit));
-				
+
 				System.out.println("1 : " + stuId);
 				System.out.println("3" + limit);
-				
+
 				Student student = studentRepository.selectByStudentId(Integer.parseInt(stuId));
 				request.setAttribute("oneStudent", student);
 				System.out.println("222222222" + student);
 				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-				
+
 			}
 
 		} catch (Exception e) {
@@ -254,43 +256,62 @@ public class UserController extends HttpServlet {
 	 * @param request
 	 * @param response
 	 * @param session
+	 * @throws IOException
+	 * @throws ServletException
 	 */
-	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+			String action) throws ServletException, IOException {
+		// TODO - 교직원이 맞는지 인증검사
+		int page;
+		int limit = 0;
+		String currentLimit = request.getParameter("limit");
+		String currentPage = request.getParameter("stu_list_page");
+		String deptId = request.getParameter("dept_Id");
+		String stuId = request.getParameter("stu_Id");
+		
 		try {
-
-			// TODO - 교직원이 맞는지 인증검사
-
-			int limit = 20;
-			int page = 1;
-
-			try {
-				String pageStr = request.getParameter("stu_list_page");
-				if (pageStr != null) {
-					page = Integer.parseInt(pageStr);
-				}
-			} catch (Exception e) {
-				// 유효하지 않은 번호를 마음대로 보낸 경우
-				page = 1;
+			if (currentPage != null) {
+				page = Integer.parseInt(currentPage);
+			} else {
+				currentPage = "1";
+				page = Integer.parseInt(currentPage);
 			}
 
-			int offset = (page - 1) * limit;
-
-			// 전체 학생 수
-			int totalStudents = studentRepository.selectStudentAmount();
-
-			// 총 페이지 수 계산
-			int totalPages = (int) Math.ceil((double) totalStudents / limit);
-
-			List<Student> allStudentList = studentRepository.selectStudentList(studentListForm, limit, offset);
-
-			request.setAttribute("allStudentList", allStudentList);
-			request.setAttribute("totalStudents", totalStudents);
-			request.setAttribute("totalPages", totalPages);
-			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+			if (currentLimit == null) {
+				currentLimit = "20";
+				limit = Integer.parseInt(currentLimit);
+			}
 		} catch (Exception e) {
+			page = 1;
+			limit = 20;
 			e.printStackTrace();
 		}
 
+		System.out.println("page : " + page);
+		System.out.println("limit : " + limit);
+		System.out.println("deptId : " + deptId);
+		System.out.println("stuId : " + stuId);
+
+//		try {
+//			int offset = (page - 1) * limit;
+//
+//			// 전체 학생 수
+//			int totalStudents = studentRepository.selectStudentAmount();
+//
+//			// 총 페이지 수 계산
+//			int totalPages = (int) Math.ceil((double) totalStudents / limit);
+//
+//			List<Student> allStudentList = studentRepository.selectStudentList(studentListForm, limit, offset);
+//
+//			request.setAttribute("allStudentList", allStudentList);
+//			request.setAttribute("totalStudents", totalStudents);
+//			request.setAttribute("totalPages", totalPages);
+//			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+		request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 	}
 
 	/**
@@ -310,12 +331,10 @@ public class UserController extends HttpServlet {
 			deptId = request.getParameter("dept_id");
 			String proId = request.getParameter("pro_id");
 			System.out.println("getparameter deptId : " + request.getParameter("dept_id"));
-			
-			
+
 			if (request.getParameter("dept_id") != null) {
 				professorListForm.setDeptId(Integer.parseInt(deptId));
-			} 
-			else if (proId != null) {
+			} else if (proId != null) {
 				professorListForm.setProfessorId(Integer.parseInt(proId));
 			}
 
@@ -402,13 +421,13 @@ public class UserController extends HttpServlet {
 			CreateProfessorHandler(request, response, session);
 			break;
 		case "/findid":
-			findIdHandler(request,response);
+			findIdHandler(request, response);
 			break;
 		case "/findpassword":
-			findPasswordHandler(request,response);
+			findPasswordHandler(request, response);
 			break;
 		case "/changepassword":
-			changePasswordHandler(request,response,session);
+			changePasswordHandler(request, response, session);
 			break;
 		default:
 			break;
@@ -418,60 +437,66 @@ public class UserController extends HttpServlet {
 	/*
 	 * 비밀번호 변경 기능
 	 */
-	private void changePasswordHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
-		User user = (User)session.getAttribute("user");
+	private void changePasswordHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		User user = (User) session.getAttribute("user");
 		String original = request.getParameter("original");
-		if(user == null) {
-			response.sendRedirect(request.getContextPath()+"/user/signin");
+		if (user == null) {
+			response.sendRedirect(request.getContextPath() + "/user/signin");
 		} else if (user.getPassword().equals(original)) {
-			request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp?pass=false").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp?pass=false").forward(request,
+					response);
 		}
-			String newPassword = request.getParameter("password");
+		String newPassword = request.getParameter("password");
 		String password = user.getPassword();
 		int id = user.getId();
-		if(password.equals(newPassword)) {
-			response.sendRedirect(request.getContextPath()+"/user/password?change=overlap");
+		if (password.equals(newPassword)) {
+			response.sendRedirect(request.getContextPath() + "/user/password?change=overlap");
 		}
 		ChangePasswordDto changePassword = ChangePasswordDto.builder().afterPassword(newPassword)
 				.beforePassword(password).id(id).build();
 		int rowCount = userRepository.updatePassword(changePassword);
-		if(rowCount != 0) {
+		if (rowCount != 0) {
 			System.out.println("비밀번호 변경 성공");
-			response.sendRedirect(request.getContextPath()+"/user/password?change=true");
+			response.sendRedirect(request.getContextPath() + "/user/password?change=true");
 		} else {
 			System.out.println("비밀번호 변경 실패");
-			response.sendRedirect(request.getContextPath()+"/user/password?change=false");
+			response.sendRedirect(request.getContextPath() + "/user/password?change=false");
 		}
 	}
 
 	/*
 	 * 비밀번호 찾기 기능
 	 */
-	private void findPasswordHandler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	private void findPasswordHandler(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String name = request.getParameter("name");
 		String password = userRepository.findPassword(id, name);
-		if(password != null) {
+		if (password != null) {
 			System.out.println(password + " 비밀번호 전송");
-			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=password&password="+password).forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=password&password=" + password)
+					.forward(request, response);
 		} else {
-			response.sendRedirect(request.getContextPath()+"/user/findid?password=fail");
+			response.sendRedirect(request.getContextPath() + "/user/findid?password=fail");
 		}
 	}
 
 	/*
 	 * id 찾기 기능
 	 */
-	private void findIdHandler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	private void findIdHandler(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		int id = userRepository.findId(name, email);
 		System.out.println("post로 발동");
-		if(id == 0) {
-			response.sendRedirect(request.getContextPath()+"/user/findid?id=fail");
+		if (id == 0) {
+			response.sendRedirect(request.getContextPath() + "/user/findid?id=fail");
 		} else {
 			System.out.println(id + " id 전송");
-			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=id&id="+id).forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/find/result.jsp?result=id&id=" + id).forward(request,
+					response);
 		}
 	}
 
@@ -582,8 +607,8 @@ public class UserController extends HttpServlet {
 			}
 			if (user.getUserRole().equals("student")) {
 				StudentInfoDto student = userRepository.studentById(id);
-				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
-				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				session.setAttribute("principal", student);
 				session.setAttribute("user", user);
@@ -593,8 +618,8 @@ public class UserController extends HttpServlet {
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else if (user.getUserRole().equals("professor")) {
 				ProfessorInfoDto professor = userRepository.professorById(id);
-				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
-				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				String deptname = professorRepository.selectProfessorDeptById(professor.getDeptId());
 				session.setAttribute("principal", professor);
 				session.setAttribute("user", user);
@@ -604,8 +629,8 @@ public class UserController extends HttpServlet {
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
 				Staff staff = userRepository.staffById(id);
-				List<Notice>noticeList = noticeRepository.selectByNoticeDtoOrderBy();
-				List<Schedule>scheduleList = scheuleRepository.selectSchodule();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				session.setAttribute("principal", staff);
 				session.setAttribute("user", user);
 				request.setAttribute("notice", noticeList);
