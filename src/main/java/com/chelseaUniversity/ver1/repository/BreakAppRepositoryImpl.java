@@ -21,6 +21,8 @@ public class BreakAppRepositoryImpl implements BreakAppRepository {
 	public static final String SELECT_STU_BREAK_STA = " SELECT * FROM break_app_tb WHERE status = ? ";
 	public static final String UPDATE_BREAK_BY_ID = " UPDATE break_app_tb SET status = ? WHERE id = ? ";
 
+	private static final String SELECT_STATUS_BY_ID = " SELECT status FROM break_app_tb WHERE id = ? ";
+	
 	@Override
 	public int insert(BreakAppFormDto breakAppFormDto) {
 		int rowCount = 0;

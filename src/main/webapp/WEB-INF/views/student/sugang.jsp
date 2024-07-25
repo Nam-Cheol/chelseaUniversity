@@ -32,11 +32,11 @@
 							신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList"
+					<td><a href="/chelseaUniversity/sugang/preAppList?page=1"
 						class="selected--menu">수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/list">수강 신청 내역 조회</a></td>
+					<td><a href="/chelseaUniversity/sugang/list?page=1">수강 신청 내역 조회</a></td>
 				</tr>
 			</table>
 		</div>
@@ -46,6 +46,11 @@
 	<main>
 		<h1>예비 수강 신청</h1>
 		<div class="split--div"></div>
+		
+		<a href="/chelseaUniversity/sugang/preAppList">
+			<button class="preStuSubList--button">신청 내역</button>
+			</a>
+		
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
 			<form action="${pageContext.request.contextPath}/sugang/pre"

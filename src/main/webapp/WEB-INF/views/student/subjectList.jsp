@@ -7,6 +7,13 @@
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/subject.css">
+	
+	<c:if test="${not empty message}">
+        <script type="text/javascript">
+            alert("${message}");
+        </script>
+    </c:if>
+	
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -23,13 +30,13 @@
 						class="selected--menu">강의 시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/pre">예비 수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList">수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/preAppList?page=1">수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/list">수강 신청 내역 조회</a></td>
+					<td><a href="/chelseaUniversity/sugang/list?page=1">수강 신청 내역 조회</a></td>
 				</tr>
 			</table>
 		</div>

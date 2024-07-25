@@ -21,8 +21,6 @@ public class GradeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
-		System.out.println("action : " + action);
-
 		switch (action) {
 		case "/thisSemester":
 			showThisSemester(request, response);
@@ -35,6 +33,10 @@ public class GradeController extends HttpServlet {
 
 		case "/total":
 			request.getRequestDispatcher("/WEB-INF/views/student/total.jsp").forward(request, response);
+			break;
+
+		case "/evaluation":
+			request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
 			break;
 
 		default:
@@ -52,6 +54,18 @@ public class GradeController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String action = request.getPathInfo();
+
+		switch (action) {
+
+		case "/evaluation":
+			request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
+			break;
+
+		default:
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			break;
+		}
 	}
 
 }

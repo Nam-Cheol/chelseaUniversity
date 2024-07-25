@@ -54,6 +54,13 @@
 			
 			<c:when test="${application}">
 			
+				<c:if test="${not empty message}">
+        			<script type="text/javascript">
+            			alert("${message}");
+					     window.location.href = 'list';
+			        </script>
+			    </c:if>
+				
 				 <script type='text/javascript'>
 				 	 alert('이미 휴학 신청 내역이 존재합니다');
 				     window.location.href = 'list';
