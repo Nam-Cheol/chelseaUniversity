@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.College;
+import com.chelseaUniversity.ver1.model.Subject;
 import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.SubjectRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.SubjectRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 
 import jakarta.servlet.ServletException;
@@ -23,6 +26,7 @@ public class AdminController extends HttpServlet {
 	
 	CollegeRepository collegeRepository;
 	TuitionRepository tuitionRepository;
+	SubjectRepository subjectRepository;
        
     public AdminController() {
     }
@@ -30,6 +34,7 @@ public class AdminController extends HttpServlet {
 	public void init() throws ServletException {
 		collegeRepository = new CollegeRepositoryImpl();
 		tuitionRepository = new TuitionRepositoryImpl();
+		subjectRepository = new SubjectRepositoryImpl();
 	}
     
 
@@ -51,7 +56,7 @@ public class AdminController extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationRoom.jsp").forward(request, response);
 			break;
 		case "/subject":
-			request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationSubject.jsp").forward(request, response);
+			showSubjectPage(request, response, session);
 			break;
 		case "/tuition":
 			showTuitionPage(request, response, session);
@@ -63,6 +68,12 @@ public class AdminController extends HttpServlet {
 		
 	}
 
+	private void showSubjectPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		List<Subject> subjectList = subjectRepository.selectSubject();
+		session.setAttribute("subjectList", subjectList);
+		
+		request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationSubject.jsp").forward(request, response);
+	}
 	private void showTuitionPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 		List<Tuition> tuitionList = tuitionRepository.selectAmount();
 		session.setAttribute("tuitionList", tuitionList);
@@ -98,10 +109,32 @@ public class AdminController extends HttpServlet {
 		case "/tuition/create-tuition-amount":
 			createTuitionAmount(request, response);
 			break;
-			
+		case "/subject/create-subject":
+			createSubject(request, response);
+			break;
 		default:
 			break;
 		}
+	}
+	
+	private void createSubject(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String subjectName = request.getParameter("subject-name");
+		int professorId = Integer.parseInt(request.getParameter("professor-id")); 
+		String roomId = request.getParameter("romm-id");
+		int deptId = Integer.parseInt(request.getParameter("dept-id")); 
+		String type = request.getParameter("type");
+		int subYear = Integer.parseInt(request.getParameter("subject-year")); 
+		int semester = Integer.parseInt(request.getParameter("semester")); 
+		String subDay = request.getParameter("subject-day");
+		int startTime = Integer.parseInt(request.getParameter("start-time")); 
+		int endTime = Integer.parseInt(request.getParameter("end-time")); 
+		int grades = Integer.parseInt(request.getParameter("grades")); 
+		int capacity = Integer.parseInt(request.getParameter("capacity")); 
+		int numOfStudent = Integer.parseInt(request.getParameter("number-of-student"));
+		
+		subjectRepository.insert(subjectName, professorId, roomId, deptId, type, subYear, semester, subDay, startTime, endTime, grades, capacity, numOfStudent);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/subject");
 	}
 	
 	private void createTuitionAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -105,5 +105,8 @@ public interface SubjectRepository {
 	public List<Integer> selectIdByMoreNumOfStudent();
 	int getTotalBoardCount(); 	
 	
+	public List<Subject> selectSubject();
+	public int insert(String subjectName, int professorId, String roomId, int deptId, String type, int subYear, int semester, String subDay, int startTime, int endTime, int grades, int capacity, int numOfStudent);
+	
 	
 }
