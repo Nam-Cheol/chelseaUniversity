@@ -175,7 +175,8 @@
 						<td><c:out value="${subject.grades}"></c:out></td>
 						<td><c:out value="${subject.numOfStudent}"></c:out></td>
 						<td><c:out value="${subject.capacity}"></c:out></td>
-						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}">강의계획서</a></td>
+						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}"
+                            onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의계획서</a></td>
 					</tr>
 				</c:forEach>
 
