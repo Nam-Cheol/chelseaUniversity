@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="/WEB-INF/views/home/professorHeader.jsp"%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
@@ -54,8 +55,8 @@
 			<tbody>
 			<c:forEach var="evaluation" items="${evaluationList}">
 				<tr>
-						<td><c:out value="${evaluation.name}"></c:out></td>
-						<td><c:out value="${evaluation.score}"></c:out></td>
+						<td><c:out value="${evaluation.subjectName}"></c:out></td>
+						<td><fmt:formatNumber value="${evaluation.totalScore/7}" type="number" maxFractionDigits="1" /></td>
 						<td><c:out value="${evaluation.suggestions}"></c:out></td>
 				</tr>
 			</c:forEach>

@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.apache.jasper.tagplugins.jstl.core.If;
 
+import com.chelseaUniversity.ver1.model.Evaluation;
 import com.chelseaUniversity.ver1.model.StuSub;
 import com.chelseaUniversity.ver1.model.StuSubDetail;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.response.ClassesDto;
 import com.chelseaUniversity.ver1.model.dto.response.ProfessorInfoDto;
 import com.chelseaUniversity.ver1.repository.ClassesRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.EvaluationRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StuSubDetailRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.StuSubRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.ClassesRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.EvaluationRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StuSubDetailRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StuSubRepository;
 
@@ -30,11 +33,13 @@ public class ProfessorController extends HttpServlet {
 	private ClassesRepository classesRepository;
 	private StuSubDetailRepository stuSubDetailRepository;
 	private StuSubRepository stuSubRepository;
+	private EvaluationRepository evaluationRepository;
 
 	public ProfessorController() {
 		classesRepository = new ClassesRepositoryImpl();
 		stuSubDetailRepository = new StuSubDetailRepositoryImpl();
 		stuSubRepository = new StuSubRepositoryImpl();
+		evaluationRepository = new EvaluationRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -88,7 +93,12 @@ public class ProfessorController extends HttpServlet {
 
 	private void showEvaluationList(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		int professorId = user.getId();
+		List<Evaluation> evaluationList = evaluationRepository.selectEvaluationByProfessorId(professorId);
+		request.setAttribute("evaluationList", evaluationList);
+
 		request.getRequestDispatcher("/WEB-INF/views/professor/evaluationList.jsp").forward(request, response);
 	}
 
