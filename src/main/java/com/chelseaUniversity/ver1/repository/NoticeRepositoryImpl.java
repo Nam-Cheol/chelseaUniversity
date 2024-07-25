@@ -16,6 +16,10 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	
 	private static final String SELECT_NOTICE_ALL_ORDER_BY = " SELECT * FROM notice_tb ORDER BY id DESC ";
 	private static final String SELECT_NOTICE_BYID = " SELECT * FROM notice_tb WHERE id = ? ";
+	private static final String UPDATE_NOTICE_VIEW_BYID = " update notice_tb SET views = views + 1 WHERE id = ? ";
+	private static final String SELECT_NOTICE_BYTITLE = " SELECT * FROM notice_tb WHERE title LIKE ? ";
+	private static final String SELECT_NOTICE_BYKEYWORD = " SELECT * FROM notice_tb WHERE title LIKE ?"
+			+ "UNION SELECT * FROM notice_tb WHERE content LIKE ?";
 	
 	@Override
 	public int insert(NoticeFormDto noticeFormDto) {
@@ -114,14 +118,43 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 
 	@Override
 	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Notice>noticeList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYTITLE)){
+			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
+			pstmt.setString(2, "%"+noticePageFormDto.getKeyword()+"%");
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Notice notice = Notice.builder().id(rs.getInt("id")).category(rs.getString("category"))
+						.title(rs.getString("title")).content(rs.getString("content"))
+						.createdTime(rs.getTimestamp("created_time")).views(rs.getInt("views"))
+						.build();
+				noticeList.add(notice);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return noticeList;
 	}
 
 	@Override
 	public List<Notice> selectNoticeByTitle(NoticePageFormDto noticePageFormDto) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Notice>noticeList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYTITLE)){
+			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Notice notice = Notice.builder().id(rs.getInt("id")).category(rs.getString("category"))
+						.title(rs.getString("title")).content(rs.getString("content"))
+						.createdTime(rs.getTimestamp("created_time")).views(rs.getInt("views"))
+						.build();
+				noticeList.add(notice);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return noticeList;
 	}
 
 	@Override
@@ -138,8 +171,15 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 
 	@Override
 	public Integer updateViews(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(UPDATE_NOTICE_VIEW_BYID)){
+			pstmt.setInt(1, id);
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
 	}
 
 	@Override

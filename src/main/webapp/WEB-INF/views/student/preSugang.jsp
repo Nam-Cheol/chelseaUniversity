@@ -5,6 +5,13 @@
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/subject.css">
+	
+	<c:if test="${not empty message}">
+        <script type="text/javascript">
+            alert("${message}");
+        </script>
+    </c:if>
+	
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -21,7 +28,7 @@
 							시간표 조회</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/pre"
+					<td><a href="/chelseaUniversity/sugang/pre?page=1"
 						class="selected--menu">예비 수강 신청</a></td>
 				</tr>
 				<tr>
@@ -210,12 +217,11 @@
 							<th>요일시간 (강의실)</th>
 							<th>현재인원</th>
 							<th>정원</th>
-							<th>강의계획서</th>
+							<th>수강신청</th>
 						</tr>
 					</thead>
 		
 					<tbody>
-					
 					
 						<c:forEach var="subject" items="${subjectList}">
 						<tr>
@@ -227,12 +233,33 @@
 							<td>${subject.professorName}</td>
 							<td>${subject.grades}</td>
 							<td>${subject.subDay}&nbsp;${subject.startTime}:00-${subject.endTime}:00&nbsp;(${subject.roomId})</td>
-							<td>${subject.capacity}</td>
 							<td>${subject.numOfStudent}</td>
+							<td>${subject.capacity}</td>
 							<td>
-								<form action="/chelseaUniversity/sugang/regist">
-								<button name="id" value="${subject.id}">신청</button>
-								</form>
+								 <c:set var="isEnrolled" value="false" />
+								    <c:forEach var="subjectId" items="${subjectIdList}">
+								        <c:if test="${subjectId == subject.id}">
+								            <c:set var="isEnrolled" value="true" />
+								        </c:if>
+								    </c:forEach>
+								
+								    <c:choose>
+								        <c:when test="${isEnrolled}">
+								            <form action="/chelseaUniversity/sugang/delete" method="get">
+												<button type="submit" name="id" value="${subject.id}" onclick="return confirm('수강신청을 취소하시겠습니까?');" style="background-color: #a7a7a7;">취소</button>
+											</form>
+								        </c:when>
+								        <c:otherwise>
+								            <form action="/chelseaUniversity/sugang/regist" method="get">
+								            	<input type="hidden" name="subId" value="${subject.id}">
+								            	<input type="hidden" name="subType" value="${subject.type}">
+								            	<input type="hidden" name="subDay" value="${subject.subDay}">
+								            	<input type="hidden" name="startTime" value="${subject.startTime}">
+								            	<input type="hidden" name="endTime" value="${subject.endTime}">
+												<button type="submit" name="id" value="${subject.id}" onclick="return confirm('해당 강의를 수강신청하시겠습니까?');" style="background-color: #548AC2;">신청</button>
+											</form>
+								        </c:otherwise>
+								    </c:choose>
 							</td>
 						</tr>
 						</c:forEach>
@@ -246,13 +273,15 @@
 						int totalPage = (int)request.getAttribute("totalPage");
 					for(int i = 1; i <= totalPage; i++) {%>
 					<%
+						if(request.getParameter("page") != null) {
 						if(Integer.parseInt(request.getParameter("page")) == i) {%>
-							<li><a href="${pageContext.request.contextPath}/sugang/subjectList?page=<%=i%>"
+							<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"
 								style="font-weight: 700; color: #007bff"><%=i%></a>
 							
 						<%} else { %>
-					<li><a href="${pageContext.request.contextPath}/sugang/subjectList?page=<%=i%>"><%=i%></a>
+					<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"><%=i%></a>
 					<%
+								}
 							}
 						} 
 					%>
@@ -265,7 +294,6 @@
 		<footer>
 			<!-- 필요 시 -->
 		</footer>
-
 
 </div>
 </body>

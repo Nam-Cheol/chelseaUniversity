@@ -28,18 +28,30 @@ public class UserRoleFilter extends HttpFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         // HttpSession을 얻기 위해 getSession() 호출
         HttpSession session = httpRequest.getSession();
-        	String action = httpRequest.getPathInfo();
-        	if(action != null) {
-        		if(action.equals("/user/signin") || action.equals("/user/signup")) {
-            		chain.doFilter(httpRequest, httpResponse);
-            	}
+        String action = httpRequest.getRequestURI();
+        System.out.println(action);
+        if(action != null) {
+        	if(action.equals(httpRequest.getContextPath()+"/user/signin") || action.equals(httpRequest.getContextPath()+"/user/signup")) {
+            	chain.doFilter(httpRequest, httpResponse);
+            	return;
+            }
+        	if (action.startsWith(httpRequest.getContextPath() + "/resources/")) {
+        		// 필터링을 생략하고 다음 필터 또는 서블릿으로 요청을 전달
+        		chain.doFilter(request, response);
+        		return;
         	}
+        } 
         if(session.getAttribute("principal") == null) {
+        	System.out.println("1발동");
         	httpRequest.getRequestDispatcher("/user/signin").forward(httpRequest, httpResponse);
+        	chain.doFilter(httpRequest, httpResponse);
+        	return;
+        } else {
+        	System.out.println("2발동");
+        	chain.doFilter(request, response);
+        	return;
         }
-		chain.doFilter(request, response);
 	}
-
 	public void init(FilterConfig fConfig) throws ServletException {
 		
 	}
