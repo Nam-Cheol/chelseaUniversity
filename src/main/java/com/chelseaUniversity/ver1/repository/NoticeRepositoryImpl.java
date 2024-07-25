@@ -120,7 +120,7 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto) {
 		List<Notice>noticeList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYTITLE)){
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYKEYWORD)){
 			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
 			pstmt.setString(2, "%"+noticePageFormDto.getKeyword()+"%");
 			ResultSet rs = pstmt.executeQuery();

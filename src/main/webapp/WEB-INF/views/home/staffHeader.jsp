@@ -47,7 +47,7 @@
 <a href="${pageContext.request.contextPath}/user/home">홈</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/views/my/myDB.jsp">MY</a>
+<a href="${pageContext.request.contextPath}/user/myinfo">MY</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/index.jsp">학사관리</a>

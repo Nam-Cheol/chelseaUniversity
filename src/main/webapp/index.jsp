@@ -48,7 +48,7 @@
 	<p><span class="label">소속</span>    <span class="status-container"><span class="status">${principal.deptName}</span></span></p>
 	<p><span class="label">학기</span>    <span class="status-container"><span class="status">${principal.grade}학년 ${principal.semester}학기</span></span></p>
 	<p><span class="label">학적상태</span>  <span class="status-container"><span class="status">${status.status}</span></span></p>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/${user.userRole}/info'">마이페이지</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/myinfo'">마이페이지</button>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/signin?logout=true'">로그아웃</button>
 	</div>
 	</c:when>
@@ -66,7 +66,7 @@
 	<hr width ="100%" align = "left" color = blue size="0.5px">
 	<p><span class="label">이메일</span>    <span class="status-container"><span class="status">${principal.email}</span></span></p>
 	<p><span class="label">소속</span>    <span class="status-container"><span class="status">교직원</span></span></p>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/${user.userRole}/info'">마이페이지</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/myinfo'">마이페이지</button>
 	<button type="button" onclick="location.href='${pageContext.request.contextPath}/user/signin?logout=true'">로그아웃</button>
 	</div>
 	</c:when>
