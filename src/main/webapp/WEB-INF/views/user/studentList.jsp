@@ -117,6 +117,9 @@
 
 		<div class="pagination">
 			<!-- index for  -->
+			<c:if test="">
+			
+			</c:if>
 			<c:forEach begin="1" end="${totalPages}" var="i">
 				<c:choose>
 					<c:when test="${i == currentPage}">
