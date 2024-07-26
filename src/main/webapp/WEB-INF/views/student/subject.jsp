@@ -17,6 +17,7 @@
 </c:choose>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -641,31 +642,27 @@
 			</tbody>
 		</table>
 	<c:if test="${isSearch ne true}">
-		<ul class="page--list">
-
-
-
-			<li><a href="${pageContext.request.contextPath}/subject/list?page=1"
-				style="font-weight: 700; color: #007bff">1</a>
-			<li><a href="${pageContext.request.contextPath}/subject/list?page=2">2</a>
-			<li><a href="${pageContext.request.contextPath}/subject/list?page=3">3</a>
-			<li><a href="${pageContext.request.contextPath}/subject/list?page=4">4</a>
-		</ul>
+    <div class="pagination">
+        <span class="page-item">
+            <a href="${pageContext.request.contextPath}/subject/list?page=1" class="page-link">1</a>
+        </span>
+        <span class="page-item">
+            <a href="${pageContext.request.contextPath}/subject/list?page=2" class="page-link">2</a>
+        </span>
+        <span class="page-item">
+            <a href="${pageContext.request.contextPath}/subject/list?page=3" class="page-link">3</a>
+        </span>
+        <span class="page-item">
+            <a href="${pageContext.request.contextPath}/subject/list?page=4" class="page-link">4</a>
+        </span>
+    </div>
 	</c:if>
-
-
-
-
 	</main>
 </div>
-
-
 
 <footer>
 	<!-- 필요 시 -->
 </footer>
-
-</div>
 
 </body>
 </html>

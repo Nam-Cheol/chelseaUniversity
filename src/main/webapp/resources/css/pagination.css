@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+/* Pagination Container */
+.pagination {
+    display: flex; /* Use flexbox to align items horizontally */
+    justify-content: center; /* Center pagination items horizontally */
+    list-style-type: none; /* Remove default list styles */
+    padding: 0;
+    margin: 20px 0; /* Adjust margin as needed */
+}
+
+/* Pagination Item */
+.page-item {
+    margin: 0 5px; /* Space between pagination items */
+}
+
+/* Pagination Link */
+.page-item a {
+    text-decoration: none; /* Remove underline from links */
+    color: #001489; /* Link color */
+    padding: 10px 15px; /* Padding around the text */
+    border: 1px solid #ddd; /* Border for the links */
+    border-radius: 5px; /* Rounded corners */
+    display: inline-block; /* Ensure padding is respected */
+}
+
+/* Pagination Link Hover State */
+.page-item a:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+}

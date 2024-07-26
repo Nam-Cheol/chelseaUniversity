@@ -187,7 +187,7 @@ public class UserController extends HttpServlet {
 			request.setAttribute("professorList", list);
 			request.setAttribute("page", professorListForm.getPage());
 
-			response.sendRedirect(request.getContextPath() + "/user/professorList");
+			response.sendRedirect(request.getContextPath() + "/staff/professorList");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -284,7 +284,7 @@ public class UserController extends HttpServlet {
 		request.setAttribute("allStudentList", allStudentList);
 		request.setAttribute("totalStudents", totalStudents);
 		request.setAttribute("totalPages", totalPages);
-		request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/staff/studentList.jsp").forward(request, response);
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class UserController extends HttpServlet {
 				int offset = (int) Math.ceil((double) (page - 1) * Integer.parseInt(limit));
 				
 				request.setAttribute("allStudentList", student);
-				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/staff/studentList.jsp").forward(request, response);
 //
 //			}
 //
@@ -379,7 +379,7 @@ public class UserController extends HttpServlet {
 			request.setAttribute("listCount", Math.ceil(amount / 20.0));
 			request.setAttribute("pro_deptId", deptId);
 			request.setAttribute("page", 1);
-			request.getRequestDispatcher("/WEB-INF/views/user/professorList.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/staff/professorList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -394,7 +394,7 @@ public class UserController extends HttpServlet {
 	 */
 	private void showStudentCreatePage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/staff/createStudent.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -410,7 +410,7 @@ public class UserController extends HttpServlet {
 	private void showProfessorCreatePage(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/views/user/createProfessor.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/staff/createProfessor.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -617,10 +617,10 @@ public class UserController extends HttpServlet {
 
 			if (rowCount == 1) {
 				request.setAttribute("createStudentDto", createStudentDto);
-				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/staff/createStudent.jsp").forward(request, response);
 //				response.sendRedirect(request.getContextPath() + "/user/student");
 			} else {
-				response.sendRedirect(request.getContextPath() + "/user/student");
+				response.sendRedirect(request.getContextPath() + "/staff/student");
 //				request.getRequestDispatcher("/WEB-INF/views/user/createStudent.jsp").forward(request, response);
 			}
 
@@ -659,7 +659,7 @@ public class UserController extends HttpServlet {
 
 			if (rowCount == 1) {
 				request.setAttribute("createProfessorDto", createProfessorDto);
-				request.getRequestDispatcher("/WEB-INF/views/user/createProfessor.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/staff/createProfessor.jsp").forward(request, response);
 			} else {
 				response.sendRedirect(request.getContextPath() + "/user/professor");
 			}
