@@ -23,7 +23,7 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 			+ "		WHERE student_id = ? AND subject_id = ? ";
 	public final String INSERT = " INSERT INTO stu_sub_tb (student_id, subject_id)\r\n"
 			+ "		VALUES (?, ?) ";
-	public final String INSERT_FAIL_SUB = " INSERT INTO over_subject (student_id, subject_id) "
+	public final String INSERT_FAIL_SUB = " INSERT INTO over_subject (stu_id, sub_id) "
 			+ "		VALUES (?, ?) ";
 	private final String UPDATE_BY_ID = " UPDATE stu_sub_tb SET GRADE = ? WHERE student_id = ? AND subject_id = ? ";
 
@@ -140,7 +140,7 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 		int rsCount = 0;
 		try (Connection conn = DBUtil.getConnection()) {
 			conn.setAutoCommit(false);
-			try (PreparedStatement pstmt = conn.prepareStatement(INSERT)) {
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_FAIL_SUB)) {
 				pstmt.setInt(1, studentId);
 				pstmt.setInt(2, subjectId);
 				rsCount = pstmt.executeUpdate();

@@ -47,7 +47,7 @@ public class SugangController extends HttpServlet {
 	RegistrationRepository registrationRepository;
 
 	SugangStatus sugangStatus;
-	
+
 	StuSub stuSub;
 
 	public SugangController() {
@@ -240,24 +240,23 @@ public class SugangController extends HttpServlet {
 					stuSub = stuSubRepository.selectByStudentIdAndSubjectId(preSutSub.getStudentId(),
 							preSutSub.getSubjectId());
 					System.out.println("입력한 정보 : " + stuSub);
-//					// 수강 디테일
-//					int rscount2 = stuSubDetailRepository.insert(stuSub.getId(), preSutSub.getStudentId(),
-//							preSutSub.getSubjectId());
-//					System.err.println("preSutSub.getSubjectId() : " + preSutSub.getSubjectId());
-//					System.out.println("수강디테일 입력성공 행 개수 : " + rscount2);
 				}
 			}
 		}
 
 		// 강의 정원 < 예비 수강신청 인원 (정원 초과O)
 		List<Integer> moreIdList = subjectRepository.selectIdByMoreNumOfStudent();
+		System.out.println("정원 초과한 강의 리스트 : " + moreIdList);
 		for (Integer subjectId : moreIdList) {
-			subjectRepository.updateNumOfStudent(subjectId, "초기화");
+			int rsCount = subjectRepository.updateNumOfStudent(subjectId, "초기화");
+			System.out.println("정원 초기화에 성공한 행 개수 : " + rsCount);
 			// 예비 수강신청 과목id와 학생 id 받아오기
 			List<PreStuSub> preAppList = preStuSubRepository.selectBySubjectId(subjectId);
+			System.out.println("예비수강신청 과목id랑 학생id : " + preAppList);
 			for (PreStuSub preSutSub : preAppList) {
 				// 수강실패 테이블에 입력
-				stuSubRepository.insertFailSub(preSutSub.getStudentId(), preSutSub.getSubjectId());
+				int rsCount2 = stuSubRepository.insertFailSub(preSutSub.getStudentId(), preSutSub.getSubjectId());
+				System.out.println("수강실패 행 : " + rsCount2);
 			}
 		}
 
@@ -279,16 +278,18 @@ public class SugangController extends HttpServlet {
 	 */
 	private void updatePeriod2(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 수강 디테일
-		int rscount2 = stuSubDetailRepository.insert(stuSub.getId(), stuSub.getStudentId(),
-				stuSub.getSubjectId());
-		System.err.println("preSutSub.getSubjectId() : " + stuSub.getSubjectId());
-		System.out.println("수강디테일 입력성공 행 개수 : " + rscount2);
-		
 		// 본수강신청 기간 종료
 		sugangStatus.updateSugangPeriod("종료");
 		final int SUGANG_PERIOD = 2;
-		
+		int rscount2 = -1;
+		System.out.println("*****수강종료******");
+		// 수강 디테일에 입력
+		while(rscount2 != 0) {
+			rscount2 = stuSubDetailRepository.insert(stuSub.getId(), stuSub.getStudentId(), stuSub.getSubjectId());
+		}
+		System.err.println("stuSub.getSubjectId() : " + stuSub.getSubjectId());
+		System.out.println("수강디테일 입력성공 행 개수 : " + rscount2);
+
 		request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 		request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 	}
