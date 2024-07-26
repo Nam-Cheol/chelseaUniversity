@@ -23,7 +23,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,entrance_date,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ";
-	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id = ? ";
+	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id like '%?%' ";
 	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id = ? ";
 	public static final String SELECT_ALL_STUDENTS_ID = " SELECT id FROM student_tb ";
 

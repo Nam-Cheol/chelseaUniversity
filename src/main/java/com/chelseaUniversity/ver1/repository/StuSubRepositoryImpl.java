@@ -23,6 +23,8 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 			+ "		WHERE student_id = ? AND subject_id = ? ";
 	public final String INSERT = " INSERT INTO stu_sub_tb (student_id, subject_id)\r\n"
 			+ "		VALUES (?, ?) ";
+	public final String INSERT_FAIL_SUB = " INSERT INTO over_subject (stu_id, sub_id) "
+			+ "		VALUES (?, ?) ";
 	private final String UPDATE_BY_ID = " UPDATE stu_sub_tb SET GRADE = ? WHERE student_id = ? AND subject_id = ? ";
 
 	@Override
@@ -128,6 +130,29 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 예비 수강 실패 목록
+	 */
+	@Override
+	public int insertFailSub(Integer studentId, Integer subjectId) {
+		int rsCount = 0;
+		try (Connection conn = DBUtil.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_FAIL_SUB)) {
+				pstmt.setInt(1, studentId);
+				pstmt.setInt(2, subjectId);
+				rsCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rsCount;
 	}
 
 }

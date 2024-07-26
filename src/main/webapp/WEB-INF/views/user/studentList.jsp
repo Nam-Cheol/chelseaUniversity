@@ -44,7 +44,7 @@
 
 	<!-- 학생 학과 번호와 학번으로 검색 -->
 	<div>
-		<form action="${pageContext.request.contextPath}/user/searchStudent" method="get">
+		<form action="${pageContext.request.contextPath}/user/studentList" method="get">
 			<label for="dept_id">학과 번호</label> 
 			<input type="search" id="dept_id" name="dept_id"> 
 			<label for="stu_id">학번</label> 
@@ -58,11 +58,11 @@
 				</div>
 			</button>
 			
-			<select name ="limit">
-			<option value="20">20개씩</option>
+	<!-- 		<select name ="limit">
+			<option value="20" selected="selected">20개씩</option>
 			<option value="40">40개씩</option>
 			<option value="60">60개씩</option>
-			</select>
+			</select> -->
 			
 		</form>
 		
@@ -141,7 +141,7 @@
 						<span class="current-page">${i}</span>
 					</c:when>
 					<c:otherwise>
-						<span><a href="${pageContext.request.contextPath}/user/studentList?stu_list_page=${i}">${i}</a></span>
+						<span><a href="${pageContext.request.contextPath}/user/studentList?page=${i}">${i}</a></span>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>

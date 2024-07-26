@@ -10,7 +10,7 @@
 
     .college-box {
     	width: 100%;
-        height: 630px;
+        height: 100%;
         background-color: #ffffff; 
         border-radius: 8px; 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -18,7 +18,6 @@
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
-        align-items: center;
     }
     
     .college-list{
@@ -54,6 +53,31 @@
     	padding: 15px;
     }
     
+    .create-subjet-table tr th{
+    	width: 100px;
+    }
+    .create-department-table tr th{
+    	width: 100px;
+    }
+    .edit-department-table tr th{
+    	width: 100px;
+    }
+    .create-room-table tr th{
+    	width: 100px;
+    }
+    .edit-room-table tr th{
+    	width: 100px;
+    }
+    .create-tuition-college-table tr th{
+    	width: 100px;
+    }
+    .create-tuition-amount-table tr th{
+    	width: 100px;
+    }
+    .edit-tuition-table tr th{
+    	width: 100px;
+    }
+    
     .college-registration-right-container{
     	display: flex;
     	flex-direction:column;
@@ -74,6 +98,19 @@
     label, input, button, a {
         margin: 5px 0;
     }
+    
+    .create-subjet-table tr th input{
+    	width: 300px;
+    }
+    
+    .college-create-table tr th{
+    	width: 100px;
+    } 
+    
+    .college-update-table tr th{
+    	width: 100px;
+    }
+    
 
     button {
         background-color: #0056b3; 
@@ -94,7 +131,7 @@
         color: black; 
         text-decoration: none;
         margin-top: 20px;
-        display: block;
+        display: inline-block;
         font-size: 16px;
     }
 

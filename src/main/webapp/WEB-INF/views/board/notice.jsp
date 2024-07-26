@@ -36,7 +36,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="0">
 				<tr>
-					<td><a href="/chelseaUniversity/notice/list" class="selected--menu">공지사항</a></td>
+					<td><a href="/chelseaUniversity/notice/list?page=0" class="selected--menu">공지사항</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
@@ -82,6 +82,11 @@
 				</tr>
 			</c:forEach>
 		</table>
+		<div class="page">
+			<c:forEach var="i" begin="0" end="${page}">
+			<a href="${pageContext.request.contextPath}/notice/list?page=${i}" class="pageNum">${i + 1}</a>
+			</c:forEach>
+			</div>
 
 		<!-- 공지 조회 -->
 		<c:if test="${crud.equals(\"select\")}">
