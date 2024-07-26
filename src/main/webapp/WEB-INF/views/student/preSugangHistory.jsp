@@ -47,53 +47,6 @@
 			<div>
 
 				<h4>
-					<span style="font-weight: 600;"> 신청 미완료 강의 목록 </span>&nbsp;
-				</h4>
-				<!-- 
-						 수강신청 해야되는 과목
-				<table border="1" class="sub--list--table">
-					<thead>
-						<tr>
-							<th>학수번호</th>
-							<th style="width: 250px;">강의명</th>
-							<th>담당교수</th>
-							<th>학점</th>
-							<th>요일시간 (강의실)</th>
-							<th>현재인원</th>
-							<th>정원</th>
-							<th>수강신청</th>
-						</tr>
-					</thead>
-
-					<tbody>
-
-						<tr>
-							<td>10000</td>
-							<td class="sub--list--name">데이터통신</td>
-							<td>김근호</td>
-							<td>3</td>
-							<td>월 14:00-17:00&nbsp;(E601)</td>
-							<td>0</td>
-							<td>5</td>
-							<td class="sub--list--button--row">
-
-
-
-								<form action="/sugang/insertApp/10000?type=1" method="post">
-									<button type="submit" style="background-color: #548AC2;">신청</button>
-								</form>
-
-
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
-				<br>
-				<br> -->
-
-
-				<h4>
 					<span style="font-weight: 600;">신청 내역</span>&nbsp; <span
 						style="color: gray; font-size: 18px;">[총 ${totalGrade}학점]</span>
 				</h4>

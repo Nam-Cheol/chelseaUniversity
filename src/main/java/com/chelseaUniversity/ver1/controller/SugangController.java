@@ -79,21 +79,24 @@ public class SugangController extends HttpServlet {
 			principalSta = (Staff) session.getAttribute("principal");
 		}
 
-		if (principalStu != null) {
-			List<Integer> subjectIdList = registrationRepository.selectSubjectRegistration(principalStu.getId());
-			request.setAttribute("subjectIdList", subjectIdList);
-		}
-
 		int totalGrade;
 		List<SubjectHistory> historyList;
 
 		boolean preSeason = "진행".equals(registrationRepository.isPreSugangSeason()) ? true : false;
 		boolean season = "진행".equals(registrationRepository.isSugangSeason()) ? true : false;
 		
-		// TODO 수강신청 기능 구현 중 임시 값
-		preSeason = true;
-		season = true;
-
+		if (principalStu != null) {
+			if(preSeason) {
+				List<Integer> subjectIdList = registrationRepository.selectPreSubjectRegistration(principalStu.getId());
+				request.setAttribute("subjectIdList", subjectIdList);
+			} else if(season) {
+				List<Integer> subjectIdList = registrationRepository.selectSubjectRegistration(principalStu.getId());
+				request.setAttribute("subjectIdList", subjectIdList);
+			} else {
+				
+			}
+		}
+		
 		switch (action) {
 		case "/subjectList":
 			showSubjectList(request, response, "/subjectList");
@@ -734,7 +737,6 @@ public class SugangController extends HttpServlet {
 					String message = "정원을 초과하였습니다.";
 					request.setAttribute("message", message);
 					request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
-					response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
 				}
 			} catch (Exception e) {
 				response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
