@@ -1,23 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<c:if test="${principal == null}">
+	<%
+	response.sendRedirect(request.getContextPath() + "/user/signin");
+	%>
+</c:if>
 <c:choose>
-<c:when test="${user.userRole eq 'staff'}">
-<%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
-</c:when>
-<c:when test="${user.userRole eq 'professor'}">
-<%@ include file="/WEB-INF/views/home/professorHeader.jsp" %>
-</c:when>
-<c:otherwise>
-<%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
-</c:otherwise>
+	<c:when test="${user.userRole eq 'staff'}">
+		<%@ include file="/WEB-INF/views/home/staffHeader.jsp"%>
+	</c:when>
+	<c:when test="${user.userRole eq 'professor'}">
+		<%@ include file="/WEB-INF/views/home/professorHeader.jsp"%>
+	</c:when>
+	<c:otherwise>
+		<%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+	</c:otherwise>
 </c:choose>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/pagination.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -30,15 +37,20 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">전체 강의 조회</a></td>
+					<td><a href="${pageContext.request.contextPath}/subject/list"
+						class="selected--menu">전체 강의 조회</a></td>
 				</tr>
 				<c:if test="${user.userRole eq 'professor'}">
-				<tr>
-					<td><a href="${pageContext.request.contextPath}/professor/subject" class="selected--menu">내 강의 조회</a></td>
-				</tr>
-				<tr>
-					<td><a href="${pageContext.request.contextPath}/professor/evaluationList" class="selected--menu">내 강의 평가</a></td>
-				</tr>
+					<tr>
+						<td><a
+							href="${pageContext.request.contextPath}/professor/subject"
+							class="selected--menu">내 강의 조회</a></td>
+					</tr>
+					<tr>
+						<td><a
+							href="${pageContext.request.contextPath}/professor/evaluationList"
+							class="selected--menu">내 강의 평가</a></td>
+					</tr>
 				</c:if>
 			</table>
 		</div>
@@ -52,7 +64,8 @@
 
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="${pageContext.request.contextPath}/subject/search?" method="get">
+			<form action="${pageContext.request.contextPath}/subject/search?"
+				method="get">
 				<div>
 					<!-- 개설연도 숫자 -->
 					<label for="subYear">연도 </label> <input type="number" value="2023"
@@ -128,7 +141,8 @@
 
 		<h4>
 			<span style="font-weight: 600;">강의 목록</span>&nbsp; <span
-				style="color: gray; font-size: 18px;"><c:out value="[총 ${rowCount}건]"/></span>
+				style="color: gray; font-size: 18px;"><c:out
+					value="[총 ${rowCount}건]" /></span>
 		</h4>
 		<table border="1" class="sub--list--table">
 			<thead>
@@ -153,19 +167,19 @@
 					<tr>
 						<td><c:out value="${subject.subYear}-${subject.semester}학기"></c:out></td>
 						<td><c:choose>
-							<c:when test="${fn:startsWith(subject.roomId, 'E')}">
-								<c:out value="공과대학"></c:out>
-							</c:when>
-							<c:when test="${fn:startsWith(subject.roomId, 'H')}">
-								<c:out value="인문대학"></c:out>
-							</c:when>
-							<c:when test="${fn:startsWith(subject.roomId, 'S')}">
-								<c:out value="사회과학대학"></c:out>
-							</c:when>
-							<c:when test="${fn:startsWith(subject.roomId, 'C')}">
-								<c:out value="상경대학"></c:out>
-							</c:when>
-						</c:choose></td>
+								<c:when test="${fn:startsWith(subject.roomId, 'E')}">
+									<c:out value="공과대학"></c:out>
+								</c:when>
+								<c:when test="${fn:startsWith(subject.roomId, 'H')}">
+									<c:out value="인문대학"></c:out>
+								</c:when>
+								<c:when test="${fn:startsWith(subject.roomId, 'S')}">
+									<c:out value="사회과학대학"></c:out>
+								</c:when>
+								<c:when test="${fn:startsWith(subject.roomId, 'C')}">
+									<c:out value="상경대학"></c:out>
+								</c:when>
+							</c:choose></td>
 						<td><c:out value="${subject.deptName}"></c:out></td>
 						<td><c:out value="${subject.id}"></c:out></td>
 						<td><c:out value="${subject.type}"></c:out></td>
@@ -174,489 +188,31 @@
 						<td><c:out value="${subject.grades}"></c:out></td>
 						<td><c:out value="${subject.numOfStudent}"></c:out></td>
 						<td><c:out value="${subject.capacity}"></c:out></td>
-						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}"
-                            onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의계획서</a></td>
+						<td><a
+							href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}"
+							onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의계획서</a></td>
 					</tr>
 				</c:forEach>
 
-				<!-- <tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>컴퓨터공학과</td>
-				<td>10000</td>
-				<td>전공</td>
-				<td class="sub--list--name">데이터통신</td>
-				<td>김근호</td>
-				<td>3</td>
-				<td>5</td>
-				<td>5</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10000"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10000"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>컴퓨터공학과</td>
-				<td>10001</td>
-				<td>전공</td>
-				<td class="sub--list--name">딥러닝의 기초</td>
-				<td>김근호</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10001"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10001"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>컴퓨터공학과</td>
-				<td>10002</td>
-				<td>교양</td>
-				<td class="sub--list--name">컴퓨터의 개념 및 실습</td>
-				<td>이치승</td>
-				<td>2</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10002"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10002"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>컴퓨터공학과</td>
-				<td>10003</td>
-				<td>전공</td>
-				<td class="sub--list--name">컴퓨터 프로그래밍</td>
-				<td>이치승</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10003"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10003"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>전자공학과</td>
-				<td>10004</td>
-				<td>전공</td>
-				<td class="sub--list--name">공학설계 입문</td>
-				<td>김미정</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10004"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10004"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>전자공학과</td>
-				<td>10005</td>
-				<td>전공</td>
-				<td class="sub--list--name">반도체 공학</td>
-				<td>김미정</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10005"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10005"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>전자공학과</td>
-				<td>10006</td>
-				<td>전공</td>
-				<td class="sub--list--name">융합전자연구</td>
-				<td>전대영</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10006"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10006"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>전자공학과</td>
-				<td>10007</td>
-				<td>전공</td>
-				<td class="sub--list--name">기초 전기실험</td>
-				<td>전대영</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10007"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10007"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>화학공학과</td>
-				<td>10008</td>
-				<td>전공</td>
-				<td class="sub--list--name">물리화학</td>
-				<td>김효린</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10008"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10008"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>화학공학과</td>
-				<td>10009</td>
-				<td>전공</td>
-				<td class="sub--list--name">반응공학</td>
-				<td>김효린</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10009"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10009"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>화학공학과</td>
-				<td>10010</td>
-				<td>교양</td>
-				<td class="sub--list--name">사고와 표현</td>
-				<td>김현우</td>
-				<td>2</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10010"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10010"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>화학공학과</td>
-				<td>10011</td>
-				<td>교양</td>
-				<td class="sub--list--name">과학과 기술</td>
-				<td>김현우</td>
-				<td>2</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10011"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10011"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>기계공학과</td>
-				<td>10012</td>
-				<td>전공</td>
-				<td class="sub--list--name">고체역학</td>
-				<td>정다운</td>
-				<td>3</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10012"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10012"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>기계공학과</td>
-				<td>10013</td>
-				<td>교양</td>
-				<td class="sub--list--name">자유정의진리</td>
-				<td>정다운</td>
-				<td>2</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10013"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10013"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>기계공학과</td>
-				<td>10014</td>
-				<td>교양</td>
-				<td class="sub--list--name">정보적 사고</td>
-				<td>손주이</td>
-				<td>2</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10014"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10014"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>기계공학과</td>
-				<td>10015</td>
-				<td>전공</td>
-				<td class="sub--list--name">CAD기초</td>
-				<td>손주이</td>
-				<td>2</td>
-				<td>0</td>
-				<td>20</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10015"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10015"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>신소재공학과</td>
-				<td>10016</td>
-				<td>전공</td>
-				<td class="sub--list--name">에너지재료</td>
-				<td>이현서</td>
-				<td>3</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10016"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10016"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>신소재공학과</td>
-				<td>10017</td>
-				<td>전공</td>
-				<td class="sub--list--name">나노재료합성</td>
-				<td>이현서</td>
-				<td>3</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10017"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10017"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>신소재공학과</td>
-				<td>10018</td>
-				<td>전공</td>
-				<td class="sub--list--name">신소재공학개론</td>
-				<td>이지운</td>
-				<td>3</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10018"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10018"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr>
-
-			<tr>
-				<td>2023-1학기</td>
-				<td>공과대학</td>
-				<td>신소재공학과</td>
-				<td>10019</td>
-				<td>전공</td>
-				<td class="sub--list--name">신소재기초실습</td>
-				<td>이지운</td>
-				<td>3</td>
-				<td>0</td>
-				<td>30</td>
-				<td>
-					<ul class="d-flex justify-content-center sub--plan--view"
-						style="margin: 0;">
-						<li style="height: 24px;"><a href="/subject/syllabus/10019"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;">조회</a>
-						<li style="height: 24px;"><a href="/subject/syllabus/10019"
-							onclick="window.open(this.href, '_blank', 'width=1000, height=1000'); return false;"><span
-								class="material-symbols-outlined">content_paste_search</span></a>
-					</ul>
-				</td>
-			</tr> -->
-
 			</tbody>
 		</table>
-	<c:if test="${isSearch ne true}">
-    <div class="pagination">
-        <span class="page-item">
-            <a href="${pageContext.request.contextPath}/subject/list?page=1" class="page-link">1</a>
-        </span>
-        <span class="page-item">
-            <a href="${pageContext.request.contextPath}/subject/list?page=2" class="page-link">2</a>
-        </span>
-        <span class="page-item">
-            <a href="${pageContext.request.contextPath}/subject/list?page=3" class="page-link">3</a>
-        </span>
-        <span class="page-item">
-            <a href="${pageContext.request.contextPath}/subject/list?page=4" class="page-link">4</a>
-        </span>
-    </div>
-	</c:if>
+		<c:if test="${isSearch ne true}">
+			<div class="pagination">
+				<span class="page-item"> <a
+					href="${pageContext.request.contextPath}/subject/list?page=1"
+					class="page-link">1</a>
+				</span> <span class="page-item"> <a
+					href="${pageContext.request.contextPath}/subject/list?page=2"
+					class="page-link">2</a>
+				</span> <span class="page-item"> <a
+					href="${pageContext.request.contextPath}/subject/list?page=3"
+					class="page-link">3</a>
+				</span> <span class="page-item"> <a
+					href="${pageContext.request.contextPath}/subject/list?page=4"
+					class="page-link">4</a>
+				</span>
+			</div>
+		</c:if>
 	</main>
 </div>
 

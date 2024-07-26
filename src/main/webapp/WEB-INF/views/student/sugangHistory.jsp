@@ -24,7 +24,7 @@
 					<td><a href="/chelseaUniversity/sugang/pre?page=1">예비 수강 신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList?page=1">수강 신청</a></td>
+					<td><a href="/chelseaUniversity/sugang/appList?page=1">수강 신청</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/sugang/list?page=1"
@@ -40,7 +40,8 @@
 			<div class="split--div"></div>
 			<!-- 여기에 내용 넣기 -->
 			<div style="width: 100%">
-
+			
+			<c:if test="${!successCheck}">
 				<h4>
 					<span style="font-weight: 600;">신청 내역</span>&nbsp; <span
 						style="color: gray; font-size: 18px;">[총 ${totalGrade}학점]</span>
@@ -60,19 +61,20 @@
 					</thead>
 
 					<tbody>
-						<c:forEach var="hitory" items="${historyList}">
+						<c:forEach var="successSub" items="${successSubList}">
 						<tr>
-							<td>${hitory.id}</td>
-							<td class="sub--list--name">${hitory.title}</td>
-							<td>${hitory.professorName}</td>
-							<td>${hitory.grades}</td>
-							<td>${hitory.subDay}&nbsp;${hitory.startTime}:00-${hitory.endTime}:00&nbsp;(${hitory.roomId})</td>
-							<td>${hitory.numOfStudent}</td>
-							<td>${hitory.capacity}</td>
+							<td>${successSub.id}</td>
+							<td class="sub--list--name">${successSub.title}</td>
+							<td>${successSub.professorName}</td>
+							<td>${successSub.grades}</td>
+							<td>${successSub.subDay}&nbsp;${successSub.startTime}:00-${successSub.endTime}:00&nbsp;(${successSub.roomId})</td>
+							<td>${successSub.numOfStudent}</td>
+							<td>${successSub.capacity}</td>
 							<td class="sub--list--button--row">
-								<form action="/chelseaUniversity/sugang/delete" method="get">
-									<input type="hidden" name="_method" value="delete">
+								<form action="/chelseaUniversity/sugang/deleteSugang" method="get">
 									<button type="submit"
+										value="${successSub.id}"
+										name="id"
 										onclick="return confirm('수강신청을 취소하시겠습니까?');"
 										style="background-color: #a7a7a7;">취소</button>
 								</form>
@@ -81,6 +83,10 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				</c:if>
+					<c:if test="${successCheck}">
+					<p>수강 신청 내역이 존재하지 않습니다.</p>
+					</c:if>
 
 			</div>
 
