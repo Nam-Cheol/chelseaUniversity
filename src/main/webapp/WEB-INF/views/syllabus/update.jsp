@@ -1,18 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<style>
-	textarea {
-		resize: none;
-	}
-</style>
-<body>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+
 	<h2>강의 계획서 수정</h2>
 	<form action="${pageContext.request.contextPath}/syllabus/submit?id=${param.id}" method="post">
 		<a>강의 개요</a>

@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 
 		<!-- 세부 메뉴 + 메인 -->
 		<div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
@@ -38,6 +40,8 @@
 			</tbody></table>
 				</div>
 			</div>
+		</div>
+			
 <section>
 	<h1>교수 명단 조회</h1>
 

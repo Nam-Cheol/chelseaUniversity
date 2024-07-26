@@ -3,10 +3,7 @@ package com.chelseaUniversity.ver1.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
-
 import com.chelseaUniversity.ver1.model.Evaluation;
-import com.chelseaUniversity.ver1.model.StuSub;
 import com.chelseaUniversity.ver1.model.StuSubDetail;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.response.ClassesDto;
@@ -190,6 +187,7 @@ public class ProfessorController extends HttpServlet {
 				.subjectId(Integer.parseInt(request.getParameter("subjectId"))).absent(absent).lateness(lateness)
 				.homework(homework).midExam(midExam).finalExam(finalExam).convertedMark(convertedMark)
 				.grade(request.getParameter("grade")).build();
+		System.out.println(stuSubDetail);
 		stuSubRepository.updateGradeByStudentIdAndSubjectId(stuSubDetail);
 		stuSubDetailRepository.updateGrade(stuSubDetail);
 		showPossessive(request, response);

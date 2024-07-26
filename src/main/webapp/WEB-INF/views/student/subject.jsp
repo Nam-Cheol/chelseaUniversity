@@ -15,10 +15,8 @@
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 </c:otherwise>
 </c:choose>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/myinfo.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">

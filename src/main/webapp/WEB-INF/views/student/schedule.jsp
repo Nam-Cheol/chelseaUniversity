@@ -14,8 +14,8 @@
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 </c:otherwise>
 </c:choose>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/notice.css">
 <style>
