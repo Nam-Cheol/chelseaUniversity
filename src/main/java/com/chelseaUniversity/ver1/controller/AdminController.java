@@ -90,7 +90,6 @@ public class AdminController extends HttpServlet {
 			break;
 		}
 		
-		
 	}
 
 	private void showSchedulePage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
