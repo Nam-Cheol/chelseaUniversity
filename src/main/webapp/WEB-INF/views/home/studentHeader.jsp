@@ -57,7 +57,7 @@
 <a href="${pageContext.request.contextPath}/grade/thisSemester">성적</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/notice/list">학사정보</a>
+<a href="${pageContext.request.contextPath}/notice/list?page=0">학사정보</a>
 </li>
 </ul>
 <!-- e : gnb -->

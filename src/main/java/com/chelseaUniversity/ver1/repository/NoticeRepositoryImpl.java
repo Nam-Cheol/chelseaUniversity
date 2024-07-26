@@ -14,7 +14,8 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class NoticeRepositoryImpl implements NoticeRepository {
 	
-	private static final String SELECT_NOTICE_ALL_ORDER_BY = " SELECT * FROM notice_tb ORDER BY id DESC ";
+	private static final String SELECT_COUNT_NOTICE = " SELECT count(id) as count FROM notice_tb ";
+	private static final String SELECT_NOTICE_ALL_ORDER_BY = " SELECT * FROM notice_tb ORDER BY id DESC limit ? OFFSET ?";
 	private static final String SELECT_NOTICE_BYID = " SELECT * FROM notice_tb WHERE id = ? ";
 	private static final String UPDATE_NOTICE_VIEW_BYID = " update notice_tb SET views = views + 1 WHERE id = ? ";
 	private static final String SELECT_NOTICE_BYTITLE = " SELECT * FROM notice_tb WHERE title LIKE ? ";
@@ -76,17 +77,16 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	}
 
 	@Override
-	public List<Notice> selectByNoticeDtoOrderBy() {
+	public List<Notice> selectByNoticeDtoOrderBy(int limit,int offset) {
 		List<Notice> noticeList = new ArrayList<>();
 		
 		try (Connection conn = DBUtil.getConnection()){
 			
 			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_ALL_ORDER_BY)){
-				
+				pstmt.setInt(1, limit);
+				pstmt.setInt(2, offset);
 				ResultSet rs = pstmt.executeQuery();
-				
 				while(rs.next()) {
-					
 					Notice notice = Notice.builder()
 									.id(rs.getInt("id"))
 									.category(rs.getString("category"))
@@ -111,9 +111,16 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	}
 
 	@Override
-	public Integer selectNoticeCount(NoticePageFormDto noticePageFormDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer selectNoticeCount() {
+		int count = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_COUNT_NOTICE)){
+			ResultSet rs = pstmt.executeQuery();
+			count = rs.getInt("count");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 	@Override

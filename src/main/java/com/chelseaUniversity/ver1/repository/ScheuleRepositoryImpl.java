@@ -14,7 +14,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class ScheuleRepositoryImpl implements ScheuleRepository{
 
-	private static final String SELECT_SCHEDULE = " SELECT * FROM schedule_tb ";
+	private static final String SELECT_SCHEDULE = " SELECT * FROM schedule_tb limit 6";
 	
 	@Override
 	public int insertSchoeduleFormDto(Schedule schedule) {

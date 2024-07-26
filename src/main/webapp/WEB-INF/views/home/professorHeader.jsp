@@ -51,7 +51,7 @@
 <a href="${pageContext.request.contextPath}/index.jsp">수업</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/notice/list">학사정보</a>
+<a href="${pageContext.request.contextPath}/notice/list?page=0">학사정보</a>
 </li>
 </ul>
 <!-- e : gnb -->

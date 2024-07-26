@@ -137,7 +137,9 @@ public class UserController extends HttpServlet {
 		int id = user.getId();
 		if (user != null) {
 			if (user.getUserRole().equals("student")) {
-				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				int limit = 8;
+				int offset = 0;
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
 				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				request.setAttribute("notice", noticeList);
@@ -145,13 +147,17 @@ public class UserController extends HttpServlet {
 				request.setAttribute("status", stuStat);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else if (user.getUserRole().equals("professor")) {
-				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				int limit = 8;
+				int offset = 0;
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
 				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
-				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				int limit = 8;
+				int offset = 0;
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
 				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
@@ -683,8 +689,10 @@ public class UserController extends HttpServlet {
 				response.addCookie(cookie);
 			}
 			if (user.getUserRole().equals("student")) {
+				int limit = 8;
+				int offset = 0;
 				StudentInfoDto student = userRepository.studentById(id);
-				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
 				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				session.setAttribute("principal", student);
@@ -694,8 +702,10 @@ public class UserController extends HttpServlet {
 				request.setAttribute("status", stuStat);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else if (user.getUserRole().equals("professor")) {
+				int limit = 8;
+				int offset = 0;
 				ProfessorInfoDto professor = userRepository.professorById(id);
-				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
 				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				String deptname = professorRepository.selectProfessorDeptById(professor.getDeptId());
 				session.setAttribute("principal", professor);
@@ -705,8 +715,10 @@ public class UserController extends HttpServlet {
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			} else {
+				int limit = 8;
+				int offset = 0;
 				Staff staff = userRepository.staffById(id);
-				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
 				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
 				session.setAttribute("principal", staff);
 				session.setAttribute("user", user);
