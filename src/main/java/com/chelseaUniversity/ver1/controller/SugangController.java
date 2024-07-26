@@ -192,7 +192,6 @@ public class SugangController extends HttpServlet {
 			}
 			break;
 		case "/period":
-			sugangStatus.updatePrePeriod("진행");
 			final int SUGANG_PERIOD = 2;
 			request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 			request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);

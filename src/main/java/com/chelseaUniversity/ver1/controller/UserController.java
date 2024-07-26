@@ -293,6 +293,7 @@ public class UserController extends HttpServlet {
 
 		int deptIdNum;
 		int stuIdNum;
+		
 		if (deptId != null && stuId.equals("")) {
 			System.out.println("if - 학과 아이디로 검색!!!!");
 			deptIdNum = Integer.parseInt(deptId);
