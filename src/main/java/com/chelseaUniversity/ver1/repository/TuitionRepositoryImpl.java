@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.CollTuit;
+import com.chelseaUniversity.ver1.model.College;
 import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 import com.chelseaUniversity.ver1.utill.DBUtil;
@@ -18,6 +19,9 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 	public final String INSERT_TUITION = " INSERT INTO tuition_tb (student_id, tui_year, semester, tui_amount, sch_type, sch_amount) VALUES (?, ?, ?, ?, ?, ?) ";
 	private static final String SELECT_TUITION_BY_STUDENT_ID = " SELECT * FROM tuition_tb WHERE student_id = ? ";
 	private static final String PAYMENT_TUITION = " UPDATE tuition_tb SET status = 1 WHERE student_id = ? AND tui_year = ? AND semester = ? ";
+	private static final String SELECT_AMOUNT = " SELECT ct.id, ct.name , ctt.amount FROM college_tb AS ct JOIN coll_tuit_tb AS ctt ON ct.id = ctt.college_id ORDER BY CT.id asc ";
+	private static final String UPDATE_AMOUNT_BY_ID = " UPDATE coll_tuit_tb SET amount = ? WHERE college_id = ? ";
+	private static final String INSERT_TUITION_AMOUNT_BY_ID = " INSERT INTO coll_tuit_tb(college_id, amount) VALUES(?, ?) ";
 	
 	@Override
 	public List<Tuition> selectByStudentId(Integer studentId) {
@@ -179,4 +183,72 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 		return 0;
 	}
 
+
+	@Override
+	public List<Tuition> selectAmount() {
+		List<Tuition> tuitionList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_AMOUNT)){
+				ResultSet set = pstmt.executeQuery();
+				conn.commit();
+				while (set.next()) {
+					Tuition tuition = Tuition.builder()
+							  			.id(set.getInt("id"))
+							  			.name(set.getString("name"))
+							  			.amount(set.getInt("amount"))
+							  			.build();
+					tuitionList.add(tuition);
+					}
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			}
+		return tuitionList;
+	}
+
+	@Override
+	public int updateByIdAndAmount(int id, int amount) {
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(UPDATE_AMOUNT_BY_ID)){
+				pstmt.setInt(1, amount);
+				pstmt.setInt(2, id);
+				rowCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			}
+		return rowCount;
+	}
+
+	@Override
+	public int insertAmount(int id, int amount) {
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_TUITION_AMOUNT_BY_ID)){
+				pstmt.setInt(1, id);
+				pstmt.setInt(2, amount);
+				rowCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			}
+		return rowCount;
+	}
+	
+	
 }
