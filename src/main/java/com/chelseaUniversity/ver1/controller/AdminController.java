@@ -35,7 +35,7 @@ public class AdminController extends HttpServlet {
 	SubjectRepository subjectRepository;
 	RoomRepository roomRepository;
 	DepartmentRepository departmentRepository;
-       
+    SubjectRepository subRepository;
     public AdminController() {
     }
 	@Override
@@ -45,6 +45,7 @@ public class AdminController extends HttpServlet {
 		subjectRepository = new SubjectRepositoryImpl();
 		roomRepository = new RoomRepositoryImpl();
 		departmentRepository = new DepartmentRepositoryImpl();
+		subjectRepository = new SubjectRepositoryImpl();
 	}
     
 
@@ -94,6 +95,7 @@ public class AdminController extends HttpServlet {
 	private void showSubjectPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
 		List<Subject> subjectList = subjectRepository.selectSubject();
 		session.setAttribute("subjectList", subjectList);
+		handleListSubject(request, response);
 		
 		request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationSubject.jsp").forward(request, response);
 	}
@@ -302,6 +304,37 @@ public class AdminController extends HttpServlet {
 		// 중복이라 주석처리 
 		// request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
 	}
+	
+	private void handleListSubject(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int page = 1; // 기본 페이지 번호 
+		int pageSize = 10; // 한 페이지당 보여질 게시글에 수  
+		
+		try {
+			 String pageStr = request.getParameter("page");
+			 if(pageStr != null ) {
+				 page = Integer.parseInt(pageStr);
+			 }
+		} catch (Exception e) {
+			page = 1; 
+		}
+		
+		int offset = (page - 1) * pageSize; // 시작 위치 계산( offset 값 계산)
+ 		List<Subject> subjectList =  subjectRepository.getAllSubject(pageSize, offset);
+		
+		// 전체 게시글 수 조회 
+		int totalBoards = subjectRepository.getTotalSubjectCount();
+		// 총 페이지 수 계산 -->  [1][2][3][...]
+		int totalPages = (int) Math.ceil((double)totalBoards / pageSize);
+		
+		request.setAttribute("subjectList", subjectList);
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("currentPage", page);
+		
+		// 중복이라 주석처리 
+		// request.getRequestDispatcher("/WEB-INF/views/admin/adminRegistrationDepartment.jsp").forward(request, response);
+	}
+
+	
 
 
 }

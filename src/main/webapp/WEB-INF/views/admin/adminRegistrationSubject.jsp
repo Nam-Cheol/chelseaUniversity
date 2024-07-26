@@ -99,6 +99,7 @@
 	
         <p>강의 목록</p>
         <br>
+        <div>
         <table border="1" class="subject-list">
                 <tr>
                     <th>강의id</th>
@@ -135,7 +136,17 @@
                 </tr>
                 </c:forEach>
         </table>
-
+        <c:forEach begin="1" end="${totalPages}"  var="i" >
+					<c:choose>
+						<c:when test="${ i == currentPage }">
+							<span class="current-page" >${i}</span>
+						</c:when>
+						<c:otherwise>
+							<span><a href="${pageContext.request.contextPath}/admin/subject?page=${i}">${i}</a></span>	
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+        </div>
 </div>
 </div>
 </section>

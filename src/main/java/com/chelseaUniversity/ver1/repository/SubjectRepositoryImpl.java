@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.College;
+import com.chelseaUniversity.ver1.model.Room;
 import com.chelseaUniversity.ver1.model.Subject;
 import com.chelseaUniversity.ver1.model.dto.AllSubjectSearchFormDto;
 import com.chelseaUniversity.ver1.model.dto.CurrentSemesterSubjectSearchFormDto;
@@ -39,6 +40,8 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	public static final String INSERT_SUBJECT = " INSERT INTO subject_tb(name, professor_id, room_id, dept_id, type, sub_year, semester, sub_day, start_time, end_time, grades, capacity, num_of_student) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 	public static final String SELECT_SUBJECT = " select * from subject_tb ";
 	
+	public final String SELECT_ALL_SUBJECT = " SELECT * FROM subject_tb ORDER BY id ASC LIMIT ? OFFSET ? ";
+	public final String COUNT_ALL_SUBJECT = " SELECT count(*) AS count FROM subject_tb ";
 	@Override
 	public Integer insert(SubjectFormDto subjectFormDto) {
 		// TODO Auto-generated method stub
@@ -485,6 +488,60 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 			e.printStackTrace();
 			}
 		return rowCount;
+	}
+
+	@Override
+	public List<Subject> getAllSubject(int limit, int offset) {
+		List<Subject> subjectList = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_SUBJECT)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				subjectList.add(
+						Subject
+						.builder()
+			  			.id(rs.getInt("id"))
+			  			.name(rs.getString("name"))
+			  			.professorId(rs.getInt("professor_id"))
+			  			.roomId(rs.getString("room_id"))
+			  			.deptId(rs.getInt("dept_id"))
+			  			.type(rs.getString("type"))
+			  			.subYear(rs.getInt("sub_year"))
+			  			.semester(rs.getInt("semester"))
+			  			.subDay(rs.getString("sub_day"))
+			  			.startTime(rs.getInt("start_time"))
+			  			.endTime(rs.getInt("end_time"))
+			  			.grades(rs.getInt("grades"))
+			  			.capacity(rs.getInt("capacity"))
+			  			.numOfStudent(rs.getInt("num_of_student"))
+			  			.build());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	return subjectList;
+	}
+
+	@Override
+	public int getTotalSubjectCount() {
+		int count = 0; 
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(COUNT_ALL_SUBJECT)){
+ 			ResultSet rs = pstmt.executeQuery();
+ 			if(rs.next()) {
+ 				count = rs.getInt("count");
+ 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(" 로깅 totalCount : " + count);
+		
+		return count;
 	}
 
 }

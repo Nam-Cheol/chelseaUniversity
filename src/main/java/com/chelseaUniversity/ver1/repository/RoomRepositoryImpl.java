@@ -121,7 +121,6 @@ public class RoomRepositoryImpl implements RoomRepository{
 							.collegeId(rs.getInt("college_id"))
 							.build());
 				}
-				System.out.println("BoardRepositoryImpl - 로깅 : count " + roomList.size());
 				
 			} catch (Exception e) {
 				e.printStackTrace();
