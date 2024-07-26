@@ -88,11 +88,16 @@
    .college-registration-top {
         background-color: #003399; 
         color: #ffffff; 
-        width: 80%;
+        width: 75%;
         text-align: center;
         padding: 10px;
         border-radius: 5px;
-        margin: 20px 0 20px 0 ; 
+        margin: 20px 0 20px 0 ;
+    }
+    
+    .college-registration-top-box{
+    	display: flex;
+    	justify-content: center;
     }
     
     label, input, button, a {

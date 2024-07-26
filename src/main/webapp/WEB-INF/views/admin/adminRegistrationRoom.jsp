@@ -12,14 +12,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
 
 <section>
-
-    <div class="college-registration-right-container">
-        <h2 class="college-registration-top">강의실 등록</h2>
-
+<div class="college-registration-top-box">
+    <h2 class="college-registration-top">강의실 등록</h2>
+</div>
         <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
             <div class="sub--menu">
                 <div class="sub--menu--top">
-                    <h2>MY</h2>
+                    <h2>등록</h2>
                 </div>
                 <div class="sub--menu--mid">
                     <table class="sub--menu--table" border="1">
@@ -38,6 +37,9 @@
                         <tr>
                             <td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
                         </tr>
+                         <tr>
+                    		<td><a href="${pageContext.request.contextPath}/admin/schedule">학사일정</a></td>
+                		</tr>
                     </table>
                 </div>
             </div>

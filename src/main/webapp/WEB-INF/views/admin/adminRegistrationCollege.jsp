@@ -8,9 +8,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-	
+<section>
+<div class="college-registration-top-box">
     <h2 class="college-registration-top">단과대학 등록</h2>
+</div>
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
     <div class="sub--menu">
         <div class="sub--menu--top">
@@ -83,3 +84,4 @@
         </table>
     </main>
 </div>
+</section>
