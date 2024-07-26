@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
 
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
@@ -82,16 +83,18 @@
                     </tr>
                 </c:forEach>
             </table>
-            <c:forEach begin="1" end="${totalPages}" var="i">
-                <c:choose>
-                    <c:when test="${i == currentPage}">
-                        <span class="current-page">${i}</span>
-                    </c:when>
-                    <c:otherwise>
-                        <span><a href="${pageContext.request.contextPath}/admin/room?page=${i}">${i}</a></span>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
+            <div class="pagination">
+			    <c:forEach begin="1" end="${totalPages}" var="i">
+			        <c:choose>
+			            <c:when test="${i == page}">
+			                <span class="page-item current-page">${i}</span>
+			            </c:when>
+			            <c:otherwise>
+			                <span class="page-item"><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="page-link">${i}</a></span>
+			            </c:otherwise>
+			        </c:choose>
+			    </c:forEach>
+			</div>
         </div>
     </main>
 </div>

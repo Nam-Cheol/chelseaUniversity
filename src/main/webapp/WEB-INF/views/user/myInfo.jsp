@@ -32,6 +32,7 @@
 					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>
 				</tr>
 				<c:if test="${user.userRole ne 'professor'}">
+				<c:if test="${user.userRole ne 'staff'}">
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
 				</tr>
@@ -44,6 +45,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/tuition/payment">등록금 납부 고지서</a></td>
 				</tr>
+				</c:if>
 				</c:if>
 			</table>
 		</div>
