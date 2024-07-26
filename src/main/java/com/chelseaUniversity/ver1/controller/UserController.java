@@ -75,7 +75,10 @@ public class UserController extends HttpServlet {
 			showSignIn(request, response, session);
 			break;
 		case "/studentList":
-			showStudentListPage(request, response, session, "/studentList");
+			showStudentListPage(request, response, session);
+			break;
+		case "/studentList/search":
+			showStudentListSearch(request, response, session);
 			break;
 		case "/professorList":
 			showProfessorListPage(request, response, session);
@@ -101,11 +104,11 @@ public class UserController extends HttpServlet {
 		case "/home":
 			showHomePage(request, response, session);
 			break;
-		case"/check":
-			showCheckPage(request,response,session);
+		case "/check":
+			showCheckPage(request, response, session);
 			break;
-		case"/myinfo":
-			showMyinfoPage(request,response,session);
+		case "/myinfo":
+			showMyinfoPage(request, response, session);
 			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -116,14 +119,16 @@ public class UserController extends HttpServlet {
 	/*
 	 * 인포 페이지 처리
 	 */
-	private void showMyinfoPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void showMyinfoPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/user/myInfo.jsp").forward(request, response);
 	}
 
 	/*
 	 * 유저 체크
 	 */
-	private void showCheckPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void showCheckPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/user/checkUser.jsp").forward(request, response);
 	}
 
@@ -220,124 +225,103 @@ public class UserController extends HttpServlet {
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			String action) throws ServletException, IOException {
-		
-		studentListForm = new StudentListForm();
-		// 검색값 초기화
-		String deptId = null;
-		String stuId = null;
-		int limit = 20;
-		
-		// 페이지
+	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		System.out.println("*** showStudentListPage 메소드 동작***");
 		int page = 1;
+		int pageSize = 20;
+
 		try {
-			if (request.getParameter("page") != null) {
-				page = Integer.parseInt(request.getParameter("page"));
+			String pageStr = request.getParameter("page");
+			if (pageStr != null) {
+				page = Integer.parseInt(pageStr);
 			}
 		} catch (Exception e) {
 			page = 1;
 		}
 
-		if(request.getParameter("dept_id") != null) {
-			deptId = request.getParameter("dept_id").trim();
-		}
-		
-		if(request.getParameter("stu_id") != null) {
-			stuId = request.getParameter("stu_id").trim();
-		}
-		
-		if(deptId == null && stuId == null) {
-			// 처음에 페이지 접속
-			System.out.println("페이지에 처음 접속");
-			viewStudentList(request, response, page , "20");
-		}else if(deptId.equals("") && stuId.equals("")) {
-			// 입력값 없이 조회 눌렀을 때
-			System.out.println("입력값 없이 조회");
-			viewStudentList(request, response, page , "20");
-		}else if(deptId != null && stuId.equals("")) {
-			// 학과 번호로만 검색할때 
-			System.out.println("학과 번호로만 조회");
-			searchStudentList(request, response, session, deptId, page, "20");
-		}
-		
-		System.out.println("파라미터 학과id : " + request.getParameter("dept_id"));
-		System.out.println("파라미터 학번 : " + request.getParameter("stu_id"));
-
-		System.out.println("deptId : " + deptId);
-		System.out.println("stuId : " + stuId);
-	}
-
-	private void viewStudentList(HttpServletRequest request, HttpServletResponse response, int page, String limit)
-			throws ServletException, IOException {
-		System.out.println("viewStudentList 메소드 작동");
-		
+		int offset = (page - 1) * pageSize; // 시작 위치 계산( offset 값 계산)
+		List<Student> allStudentList = studentRepository.selectStudentList(pageSize, offset);
+		System.out.println("전체학생 리스트 : " + allStudentList);
 		// 전체 학생 수
 		int totalStudents = studentRepository.selectStudentAmount();
+		System.out.println("전체 학생 수 : " + totalStudents);
 		// 총 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalStudents / Integer.parseInt(limit));
-		// 오프셋
-		int offset = (int) Math.ceil((double) (page - 1) * Integer.parseInt(limit));
-		// 리스트 출력
-		List<Student> allStudentList = studentRepository.selectStudentList(studentListForm, Integer.parseInt(limit), offset);
-		System.out.println("총 페이지수 : " + totalPages);
+		int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
+		System.out.println("총 페이지 수 : " + totalPages);
+
 		request.setAttribute("allStudentList", allStudentList);
 		request.setAttribute("totalStudents", totalStudents);
 		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("currentPage", page);
+
 		request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 	}
 
 	/**
-	 * 학생 정보 검색 - 학과id, 학번, 몇 개씩 볼 지
+	 * 교직원 -> 학생 리스트 검색
 	 * 
 	 * @param request
 	 * @param response
 	 * @param session
-	 * @param deptId 
-	 * @param limit
+	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session,
-			String deptId,int page, String limit) throws NumberFormatException, IOException, ServletException {
-	
-//
-//		try {
-//
-//			if (request.getParameter("dept_id") != null) {
-//
-				studentListForm.setDeptId(Integer.parseInt(deptId));
-				
-				// 리스트 출력
-				List<Student> student = studentRepository.selectByDepartmentId(studentListForm);
-				// 총 페이지 수 계산
-				int totalPages = (int) Math.ceil((double) student.size() / Integer.parseInt(limit));
-				// 오프셋
-				int offset = (int) Math.ceil((double) (page - 1) * Integer.parseInt(limit));
-				
-				request.setAttribute("allStudentList", student);
-				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-//
-//			}
-//
-//			if (request.getParameter("stu_id") != null) {
-//
-//				studentListForm.setDeptId(Integer.parseInt(stuId));
-//				studentListForm.setPage(Integer.parseInt(limit));
-//
-//				System.out.println("1 : " + stuId);
-//				System.out.println("3" + limit);
-//
-//				Student student = studentRepository.selectByStudentId(Integer.parseInt(stuId));
-//				request.setAttribute("oneStudent", student);
-//				System.out.println("222222222" + student);
-//				request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-//
-//			}
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+	private void showStudentListSearch(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		System.out.println("*** 학생 검색 메소드 동작 ***");
+		String deptId = request.getParameter("dept_id");
+		String stuId = request.getParameter("stu_id");
+		System.out.println("검색한 학과 : " + deptId);
+		System.out.println("검색한 학번 : " + stuId);
+		
+		if(deptId.equals("") && stuId.equals("")) {
+			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+		}
+		
+		int page = 1;
+		int pageSize = 20;
 
+		try {
+			String pageStr = request.getParameter("page");
+			if (pageStr != null) {
+				page = Integer.parseInt(pageStr);
+			}
+		} catch (Exception e) {
+			page = 1;
+		}
+		
+		int deptIdNum;
+		int stuIdNum;
+		if (deptId != null && stuId.equals("")) {
+			System.out.println("if - 학과 아이디로 검색!!!!");
+			deptIdNum = Integer.parseInt(deptId);
+			studentListForm.setDeptId(deptIdNum);
+			System.out.println("studentListForm에서 학과 아이디 : " + studentListForm.getDeptId());
+			List<Student> allStudentList = studentRepository.selectByDepartmentId(studentListForm);
+			System.out.println("학과 번호로 검색한 학생 리스트 : " + allStudentList);
+			int rowCount = allStudentList.size();
+			// 총 페이지 수 계산
+			int totalPages = (int) Math.ceil((double) rowCount / pageSize);
+			request.setAttribute("allStudentList", allStudentList);
+			request.setAttribute("totalPages", totalPages);
+			request.setAttribute("totalStudents", rowCount);
+		}
+		if(deptId.equals("") && stuId != null) {
+			System.out.println("if - 학번으로 검색!!!!");
+			stuIdNum = Integer.parseInt(stuId);
+			studentListForm.setStudentId(stuIdNum);
+			List<Student> allStudentList = studentRepository.selectByStudentIdList(studentListForm);
+			System.out.println("학번으로 검색한 학생 리스트 : " + allStudentList);
+			int rowCount = allStudentList.size();
+			// 총 페이지 수 계산
+			int totalPages = (int) Math.ceil((double) rowCount / pageSize);
+			request.setAttribute("allStudentList", allStudentList);
+			request.setAttribute("totalPages", totalPages);
+			request.setAttribute("totalStudents", rowCount);
+		}
+
+		request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
 	}
 
 	/**
@@ -455,11 +439,11 @@ public class UserController extends HttpServlet {
 		case "/changepassword":
 			changePasswordHandler(request, response, session);
 			break;
-		case"/update":
-			updateHandler(request,response,session);
+		case "/update":
+			updateHandler(request, response, session);
 			break;
-		case"/check":
-			checkHandler(request,response,session);
+		case "/check":
+			checkHandler(request, response, session);
 		default:
 			break;
 		}
@@ -468,11 +452,12 @@ public class UserController extends HttpServlet {
 	/*
 	 * 회원 정보 유효 확인 처리
 	 */
-	private void checkHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+	private void checkHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String password = request.getParameter("password");
-		User user = (User)session.getAttribute("user");
-		if(user.getId().equals(id) && user.getPassword().equals(password)) {
+		User user = (User) session.getAttribute("user");
+		if (user.getId().equals(id) && user.getPassword().equals(password)) {
 			System.out.println("보안검사 성공");
 			request.getRequestDispatcher("/WEB-INF/views/user/checkUser.jsp?check=success").forward(request, response);
 		} else {
@@ -484,37 +469,38 @@ public class UserController extends HttpServlet {
 	/*
 	 * 회원 정보 수정 처리
 	 */
-	private void updateHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	private void updateHandler(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
 		String address = request.getParameter("address");
 		String tel = request.getParameter("tel");
 		String email = request.getParameter("email");
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		System.out.println(tel);
-			if(user.getUserRole().equals("student")) {
-				StudentInfoDto student = (StudentInfoDto)session.getAttribute("principal");
-				student.setAddress(address);
-				student.setTel(tel);
-				student.setEmail(email);
-				userRepository.updateStudent(student);
-				session.setAttribute("principal",student);
-				response.sendRedirect(request.getContextPath()+"/user/myinfo");
-			} else if (user.getUserRole().equals("staff")) {
-				Staff staff = (Staff)session.getAttribute("principal");
-				staff.setAddress(address);
-				staff.setTel(tel);
-				staff.setEmail(email);
-				userRepository.updateStaff(staff);
-				session.setAttribute("principal",staff);
-				response.sendRedirect(request.getContextPath()+"/user/myinfo");
-			} else {
-				ProfessorInfoDto professor = (ProfessorInfoDto)session.getAttribute("principal");
-				professor.setAddress(address);
-				professor.setTel(tel);
-				professor.setEmail(email);
-				userRepository.updateProfessor(professor);
-				session.setAttribute("principal",professor);
-				response.sendRedirect(request.getContextPath()+"/user/myinfo");
-			}
+		if (user.getUserRole().equals("student")) {
+			StudentInfoDto student = (StudentInfoDto) session.getAttribute("principal");
+			student.setAddress(address);
+			student.setTel(tel);
+			student.setEmail(email);
+			userRepository.updateStudent(student);
+			session.setAttribute("principal", student);
+			response.sendRedirect(request.getContextPath() + "/user/myinfo");
+		} else if (user.getUserRole().equals("staff")) {
+			Staff staff = (Staff) session.getAttribute("principal");
+			staff.setAddress(address);
+			staff.setTel(tel);
+			staff.setEmail(email);
+			userRepository.updateStaff(staff);
+			session.setAttribute("principal", staff);
+			response.sendRedirect(request.getContextPath() + "/user/myinfo");
+		} else {
+			ProfessorInfoDto professor = (ProfessorInfoDto) session.getAttribute("principal");
+			professor.setAddress(address);
+			professor.setTel(tel);
+			professor.setEmail(email);
+			userRepository.updateProfessor(professor);
+			session.setAttribute("principal", professor);
+			response.sendRedirect(request.getContextPath() + "/user/myinfo");
+		}
 	}
 
 	/*

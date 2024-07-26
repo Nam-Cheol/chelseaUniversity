@@ -44,7 +44,7 @@
 
 	<!-- 학생 학과 번호와 학번으로 검색 -->
 	<div>
-		<form action="${pageContext.request.contextPath}/user/studentList" method="get">
+		<form action="${pageContext.request.contextPath}/user/studentList/search" method="get">
 			<label for="dept_id">학과 번호</label> 
 			<input type="search" id="dept_id" name="dept_id"> 
 			<label for="stu_id">학번</label> 
@@ -113,24 +113,6 @@
 					</tr>
 				</tbody>
 			</c:forEach>
-			<c:if test="${not empty oneStudent }">
-				<tbody>
-					<tr>
-						<td>${oneStudent.id}</td>
-						<td>${oneStudent.name}</td>
-						<td>${oneStudent.birthDate}</td>
-						<td>${oneStudent.gender}</td>
-						<td>${oneStudent.address}</td>
-						<td>${oneStudent.tel}</td>
-						<td>${oneStudent.email}</td>
-						<td>${oneStudent.deptId}</td>
-						<td>${oneStudent.grade}</td>
-						<td>${oneStudent.semester}</td>
-						<td>${oneStudent.entranceDate}</td>
-						<td>${oneStudent.graduationDate}</td>
-					</tr>
-				</tbody>
-			</c:if>
 		</table>
 
 		<div class="pagination">
