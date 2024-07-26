@@ -36,7 +36,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/notice/list">공지사항</a></td>
+					<td><a href="/chelseaUniversity/notice/list?page=0">공지사항</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/schedule/list"

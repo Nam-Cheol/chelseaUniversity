@@ -5,6 +5,8 @@ import com.chelseaUniversity.ver1.utill.NumberUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author 서영
@@ -14,6 +16,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@ToString
 public class Tuition {
 
 	private Integer studentId;
@@ -24,6 +28,9 @@ public class Tuition {
 	private Integer schAmount;
 	private Boolean status;
 	
+	private Integer id;
+	private Integer amount;
+	private String name;
 	/**
 	 * @return 금액 형식으로 변환한 등록금
 	 */

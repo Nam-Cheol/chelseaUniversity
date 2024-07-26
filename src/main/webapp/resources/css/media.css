@@ -166,15 +166,15 @@ p {
             display: flex;
             justify-content: center; /* 수평 중앙 정렬 */
 }
-button {
-/* 	width: 80px;
+.demon--slayer {
+	width: 80px;
 	margin: 20px;
 	margin-top: 30px;
 	background-color: #78EAFF;
 	border-color: #78EAFF;
 	border-radius: 5px;
 	border: none;
-	padding: 5px; */
+	padding: 5px; 
 }
 button:hover {
 	background-color: #3232FF;

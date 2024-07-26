@@ -62,7 +62,12 @@ public class NoticeController extends HttpServlet {
 	 * 공지사항 리스트 페이지 처리
 	 */
 	private void showListPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy();
+		int count = noticeRepository.selectNoticeCount();
+		int pageSize = 10;
+		int page = count / pageSize;
+		int offset = Integer.parseInt(request.getParameter("page"));
+		List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(pageSize,offset);
+		request.setAttribute("page", page);
 		request.setAttribute("noticeList", noticeList);
 		request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
 	}
@@ -70,7 +75,6 @@ public class NoticeController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 			String action = request.getPathInfo();
-		
 			switch (action) {
 			case "/search":
 				searchNotice(request,response);

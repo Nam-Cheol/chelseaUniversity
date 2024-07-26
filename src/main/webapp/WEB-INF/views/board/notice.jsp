@@ -83,6 +83,11 @@
 				</tr>
 			</c:forEach>
 		</table>
+		<div class="page">
+			<c:forEach var="i" begin="0" end="${page}">
+			<a href="${pageContext.request.contextPath}/notice/list?page=${i}" class="pageNum">${i + 1}</a>
+			</c:forEach>
+			</div>
 
 		<!-- 공지 조회 -->
 		<c:if test="${crud.equals(\"select\")}">
