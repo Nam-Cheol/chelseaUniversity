@@ -15,6 +15,7 @@
 </c:choose>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/password.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <c:choose>
 <c:when test="${param.change eq 'true'}"><script>alert("비밀번호가 변경되었습니다!!")</script></c:when>
 <c:when test="${param.change eq 'false'}"><script>alert("비밀번호 변경에 실패하였습니다")</script></c:when>
@@ -43,6 +44,7 @@
 					<td><a href="/chelseaUniversity/user/password" class="selected--menu">비밀번호 변경</a></td>
 				</tr>
 				<c:if test="${user.userRole ne 'professor'}">
+				<c:if test="${user.userRole ne 'staff'}">
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
 				</tr>
@@ -55,6 +57,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/tuition/payment">등록금 납부 고지서</a></td>
 				</tr>
+				</c:if>
 				</c:if>
 			</table>
 		</div>

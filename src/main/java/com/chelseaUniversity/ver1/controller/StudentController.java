@@ -43,7 +43,7 @@ public class StudentController extends HttpServlet {
 				if(app != null) {
 					request.setAttribute("app", app);
 				}
-				request.getRequestDispatcher("/WEB-INF/views/student/myInfo.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/user/myInfo.jsp").forward(request, response);
 				break;
 				
 			default:

@@ -23,8 +23,8 @@ public class StudentRepositoryImpl implements StudentRepository {
 	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,entrance_date,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
 	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ";
-	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id = ? ";
-	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id = ? ";
+	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id LIKE ? ";
+	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id LIKE ?";
 	public static final String SELECT_ALL_STUDENTS_ID = " SELECT id FROM student_tb ";
 
 	@Override
@@ -79,27 +79,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 	}
 
 	@Override
-	public Student selectByStudentId(Integer studentId) {
-		Student student = null;
-		try (Connection conn = DBUtil.getConnection()) {
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_ID);
-			pstmt.setInt(1, studentId);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				student = Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
-						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
-						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
-						.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
-						.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
-						.build();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return student;
-	}
-
-	@Override
 	public UserInfoForUpdateDto selectByUserId(Integer userId) {
 		// TODO Auto-generated method stub
 		return null;
@@ -133,7 +112,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 	 * 교직원 -> 학생 전체 조회
 	 */
 	@Override
-	public List<Student> selectStudentList(StudentListForm studentListForm, int limit, int offset) {
+	public List<Student> selectStudentList(int limit, int offset) {
 		List<Student> allStudentList = new ArrayList<>();
 
 		try (Connection conn = DBUtil.getConnection();
@@ -162,7 +141,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_DEPT_ID)) {
-			pstmt.setInt(1, studentListForm.getDeptId());
+			pstmt.setString(1, "%"+studentListForm.getDeptId()+"%");
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					student.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
@@ -184,9 +163,29 @@ public class StudentRepositoryImpl implements StudentRepository {
 	}
 
 	@Override
-	public List<Student> selectByStudentId(StudentListForm studentListForm) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Student> selectByStudentIdList(StudentListForm studentListForm) {
+		List<Student> student = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_ID)) {
+			pstmt.setString(1, "%"+studentListForm.getStudentId()+"%");
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					student.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+							.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+							.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+							.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+							.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+							.build());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return student;
+		
 	}
 
 	/**
@@ -257,6 +256,12 @@ public class StudentRepositoryImpl implements StudentRepository {
 	public int updateStudentGradeAndSemester4_2() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Student selectByStudentId(Integer studentId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

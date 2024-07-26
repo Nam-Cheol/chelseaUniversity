@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
 <c:choose>
 <c:when test="${user.userRole eq 'staff'}">
@@ -14,8 +14,8 @@
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
 </c:otherwise>
 </c:choose>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/notice.css">
 <style>
@@ -53,86 +53,20 @@
 
 	<main>
 		<h1>학사일정</h1>
+			<div class="split--div"></div>
 		<div class="container">
-			<div></div>
-
+					<c:forEach var="schedule" items="${scheduleList}">
 			<table class="room--table">
 				<tbody>
-
 					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">01-27~02-01</td>
-						<td class="line">2023-1학기 예비수강신청</td>
+						<td class="year" width="100px;">2024년</td>
+						<td class="month"><fmt:formatDate value="${schedule.startDay}" pattern="MM-dd" />
+						~<fmt:formatDate value="${schedule.endDay}" pattern="MM-dd" /></td>
+						<td class="information"> ${schedule.information}</td>
 					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">02-13~02-17</td>
-						<td class="line">2023-1학기 수강신청</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">02-17~02-23</td>
-						<td class="line">2023-1학기 등록</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">02-22~02-22</td>
-						<td class="line">복학 접수 마감</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">02-26~02-26</td>
-						<td class="line">졸업예배</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">02-27~02-27</td>
-						<td class="line">학위수여식</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">03-01~03-01</td>
-						<td class="line">삼일절</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">03-02~03-02</td>
-						<td class="line">개강/교무위원회</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">03-06~03-08</td>
-						<td class="line">수강신청 확인 및 변경</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">03-10~03-13</td>
-						<td class="line">2023-1학기 추가등록</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">03-13~03-17</td>
-						<td class="line">조기졸업 신청</td>
-					</tr>
-
-					<tr>
-						<td class="month" width="100px;">월</td>
-						<td class="line">03-15~03-15</td>
-						<td class="line">미등록자 일반 휴학 접수 마감/ 등록금 전액반환 마감</td>
-					</tr>
-
 				</tbody>
 			</table>
+					</c:forEach>
 		</div>
 	</main>
 

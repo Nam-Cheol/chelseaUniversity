@@ -14,6 +14,7 @@
 </c:choose>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myinfo.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
 	<!-- 세부 메뉴 div-->
@@ -31,6 +32,7 @@
 					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>
 				</tr>
 				<c:if test="${user.userRole ne 'professor'}">
+				<c:if test="${user.userRole ne 'staff'}">
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
 				</tr>
@@ -43,6 +45,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/tuition/payment">등록금 납부 고지서</a></td>
 				</tr>
+				</c:if>
 				</c:if>
 			</table>
 		</div>
@@ -198,6 +201,5 @@
 			<!-- 필요 시 -->
 		</footer>
 
-</div>
 </body>
 </html>

@@ -16,7 +16,7 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class ScheuleRepositoryImpl implements ScheuleRepository{
 
-	private static final String SELECT_SCHEDULE = " SELECT * FROM schedule_tb limit 6";
+	private static final String SELECT_SCHEDULE = " SELECT * FROM schedule_tb limit ? offset ?";
 	
 	public final String SELECT_ALL_SCHEDUE = " SELECT * FROM schedule_tb ORDER BY id ASC LIMIT ? OFFSET ? ";
 	public final String COUNT_ALL_SCHEDULE = " SELECT count(*) AS count FROM schedule_tb ";
@@ -27,7 +27,6 @@ public class ScheuleRepositoryImpl implements ScheuleRepository{
 	
 	@Override
 	public int insertSchoeduleFormDto(Schedule schedule) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -63,15 +62,16 @@ public class ScheuleRepositoryImpl implements ScheuleRepository{
 
 	@Override
 	public int deleteSchoeduleFormDtoByStaffIdAndId(Integer id) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public List<Schedule> selectSchodule() {
+	public List<Schedule> selectSchodule(int limit, int offset) {
 		List<Schedule>scheduleList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_SCHEDULE)){
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Schedule schedule = Schedule.builder().startDay(rs.getDate("start_day"))
@@ -87,19 +87,16 @@ public class ScheuleRepositoryImpl implements ScheuleRepository{
 
 	@Override
 	public List<ScheduleDto> selectSchoduleMouth() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ScheduleDto selectScheduleById(Integer id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Schedule> selectListByMonth(Integer month) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

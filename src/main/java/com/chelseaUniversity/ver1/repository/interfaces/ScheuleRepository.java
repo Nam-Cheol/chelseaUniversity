@@ -13,7 +13,7 @@ public interface ScheuleRepository { // todo ScheduleRepository로 변경
 public int insertSchoeduleFormDto(Schedule schedule);
 public int updateSchoeduleFormDtoBycontent(ScheduleFormDto scheduleFormDto);
 public int deleteSchoeduleFormDtoByStaffIdAndId(Integer id);
-public List<Schedule> selectSchodule();
+public List<Schedule> selectSchodule(int limit,int offset);
 public List<ScheduleDto> selectSchoduleMouth();
 
 

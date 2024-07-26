@@ -18,6 +18,7 @@
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/notice.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <style>
 .select--button {
 	margin-left: 350px;
@@ -34,9 +35,9 @@
 		<!-- 메뉴 -->
 		<!-- 선택된 메뉴에 class="selected--menu" 추가해주세요 -->
 		<div class="sub--menu--mid">
-			<table class="sub--menu--table" border="0">
+			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/notice/list" class="selected--menu">공지사항</a></td>
+					<td><a href="/chelseaUniversity/notice/list?page=0" class="selected--menu">공지사항</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
