@@ -6,6 +6,7 @@
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/myinfo.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
 	<!-- 세부 메뉴 div-->
@@ -71,7 +72,7 @@
 					</tr>
 					<tr>
 						<td>중간시험</td>
-						<td><input type="number" name="mixExam" id="midExam" required="required"></td>
+						<td><input type="number" name="midExam" id="midExam" required="required"></td>
 					</tr>
 					<tr>
 						<td>기말시험</td>

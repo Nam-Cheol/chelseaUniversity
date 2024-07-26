@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>아이디 비밀번호 확인</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/findUser.css" type="text/css">
 </head>
 <body>

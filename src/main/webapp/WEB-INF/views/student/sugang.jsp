@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/subject.css">
 
@@ -32,7 +32,7 @@
 							신청</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/sugang/preAppList?page=1"
+					<td><a href="/chelseaUniversity/sugang/appList?page=1"
 						class="selected--menu">수강 신청</a></td>
 				</tr>
 				<tr>
@@ -44,16 +44,16 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>예비 수강 신청</h1>
+		<h1>수강 신청</h1>
 		<div class="split--div"></div>
 		
-		<a href="/chelseaUniversity/sugang/preAppList">
+		<a href="/chelseaUniversity/sugang/appList">
 			<button class="preStuSubList--button">신청 내역</button>
 			</a>
 		
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="${pageContext.request.contextPath}/sugang/pre"
+			<form action="${pageContext.request.contextPath}/sugang/application"
 				method="get">
 				<div>
 					<input type="hidden" name="page" value="1">
@@ -252,13 +252,14 @@
 								
 								    <c:choose>
 								        <c:when test="${isEnrolled}">
-								            <form action="/chelseaUniversity/sugang/delete" method="get">
+								            <form action="/chelseaUniversity/sugang/deleteSugang" method="get">
 												<button type="submit" name="id" value="${subject.id}" onclick="return confirm('수강신청을 취소하시겠습니까?');" style="background-color: #a7a7a7;">취소</button>
 											</form>
 								        </c:when>
 								        <c:otherwise>
-								            <form action="/chelseaUniversity/sugang/regist" method="get">
+								            <form action="/chelseaUniversity/sugang/registrationSugang" method="get">
 								            	<input type="hidden" name="subId" value="${subject.id}">
+								            	<input type="hidden" name="subGrade" value="${subject.grades}">
 								            	<input type="hidden" name="subType" value="${subject.type}">
 								            	<input type="hidden" name="subDay" value="${subject.subDay}">
 								            	<input type="hidden" name="startTime" value="${subject.startTime}">
@@ -282,11 +283,11 @@
 					<%
 						if(request.getParameter("page") != null) {
 						if(Integer.parseInt(request.getParameter("page")) == i) {%>
-							<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"
+							<li><a href="${pageContext.request.contextPath}/sugang/application?page=<%=i%>"
 								style="font-weight: 700; color: #007bff"><%=i%></a>
 							
 						<%} else { %>
-					<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"><%=i%></a>
+					<li><a href="${pageContext.request.contextPath}/sugang/application?page=<%=i%>"><%=i%></a>
 					<%
 								}
 							}
