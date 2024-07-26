@@ -1,59 +1,62 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>첼시대학교</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/media.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/common.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/header.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/footer.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/media.css">
 </head>
 <body>
 
-<header>
+	<header>
 
-<p class="h-border-top"></p>
-<div class="header-wrap">
+		<p class="h-border-top"></p>
+		<div class="header-wrap">
 
-<!-- s : user-utils -->
-<div class="user-utils-wrap">
-<ul class="user-utils">
-<li>
-	<a href="${pageContext.request.contextPath}/user/home">${principal.name} (${principal.id})</a>
-</li>
-<li>
-	<a href="${pageContext.request.contextPath}/user/signin?logout=true">로그아웃</a>
-</li>
-</ul>
-</div>
-<!-- e : user-utils -->
+			<!-- s : user-utils -->
+			<div class="user-utils-wrap">
+				<ul class="user-utils">
+					<li><a href="${pageContext.request.contextPath}/user/home">${principal.name}
+							(${principal.id})</a></li>
+					<li><a
+						href="${pageContext.request.contextPath}/user/signin?logout=true">로그아웃</a>
+					</li>
+				</ul>
+			</div>
+			<!-- e : user-utils -->
 
-<nav class="header-nav">
-<h1 class="header-logo">
-<a href="${pageContext.request.contextPath}/user/home">
-<picture>
-<source srcset="https://img.chelseafc.com/image/upload/f_auto,c_pad,ar_1,w_140,h_140,q_auto:best/Site%20Chelsea%20Badges/Main_Website_Badge_-_Colour.png" media="(min-width: 400px)" type="image/webp">
-<img alt="첼시대학교" src="${pageContext.request.contextPath}/resources/img/Chelsea_FC_Logo.svg.png" >
-</picture>
-</a>
-</h1>
-<!-- s : gnb -->
-<ul class="gnb">
-<li>
-<a href="${pageContext.request.contextPath}/user/home">홈</a>
-</li>
-<li>
-<a href="${pageContext.request.contextPath}/user/myinfo">MY</a>
-</li>
-<li>
-<a href="${pageContext.request.contextPath}/index.jsp">수업</a>
-</li>
-<li>
-<a href="${pageContext.request.contextPath}/notice/list?page=0">학사정보</a>
-</li>
-</ul>
+	<nav class="header-nav">
+	<h1 class="header-logo">
+	<a href="${pageContext.request.contextPath}/user/home">
+	<picture>
+	<source srcset="https://img.chelseafc.com/image/upload/f_auto,c_pad,ar_1,w_140,h_140,q_auto:best/Site%20Chelsea%20Badges/Main_Website_Badge_-_Colour.png" media="(min-width: 400px)" type="image/webp">
+	<img alt="첼시대학교" src="${pageContext.request.contextPath}/resources/img/Chelsea_FC_Logo.svg.png" >
+	</picture>
+	</a>
+	</h1>
+	<!-- s : gnb -->
+	<ul class="gnb">
+	<li>
+	<a href="${pageContext.request.contextPath}/user/home">홈</a>
+	</li>
+	<li>
+		<a href="${pageContext.request.contextPath}/user/myinfo">MY</a>
+	</li>
+	<li>
+	<a href="${pageContext.request.contextPath}/index.jsp">수업</a>
+	</li>
+	<li>
+	<a href="${pageContext.request.contextPath}/notice/list?page=0">학사정보</a>
+	</li>
+	</ul>
 <!-- e : gnb -->
 <div class="menu-toggle-wrap">
 	<button type="button" class="menu-toggle">
@@ -62,11 +65,10 @@
 </div>
 </nav>
 
-</div>
+		</div>
 
-<div class="mobile-nav">
-<p>X</p>
-</div>
-</header>
-
+		<div class="mobile-nav">
+			<p>X</p>
+		</div>
+	</header>
 <body>

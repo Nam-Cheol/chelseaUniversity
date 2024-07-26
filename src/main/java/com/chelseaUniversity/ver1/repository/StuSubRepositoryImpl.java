@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.StuSub;
+import com.chelseaUniversity.ver1.model.StuSubDetail;
 import com.chelseaUniversity.ver1.model.dto.UpdateStudentGradeDto;
 import com.chelseaUniversity.ver1.model.dto.response.StuSubAppDto;
 import com.chelseaUniversity.ver1.model.dto.response.StuSubDayTimeDto;
@@ -22,17 +23,14 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 			+ "		WHERE student_id = ? AND subject_id = ? ";
 	public final String INSERT = " INSERT INTO stu_sub_tb (student_id, subject_id)\r\n"
 			+ "		VALUES (?, ?) ";
+	public final String INSERT_FAIL_SUB = " INSERT INTO over_subject (student_id, subject_id) "
+			+ "		VALUES (?, ?) ";
+	private final String UPDATE_BY_ID = " UPDATE stu_sub_tb SET GRADE = ? WHERE student_id = ? AND subject_id = ? ";
 
 	@Override
 	public List<StudentInfoForProfessorDto> selectBySubjectId(Integer subjectId) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public int updateGradeByStudentIdAndSubjectId(UpdateStudentGradeDto updateStudentGradeDto) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -108,6 +106,53 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 	public int updateCompleteGradeByStudentIdAndSubjectId(Integer studentId, Integer subjectId, Integer completeGrade) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void updateGradeByStudentIdAndSubjectId(StuSubDetail stuSubDetail) {
+		try (Connection conn = DBUtil.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(UPDATE_BY_ID)) {
+				pstmt.setString(1, stuSubDetail.getGrade());
+				pstmt.setInt(2, stuSubDetail.getId());
+				pstmt.setInt(3, stuSubDetail.getSubjectId());
+				System.out.println(stuSubDetail.getGrade());
+				System.out.println(stuSubDetail.getId());
+				System.out.println(stuSubDetail.getSubjectId());
+				int result = pstmt.executeUpdate();
+				if(result == 1) {
+					conn.commit();
+				}
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 예비 수강 실패 목록
+	 */
+	@Override
+	public int insertFailSub(Integer studentId, Integer subjectId) {
+		int rsCount = 0;
+		try (Connection conn = DBUtil.getConnection()) {
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT)) {
+				pstmt.setInt(1, studentId);
+				pstmt.setInt(2, subjectId);
+				rsCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rsCount;
 	}
 
 }

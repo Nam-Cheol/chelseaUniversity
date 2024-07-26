@@ -30,6 +30,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>
 				</tr>
+				<c:if test="${user.userRole ne 'professor'}">
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
 				</tr>
@@ -42,6 +43,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/tuition/payment">등록금 납부 고지서</a></td>
 				</tr>
+				</c:if>
 			</table>
 		</div>
 	</div>
@@ -167,6 +169,7 @@
 				}
 			</script>
 			<hr>
+			<c:if test="${user.userRole ne 'professor'}">
 			<h4>
 				<span style="font-weight: 600;">학적 변동 내역</span>
 			</h4>
@@ -184,6 +187,7 @@
 					
 				</tbody>
 			</table>
+			</c:if>
 			
 	</main>
 </div>

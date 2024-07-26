@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<c:if test="${principal == null}"><% response.sendRedirect(request.getContextPath()+"/user/signin"); %></c:if>
+<c:choose>
+<c:when test="${user.userRole eq 'staff'}">
+<%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
+</c:when>
+<c:when test="${user.userRole eq 'professor'}">
+<%@ include file="/WEB-INF/views/home/professorHeader.jsp" %>
+</c:when>
+<c:otherwise>
+<%@ include file="/WEB-INF/views/home/studentHeader.jsp" %>
+</c:otherwise>
+</c:choose>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
@@ -22,6 +33,14 @@
 				<tr>
 					<td><a href="${pageContext.request.contextPath}/subject/list" class="selected--menu">전체 강의 조회</a></td>
 				</tr>
+				<c:if test="${user.userRole eq 'professor'}">
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/professor/subject" class="selected--menu">내 강의 조회</a></td>
+				</tr>
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/professor/evaluationList" class="selected--menu">내 강의 평가</a></td>
+				</tr>
+				</c:if>
 			</table>
 		</div>
 	</div>
@@ -34,7 +53,7 @@
 
 		<!-- 필터 및 검색 -->
 		<div class="sub--filter">
-			<form action="/subject/list/search" method="get">
+			<form action="${pageContext.request.contextPath}/subject/search?" method="get">
 				<div>
 					<!-- 개설연도 숫자 -->
 					<label for="subYear">연도 </label> <input type="number" value="2023"
@@ -110,7 +129,7 @@
 
 		<h4>
 			<span style="font-weight: 600;">강의 목록</span>&nbsp; <span
-				style="color: gray; font-size: 18px;">[총 80건]</span>
+				style="color: gray; font-size: 18px;"><c:out value="[총 ${rowCount}건]"/></span>
 		</h4>
 		<table border="1" class="sub--list--table">
 			<thead>
@@ -156,7 +175,8 @@
 						<td><c:out value="${subject.grades}"></c:out></td>
 						<td><c:out value="${subject.numOfStudent}"></c:out></td>
 						<td><c:out value="${subject.capacity}"></c:out></td>
-						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}">강의계획서</a></td>
+						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}"
+                            onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의계획서</a></td>
 					</tr>
 				</c:forEach>
 
@@ -622,7 +642,7 @@
 
 			</tbody>
 		</table>
-
+	<c:if test="${isSearch ne true}">
 		<ul class="page--list">
 
 
@@ -633,6 +653,7 @@
 			<li><a href="${pageContext.request.contextPath}/subject/list?page=3">3</a>
 			<li><a href="${pageContext.request.contextPath}/subject/list?page=4">4</a>
 		</ul>
+	</c:if>
 
 
 
