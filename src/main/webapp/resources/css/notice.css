@@ -99,3 +99,14 @@
 	margin-top: -20px;
 	margin-bottom: 20px;
 }
+.page {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+.pageNum {
+	margin: 0 15px;
+}
+.pageNum:hover {
+	color: blue;
+}
