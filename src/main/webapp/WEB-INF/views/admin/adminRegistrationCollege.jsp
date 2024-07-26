@@ -4,9 +4,9 @@
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="adminHeader.jsp"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="/WEB-INF/views/home/staffHeader.jsp" %>
 
 	<section>
 <div class="college-box">
@@ -29,6 +29,9 @@
 			</tr>
 			<tr>
 				<td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
+			</tr>
+			<tr>	
+				<td><a href="${pageContext.request.contextPath}/admin/schedule">학사일정</a></td>
 			</tr>
 		</table>
 	</div>
