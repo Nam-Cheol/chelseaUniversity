@@ -137,7 +137,7 @@ public class UserController extends HttpServlet {
 				int limit = 8;
 				int offset = 0;
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
@@ -147,7 +147,7 @@ public class UserController extends HttpServlet {
 				int limit = 8;
 				int offset = 0;
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -155,7 +155,7 @@ public class UserController extends HttpServlet {
 				int limit = 8;
 				int offset = 0;
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -697,7 +697,7 @@ public class UserController extends HttpServlet {
 				int offset = 0;
 				StudentInfoDto student = userRepository.studentById(id);
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				session.setAttribute("principal", student);
 				session.setAttribute("user", user);
@@ -710,7 +710,7 @@ public class UserController extends HttpServlet {
 				int offset = 0;
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				String deptname = professorRepository.selectProfessorDeptById(professor.getDeptId());
 				session.setAttribute("principal", professor);
 				session.setAttribute("user", user);
@@ -723,7 +723,7 @@ public class UserController extends HttpServlet {
 				int offset = 0;
 				Staff staff = userRepository.staffById(id);
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				session.setAttribute("principal", staff);
 				session.setAttribute("user", user);
 				request.setAttribute("notice", noticeList);

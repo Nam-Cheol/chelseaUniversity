@@ -188,7 +188,6 @@ public class SugangController extends HttpServlet {
 			break;
 		case "/subjectList":
 			break;
-
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
