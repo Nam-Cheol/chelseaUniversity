@@ -20,7 +20,6 @@
 
 		<p class="h-border-top"></p>
 		<div class="header-wrap">
-
 			<!-- s : user-utils -->
 			<div class="user-utils-wrap">
 				<ul class="user-utils">

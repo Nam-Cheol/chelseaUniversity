@@ -137,7 +137,7 @@ public class UserController extends HttpServlet {
 				int limit = 8;
 				int offset = 0;
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
@@ -147,7 +147,7 @@ public class UserController extends HttpServlet {
 				int limit = 8;
 				int offset = 0;
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -155,7 +155,7 @@ public class UserController extends HttpServlet {
 				int limit = 8;
 				int offset = 0;
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				request.setAttribute("notice", noticeList);
 				request.setAttribute("schedule", scheduleList);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -222,6 +222,14 @@ public class UserController extends HttpServlet {
 	 */
 	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			String action) throws ServletException, IOException {
+		
+		studentListForm = new StudentListForm();
+		// 검색값 초기화
+		String deptId = null;
+		String stuId = null;
+		int limit = 20;
+		
+		// 페이지
 		int page = 1;
 		try {
 			if (request.getParameter("page") != null) {
@@ -231,44 +239,33 @@ public class UserController extends HttpServlet {
 			page = 1;
 		}
 
-		String deptId = null;
-		String stuId = null;
-		String limit = null;
-
-		try {
-			if (request.getParameter("dept_id") != null || !request.getParameter("dept_id").equals("")) {
-				deptId = request.getParameter("dept_id").trim();
-			}
-			if (request.getParameter("stu_id") != null || !request.getParameter("stu_id").equals("")) {
-				stuId = request.getParameter("stu_id").trim();
-			}
-			if (request.getParameter("limit") != null) {
-				limit = request.getParameter("limit");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(request.getParameter("dept_id") != null) {
+			deptId = request.getParameter("dept_id").trim();
 		}
-
+		
+		if(request.getParameter("stu_id") != null) {
+			stuId = request.getParameter("stu_id").trim();
+		}
+		
+		if(deptId == null && stuId == null) {
+			// 처음에 페이지 접속
+			System.out.println("페이지에 처음 접속");
+			viewStudentList(request, response, page , "20");
+		}else if(deptId.equals("") && stuId.equals("")) {
+			// 입력값 없이 조회 눌렀을 때
+			System.out.println("입력값 없이 조회");
+			viewStudentList(request, response, page , "20");
+		}else if(deptId != null && stuId.equals("")) {
+			// 학과 번호로만 검색할때 
+			System.out.println("학과 번호로만 조회");
+			searchStudentList(request, response, session, deptId, page, "20");
+		}
+		
 		System.out.println("파라미터 학과id : " + request.getParameter("dept_id"));
 		System.out.println("파라미터 학번 : " + request.getParameter("stu_id"));
-		System.out.println("파라미터 리밋 : " + request.getParameter("limit"));
 
 		System.out.println("deptId : " + deptId);
 		System.out.println("stuId : " + stuId);
-		System.out.println("limit : " + limit);
-		try {
-			if (deptId == null && stuId == null && limit == null) {
-				viewStudentList(request, response, page, limit);
-			}else if(deptId == null && stuId == null && limit == null) {
-				viewStudentList(request, response, page, limit);
-			}
-			else if(deptId != null && stuId == null && limit != null) {
-				searchStudentList(request, response, session, deptId, page, limit);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private void viewStudentList(HttpServletRequest request, HttpServletResponse response, int page, String limit)
@@ -302,14 +299,13 @@ public class UserController extends HttpServlet {
 	 */
 	private void searchStudentList(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			String deptId,int page, String limit) throws NumberFormatException, IOException, ServletException {
-		studentListForm = new StudentListForm();
+	
 //
 //		try {
 //
 //			if (request.getParameter("dept_id") != null) {
 //
 				studentListForm.setDeptId(Integer.parseInt(deptId));
-				studentListForm.setPage(Integer.parseInt(limit));
 				
 				// 리스트 출력
 				List<Student> student = studentRepository.selectByDepartmentId(studentListForm);
@@ -697,7 +693,7 @@ public class UserController extends HttpServlet {
 				int offset = 0;
 				StudentInfoDto student = userRepository.studentById(id);
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				StuStat stuStat = stuStatRepository.selectStatusByStudentId(id);
 				session.setAttribute("principal", student);
 				session.setAttribute("user", user);
@@ -710,7 +706,7 @@ public class UserController extends HttpServlet {
 				int offset = 0;
 				ProfessorInfoDto professor = userRepository.professorById(id);
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				String deptname = professorRepository.selectProfessorDeptById(professor.getDeptId());
 				session.setAttribute("principal", professor);
 				session.setAttribute("user", user);
@@ -723,7 +719,7 @@ public class UserController extends HttpServlet {
 				int offset = 0;
 				Staff staff = userRepository.staffById(id);
 				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(limit,offset);
-				List<Schedule> scheduleList = scheuleRepository.selectSchodule();
+				List<Schedule> scheduleList = scheuleRepository.selectSchodule(limit,offset);
 				session.setAttribute("principal", staff);
 				session.setAttribute("user", user);
 				request.setAttribute("notice", noticeList);
