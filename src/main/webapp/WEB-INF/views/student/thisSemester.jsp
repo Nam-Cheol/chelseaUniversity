@@ -94,6 +94,7 @@
 
 		<div>
 			<h4 style="font-weight: 600">과목별 성적</h4>
+			<c:if test="${gradeList != null}">
 			<table border="1" class="sub--list--table">
 				<thead>
 					<tr>
@@ -108,32 +109,34 @@
 					</tr>
 				</thead>
 				<tbody>
-
+			<c:forEach var="grade" items="${gradeList}">
 					<tr>
-						<td>2023년</td>
-						<td>1학기</td>
-						<td>10001</td>
-						<td class="sub--list--name">딥러닝의 기초</td>
-						<td>전공</td>
-						<td>3</td>
-						<td>A+</td>
+						<td>${grade.subYear}</td>
+						<td>${grade.semester}</td>
+						<td>${grade.subjectId}</td>
+						<td class="sub--list--name">${grade.name}</td>
+						<td>${grade.type}</td>
+						<td>${grade.grade}</td>
+						<td>${grade.gradeValue}</td>
 						<td><a
-							href="/chelseaUniversity/grade/evaluation?subjectId=10001"
+							href="/chelseaUniversity/grade/evaluation?subjectId=${grade.subjectId}"
 							onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">Click</a>
-
-
-
 						</td>
 					</tr>
-
+			</c:forEach>
 				</tbody>
 			</table>
+				</c:if>
+				<c:if test="${gradeList == null}">
+					<br><h3>금학기 들은 과목이 없습니다.</h3><br>
+				</c:if>
 			<p style="color: #888; margin-bottom: 40px;">※ 강의 평가 후 성적 조회 가능</p>
 		</div>
 		<hr>
 		<br>
 		<div>
 			<h4 style="font-weight: 600">누계 성적</h4>
+			<c:if test="${myGrade != null}">
 			<table border="1" class="sub--list--table">
 				<thead>
 					<tr>
@@ -146,15 +149,18 @@
 				</thead>
 				<tbody>
 					<tr>
-
-						<td>2023년</td>
-						<td>1학기</td>
-						<td>3</td>
-						<td>3</td>
-						<td>4.50</td>
+						<td>${myGrade.subYear}</td>
+						<td>${myGrade.semester}</td>
+						<td>${myGrade.sumGrades}</td>
+						<td>${myGrade.myGrades}</td>
+						<td>${myGrade.average}</td>
 					</tr>
 				</tbody>
 			</table>
+					</c:if>
+			<c:if test="${myGrade == null}">
+					<br><h3>금학기 들은 과목이 없습니다.</h3><br>
+					</c:if>
 		</div>
 
 
