@@ -61,7 +61,7 @@ public class ProfessorController extends HttpServlet {
 
 			switch (action) {
 			case "/info":
-				request.getRequestDispatcher("/WEB-INF/views/professor/myInfo.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/user/myInfo.jsp").forward(request, response);
 				break;
 
 			case "/subject":
@@ -96,7 +96,9 @@ public class ProfessorController extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		int professorId = user.getId();
+		System.out.println(professorId);
 		List<Evaluation> evaluationList = evaluationRepository.selectEvaluationByProfessorId(professorId);
+		System.out.println(evaluationList);
 		request.setAttribute("evaluationList", evaluationList);
 
 		request.getRequestDispatcher("/WEB-INF/views/professor/evaluationList.jsp").forward(request, response);

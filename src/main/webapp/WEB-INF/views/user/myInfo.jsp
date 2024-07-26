@@ -169,6 +169,7 @@
 				}
 			</script>
 			<hr>
+			<c:if test="${user.userRole ne 'professor'}">
 			<h4>
 				<span style="font-weight: 600;">학적 변동 내역</span>
 			</h4>
@@ -186,6 +187,7 @@
 					
 				</tbody>
 			</table>
+			</c:if>
 			
 	</main>
 </div>

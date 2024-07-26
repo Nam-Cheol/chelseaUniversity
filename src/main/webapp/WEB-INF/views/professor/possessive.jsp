@@ -62,7 +62,8 @@
 						<td><c:out value="${subject.id}"></c:out></td>
 						<td><c:out value="${subject.name}"></c:out></td>
 						<td><c:out value="${subject.subDay} ${subject.startTime}:00-${subject.endTime}:00 (${subject.roomId})"></c:out></td>
-						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}">강의계획서</a></td>
+						<td><a href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}"
+                            onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의계획서</a></td>
 						<td><a href="${pageContext.request.contextPath}/professor/studentList?id=${subject.id}">학생 목록</a></td>
 					</tr>
 				</c:forEach>
