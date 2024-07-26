@@ -252,12 +252,12 @@
 								
 								    <c:choose>
 								        <c:when test="${isEnrolled}">
-								            <form action="/chelseaUniversity/sugang/delete" method="get">
+								            <form action="/chelseaUniversity/sugang/deleteSugang" method="get">
 												<button type="submit" name="id" value="${subject.id}" onclick="return confirm('수강신청을 취소하시겠습니까?');" style="background-color: #a7a7a7;">취소</button>
 											</form>
 								        </c:when>
 								        <c:otherwise>
-								            <form action="/chelseaUniversity/sugang/regist" method="get">
+								            <form action="/chelseaUniversity/sugang/registrationSugang" method="get">
 								            	<input type="hidden" name="subId" value="${subject.id}">
 								            	<input type="hidden" name="subGrade" value="${subject.grades}">
 								            	<input type="hidden" name="subType" value="${subject.type}">
@@ -283,11 +283,11 @@
 					<%
 						if(request.getParameter("page") != null) {
 						if(Integer.parseInt(request.getParameter("page")) == i) {%>
-							<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"
+							<li><a href="${pageContext.request.contextPath}/sugang/application?page=<%=i%>"
 								style="font-weight: 700; color: #007bff"><%=i%></a>
 							
 						<%} else { %>
-					<li><a href="${pageContext.request.contextPath}/sugang/pre?page=<%=i%>"><%=i%></a>
+					<li><a href="${pageContext.request.contextPath}/sugang/application?page=<%=i%>"><%=i%></a>
 					<%
 								}
 							}

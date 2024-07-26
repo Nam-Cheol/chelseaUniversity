@@ -86,6 +86,10 @@ public class SugangController extends HttpServlet {
 		
 		boolean preSeason = "진행".equals(registrationRepository.isPreSugangSeason()) ? true : false;
 		boolean season = "진행".equals(registrationRepository.isSugangSeason()) ? true : false;
+		
+		// TODO 수강신청 기능 구현 중 임시 값
+		preSeason = true;
+		season = true;
 
 		switch (action) {
 		case "/subjectList":
@@ -130,13 +134,12 @@ public class SugangController extends HttpServlet {
 				List<SubjectHistory> successSubList = new ArrayList<>();
 				List<Integer> failList = registrationRepository.failResistration(principalStu.getId());
 				List<Integer> successList = registrationRepository.successResistration(principalStu.getId());
-				
 				for (int failNum : failList) {
-					failSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), failNum));
+					failSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), failNum, RegistrationRepositoryImpl.FAIL_SELECT_SUBJECT_HISTORY));
 				}
 				
 				for (int successNum : successList) {
-					successSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), successNum));
+					successSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), successNum, RegistrationRepositoryImpl.SUCCESS_SELECT_SUBJECT_HISTORY));
 				}
 				
 				boolean failCheck = failSubList.isEmpty();
@@ -165,7 +168,7 @@ public class SugangController extends HttpServlet {
 				List<Integer> successList = registrationRepository.successResistration(principalStu.getId());
 				
 				for (int successNum : successList) {
-					successSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), successNum));
+					successSubList.add(registrationRepository.resistrationHistory(principalStu.getId(), successNum, RegistrationRepositoryImpl.SUCCESS_SELECT_SUBJECT_HISTORY));
 				}
 				
 				boolean successCheck = successSubList.isEmpty();
@@ -191,6 +194,7 @@ public class SugangController extends HttpServlet {
 
 		case "/regist":
 			registrationPreSubject(request, response, principalStu);
+			response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 			break;
 
 		case "/delete":
@@ -208,7 +212,14 @@ public class SugangController extends HttpServlet {
 			break;
 			
 		case "/deleteSugang":
-			deleteSubject(request, response, principalStu);
+			try {
+				int subjectId = Integer.parseInt(request.getParameter("id"));
+				registrationRepository.deleteSubjectRegistration(principalStu.getId(), subjectId);
+				registrationRepository.deleteNumOfStudent(subjectId);
+			} catch (Exception e) {
+				response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
+			}
+			response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
 			break;
 			
 		case "/registrationSugang":
@@ -223,10 +234,11 @@ public class SugangController extends HttpServlet {
 
 
 
+	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
-		System.out.println("action : " + action);
 		switch (action) {
 		case "/updatePeriod0":
 			updatePeriod0(request, response);
@@ -409,6 +421,7 @@ public class SugangController extends HttpServlet {
 		int totalCount = subjectList.size();
 		int totalPage = totalCount / VIEW_SUBJECT;
 		request.setAttribute("subjectList", subjectList);
+		System.out.println(subjectList.toString());
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("checkNum", checkNum);
@@ -552,7 +565,7 @@ public class SugangController extends HttpServlet {
 	private void registrationPreSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
 			throws ServletException, IOException {
 
-		List<CheckSubjectTime> checkTimeList = registrationRepository.registSubjectTime(principal.getId());
+		List<CheckSubjectTime> checkTimeList = registrationRepository.registSubjectTime(principal.getId(), RegistrationRepositoryImpl.CHECK_PRE_SUBJECT_TIME);
 
 		if (!checkTimeList.isEmpty()) {
 
@@ -615,17 +628,106 @@ public class SugangController extends HttpServlet {
 				return;
 			}
 
-			List<Integer> checkList = registrationRepository.selectSubjectRegistration(principal.getId());
-			System.out.println(checkList);
+			List<Integer> checkList = registrationRepository.selectPreSubjectRegistration(principal.getId());
 			if (!checkList.contains(subId)) {
-				registrationRepository.insertSubjectRegistration(principal.getId(), subId);
+				registrationRepository.insertPreSubjectRegistration(principal.getId(), subId);
 				registrationRepository.addNumOfStudent(subId);
 			}
 
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-		response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
+	}
+	
+	private void registrationSubject(HttpServletRequest request, HttpServletResponse response,
+			StudentInfoDto principalStu) throws ServletException, IOException {
+		List<CheckSubjectTime> checkTimeList = registrationRepository.registSubjectTime(principalStu.getId(), RegistrationRepositoryImpl.CHECK_SUBJECT_TIME);
+
+		if (!checkTimeList.isEmpty()) {
+
+			int totalGrades = registrationRepository.totalGrades(principalStu.getId());
+			int subGrade = Integer.parseInt(request.getParameter("subGrade"));
+			if((totalGrades+subGrade) > 18) {
+				
+				String message = "최대 수강학점을 넘습니다.";
+
+				// 메시지를 요청 속성으로 설정
+				request.setAttribute("message", message);
+				showSubjectList(request, response, "/application");
+				return;
+				
+			}
+			
+			String subDay = request.getParameter("subDay");
+			String startTimeStr = request.getParameter("startTime");
+			String endTimeStr = request.getParameter("endTime");
+
+			for (CheckSubjectTime checkSubjectTime : checkTimeList) {
+
+				if (checkSubjectTime.getSubDay().equals(subDay)) {
+
+					int startTime = Integer.parseInt(startTimeStr);
+					int endTime = Integer.parseInt(endTimeStr);
+					int checkStartTime = Integer.parseInt(checkSubjectTime.getStartTime());
+					int checkEndTime = Integer.parseInt(checkSubjectTime.getEndTime());
+
+					if ((checkStartTime <= startTime && startTime <= checkEndTime)
+							|| (checkStartTime <= endTime && endTime <= checkEndTime)) {
+
+						String message = "중복된 수업시간이 있습니다.";
+
+						// 메시지를 요청 속성으로 설정
+						request.setAttribute("message", message);
+						showSubjectList(request, response, "/application");
+						return;
+
+					}
+
+				}
+
+			}
+			
+		}
+
+		String registSubIdStr = request.getParameter("id");
+
+		try {
+			int subId = Integer.parseInt(registSubIdStr);
+
+			if (!principalStu.getDeptId().equals(registrationRepository.checkDepartment(subId, principalStu.getId()))
+					&& "전공".equals(request.getParameter("subType"))) {
+
+				String message = "학과 내 전공만 신청이 가능합니다.";
+
+				// 메시지를 요청 속성으로 설정
+				request.setAttribute("message", message);
+				showSubjectList(request, response, "/application");
+				return;
+			}
+
+			try {
+				int subjectId = Integer.parseInt(request.getParameter("id"));
+				boolean check = registrationRepository.checkCapacity(subjectId);
+				
+				if(check) {
+					registrationRepository.insertSubjectRegistration(principalStu.getId(), subjectId);
+					registrationRepository.addNumOfStudent(subjectId);
+					response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
+				} else {
+					String message = "정원을 초과하였습니다.";
+					request.setAttribute("message", message);
+					request.getRequestDispatcher("/WEB-INF/views/student/sugangList.jsp").forward(request, response);
+					response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
+				}
+			} catch (Exception e) {
+				response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
+			}
+
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	private void deletePreSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
@@ -634,25 +736,14 @@ public class SugangController extends HttpServlet {
 
 		try {
 			int subId = Integer.parseInt(deleteSubIdStr);
-			List<Integer> checkList = registrationRepository.selectSubjectRegistration(principal.getId());
-			System.out.println(checkList);
+			List<Integer> checkList = registrationRepository.selectPreSubjectRegistration(principal.getId());
 			if (checkList.contains(subId)) {
-				registrationRepository.deleteSubjectRegistration(principal.getId(), subId);
+				registrationRepository.deletePreSubjectRegistration(principal.getId(), subId);
 				registrationRepository.deleteNumOfStudent(subId);
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	// TODO - 본 수강신청 자유롭게 신청 취소
-	private void registrationSubject(HttpServletRequest request, HttpServletResponse response,
-			StudentInfoDto principalStu) {
-		
-	}
-
-	private void deleteSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principalStu) {
-		
 	}
 	
 }

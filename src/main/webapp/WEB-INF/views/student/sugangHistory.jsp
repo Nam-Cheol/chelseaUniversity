@@ -71,7 +71,7 @@
 							<td>${successSub.numOfStudent}</td>
 							<td>${successSub.capacity}</td>
 							<td class="sub--list--button--row">
-								<form action="/chelseaUniversity/sugang/delete" method="get">
+								<form action="/chelseaUniversity/sugang/deleteSugang" method="get">
 									<button type="submit"
 										value="${successSub.id}"
 										name="id"
