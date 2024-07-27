@@ -25,6 +25,8 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 	public static final String SELECT_PROFESSOR_BY_DEPT_ID = " SELECT * FROM professor_tb WHERE dept_id = ? ";
 	public static final String SELECT_PROFESSORDEPT_BYID = " SELECT name FROM department_tb WHERE id = ? ";
 	public static final String SELECT_PROFESSOR_BY_ID = " SELECT * FROM professor_tb AS p LEFT JOIN department_tb AS d ON p.dept_id = d.id WHERE p.id = ?; ";
+	public static final String SELECT_PRO_DEPT_AND_PRO_ID = " SELECT * FROM professor_tb WHERE id LIKE ? AND dept_id LIKE ? LIMIT ? OFFSET ? ";
+	public static final String COUNT_PRO_BY_ID = " SELECT count(*) FROM professor_tb where id LIKE ? AND dept_id LIKE ? ";
 
 	@Override
 	public int insertToProfessor(CreateProfessorDto createProfessorDto) {
@@ -70,10 +72,10 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				professorInfoDto = ProfessorInfoDto.builder().id(rs.getInt("p.id")).name(rs.getString("p.name"))
-				.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
-				.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
-				.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date"))
-				.deptName(rs.getString("d.name")).collegeId(rs.getInt("college_id")).build();
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).deptName(rs.getString("d.name"))
+						.collegeId(rs.getInt("college_id")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,6 +103,64 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_SQL);
 			pstmt.setInt(1, 20);
 			pstmt.setInt(2, professorListForm.getPage());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(Professor.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	@Override
+	public List<Professor> selectProfessorList(int limit, int offset) {
+		List<Professor> list = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_SQL);
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(Professor.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	@Override
+	public List<Professor> selectProfessorList(String deptId, String proId, int limit, int offset) {
+		List<Professor> list = new ArrayList<>();
+		if (deptId == null) {
+			deptId = "";
+		}
+		if (proId == null) {
+			proId = "";
+		}
+
+		try (Connection conn = DBUtil.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_PRO_DEPT_AND_PRO_ID);
+			pstmt.setString(1, "%"+deptId+"%");
+			pstmt.setString(2, "%"+proId+"%");
+			pstmt.setInt(3, limit);
+			pstmt.setInt(4, offset);
+			System.out.println("impl**********");
+			System.out.println(deptId);
+			System.out.println(proId);
+			System.out.println(limit);
+			System.out.println(offset);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				list.add(Professor.builder().id(rs.getInt("id")).name(rs.getString("name"))
@@ -175,6 +235,31 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 	}
 
 	@Override
+	public Integer selectProfessorAmount(String deptId, String proId) {
+		int totalProfessors = 0;
+		if (deptId == null) {
+			deptId = "";
+		}
+		if (proId == null) {
+			proId = "";
+		}
+		try (Connection conn = DBUtil.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(COUNT_PRO_BY_ID);
+			pstmt.setString(1, "%"+proId+"%");
+			pstmt.setString(2, "%"+deptId+"%");
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				totalProfessors = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return totalProfessors;
+	}
+
+	@Override
 	public Integer selectProfessorAmountByDeptId(Integer deptId) {
 		int totalProfessors = 0;
 		try (Connection conn = DBUtil.getConnection()) {
@@ -195,10 +280,10 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 	public String selectProfessorDeptById(int id) {
 		String name = null;
 		try (Connection conn = DBUtil.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_PROFESSORDEPT_BYID)){
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_PROFESSORDEPT_BYID)) {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				name = rs.getString("name");
 			}
 		} catch (Exception e) {

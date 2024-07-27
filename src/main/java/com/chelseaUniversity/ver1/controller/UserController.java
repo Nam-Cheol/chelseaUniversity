@@ -221,7 +221,7 @@ public class UserController extends HttpServlet {
 	 */
 	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-		int page = 1; 
+		int page = 1;
 		int pageSize = 20; // limit
 
 		try {
@@ -233,7 +233,7 @@ public class UserController extends HttpServlet {
 			page = 1;
 		}
 		int offset = (page - 1) * pageSize; // 시작 위치 계산
-		
+
 		String deptId = request.getParameter("deptId");
 		String studentId = request.getParameter("studentId");
 		List<Student> studentList = null;
@@ -257,50 +257,94 @@ public class UserController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/views/management/studentList.jsp").forward(request, response);
 	}
 
-
 	/**
 	 * 교직원 -> 교수 명단 조회
 	 * 
 	 * @param request
 	 * @param response
 	 * @param session
+	 * @throws IOException
+	 * @throws ServletException
 	 */
-	private void showProfessorListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		ProfessorService professorService;
-		professorService = new ProfessorService();
-		String deptId = null;
+	private void showProfessorListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws ServletException, IOException {
+		int page = 1;
+		int pageSize = 20; // limit
+
 		try {
-			professorListForm.setPage(0);
-
-			deptId = request.getParameter("dept_id");
-			String proId = request.getParameter("pro_id");
-			System.out.println("getparameter deptId : " + request.getParameter("dept_id"));
-
-			if (request.getParameter("dept_id") != null) {
-				professorListForm.setDeptId(Integer.parseInt(deptId));
-			} else if (proId != null) {
-				professorListForm.setProfessorId(Integer.parseInt(proId));
+			String pageStr = request.getParameter("page");
+			if (pageStr != null) {
+				page = Integer.parseInt(pageStr);
 			}
-
-			Integer amount = professorService.readProfessorAmount(professorListForm);
-			if (proId != null) {
-				amount = 1;
-			}
-
-			System.out.println("userController에서 amount" + amount);
-
-			List<Professor> list = professorService.readProfessorList(professorListForm);
-
-			System.out.println("userController에서 교수list : " + list);
-
-			request.setAttribute("professorList", list);
-			request.setAttribute("listCount", Math.ceil(amount / 20.0));
-			request.setAttribute("pro_deptId", deptId);
-			request.setAttribute("page", 1);
-			request.getRequestDispatcher("/WEB-INF/views/staff/professorList.jsp").forward(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			page = 1;
 		}
+		int offset = (page - 1) * pageSize; // 시작 위치 계산
+
+		String deptId = request.getParameter("deptId");
+		String proId = request.getParameter("studentId");
+		
+		List<Professor> professorList = null;
+		int totalProfessors = 0;
+
+		if (deptId == null && proId == null) {
+			professorList = professorRepository.selectProfessorList(pageSize, offset);
+			totalProfessors = professorRepository.selectProfessorAmount();
+			System.out.println("처음 들어왔을 때");
+			System.out.println("교수 리스트 : "+professorList);
+			System.out.println("총 양 : " + totalProfessors);
+		} else {
+			professorList = professorRepository.selectProfessorList(deptId, proId, pageSize, offset);
+			totalProfessors = professorRepository.selectProfessorAmount(deptId,proId);
+			System.out.println("검색 들어왔을 때");
+			System.out.println("교수 리스트 : "+professorList);
+			System.out.println("총 양 : " + totalProfessors);
+		}
+
+		int totalPages = (int) Math.ceil((double) totalProfessors / pageSize);
+
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("studentList", professorList);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("deptId", deptId);
+		request.setAttribute("stuId", proId);
+		request.getRequestDispatcher("/WEB-INF/views/staff/professorList.jsp").forward(request, response);
+
+		// ProfessorService professorService;
+//		professorService = new ProfessorService();
+//		String deptId = null;
+//		try {
+//			professorListForm.setPage(0);
+//
+//			deptId = request.getParameter("dept_id");
+//			String proId = request.getParameter("pro_id");
+//			System.out.println("getparameter deptId : " + request.getParameter("dept_id"));
+//
+//			if (request.getParameter("dept_id") != null) {
+//				professorListForm.setDeptId(Integer.parseInt(deptId));
+//			} else if (proId != null) {
+//				professorListForm.setProfessorId(Integer.parseInt(proId));
+//			}
+//
+//			Integer amount = professorService.readProfessorAmount(professorListForm);
+//			if (proId != null) {
+//				amount = 1;
+//			}
+//
+//			System.out.println("userController에서 amount" + amount);
+//
+//			List<Professor> list = professorService.readProfessorList(professorListForm);
+//
+//			System.out.println("userController에서 교수list : " + list);
+//
+//			request.setAttribute("professorList", list);
+//			request.setAttribute("listCount", Math.ceil(amount / 20.0));
+//			request.setAttribute("pro_deptId", deptId);
+//			request.setAttribute("page", 1);
+//			request.getRequestDispatcher("/WEB-INF/views/staff/professorList.jsp").forward(request, response);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	/**

@@ -312,8 +312,8 @@ public class StudentRepositoryImpl implements StudentRepository {
 		try (Connection conn = DBUtil.getConnection()) {
 
 			PreparedStatement pstmt = conn.prepareStatement(COUNT_STU_BY_ID);
-			pstmt.setString(1, "%" + deptId + "%");
-			pstmt.setString(2, "%" + studentId + "%");
+			pstmt.setString(1, "%" + studentId + "%");
+			pstmt.setString(2, "%" + deptId + "%");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				totalStudents = rs.getInt("count(*)");
