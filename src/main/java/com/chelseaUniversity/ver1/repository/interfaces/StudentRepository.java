@@ -51,6 +51,7 @@ public interface StudentRepository {
 	
 	// 페이지별 학생 조회
 	public List<Student> selectStudentList(StudentListForm studentListForm, int limit, int offset);
+	public List<Student> selectStudentList(StudentListForm studentListForm);
 	
 	// 페이지, 과별 학생조회
 	public List<Student> selectByDepartmentId(StudentListForm studentListForm);

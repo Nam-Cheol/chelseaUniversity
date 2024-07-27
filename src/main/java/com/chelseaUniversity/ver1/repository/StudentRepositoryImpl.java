@@ -259,4 +259,25 @@ public class StudentRepositoryImpl implements StudentRepository {
 		return 0;
 	}
 
+	@Override
+	public List<Student> selectStudentList(StudentListForm studentListForm) {
+		List<Student> allStudentList = new ArrayList<>();
+
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+						.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+						.build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allStudentList;
+	}
+
 }

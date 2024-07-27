@@ -80,9 +80,6 @@ public class UserController extends HttpServlet {
 		case "/professorList":
 			showProfessorListPage(request, response, session);
 			break;
-		case "/professorList/pro_list_page{i}":
-			showProfessorListByPage(request, response, session);
-			break;
 		case "/student":
 			showStudentCreatePage(request, response, session);
 			break;
@@ -216,52 +213,46 @@ public class UserController extends HttpServlet {
 	 */
 	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 			String action) throws ServletException, IOException {
-		int page = 1;
-		try {
-			if (request.getParameter("page") != null) {
-				page = Integer.parseInt(request.getParameter("page"));
-			}
-		} catch (Exception e) {
-			page = 1;
-		}
+	        // 페이징 처리를 위한 변수 선언
+	        int page = 1; // 기본 페이지 번호
+	        int pageSize = 20; // 한 페이지당 보여질 게시글 수
 
-		String deptId = null;
-		String stuId = null;
-		String limit = null;
+	        try {
+	            String pageStr = request.getParameter("page");
+	            if (pageStr != null) {
+	                page = Integer.parseInt(pageStr);
+	            }
+	        } catch (Exception e) {
+	            // 유효하지 않은 번호를 마음대로 보낼 경우
+	            page = 1;
+	        }
+	        int offset = (page - 1) * pageSize; // 시작 위치 계산 (offset 값 계산)
 
-		try {
-			if (request.getParameter("dept_id") != null || !request.getParameter("dept_id").equals("")) {
-				deptId = request.getParameter("dept_id").trim();
-			}
-			if (request.getParameter("stu_id") != null || !request.getParameter("stu_id").equals("")) {
-				stuId = request.getParameter("stu_id").trim();
-			}
-			if (request.getParameter("limit") != null) {
-				limit = request.getParameter("limit");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        String deptId = request.getParameter("deptId");
+	        String studentId = request.getParameter("studentId");
+	        List<Student> studentList = null;
+	        
+	        int totalStudents = 0;
+	        if (deptId == null && studentId == null) {
+//	            studentList = managementRepository.getAllStudents(pageSize, offset);
+	        	studentList = studentRepository.selectStudentList(studentListForm, pageSize, offset);
+	            // 전체 학생 수 조회
+	            totalStudents = studentRepository.selectStudentAmount();
+	        } else {
+	        	studentList = studentRepository.selectStudentList(studentListForm, pageSize, offset);
+//	            studentList = managementRepository.getAllStudents(studentId, deptId, pageSize, offset);
+//	            totalStudents = managementRepository.getTotalStudentCount(studentId, deptId);
+	        }
 
-		System.out.println("파라미터 학과id : " + request.getParameter("dept_id"));
-		System.out.println("파라미터 학번 : " + request.getParameter("stu_id"));
-		System.out.println("파라미터 리밋 : " + request.getParameter("limit"));
+	        // 총 페이지 수 계산
+	        int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
 
-		System.out.println("deptId : " + deptId);
-		System.out.println("stuId : " + stuId);
-		System.out.println("limit : " + limit);
-		try {
-			if (deptId == null && stuId == null && limit == null) {
-				viewStudentList(request, response, page, limit);
-			}else if(deptId == null && stuId == null && limit == null) {
-				viewStudentList(request, response, page, limit);
-			}
-			else if(deptId != null && stuId == null && limit != null) {
-				searchStudentList(request, response, session, deptId, page, limit);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        request.setAttribute("totalPages", totalPages);
+	        request.setAttribute("studentList", studentList);
+	        request.setAttribute("currentPage", page);
+
+	        request.getRequestDispatcher("/WEB-INF/views/management/studentList.jsp").forward(request, response);
+	    }
 
 	}
 
