@@ -48,33 +48,39 @@ public interface StudentRepository {
 
 	// password 발급용 model 확인
 	public Integer selectStudentByIdAndNameAndEmail(FindPasswordFormDto findPasswordFormDto);
-	
+
 	// 페이지별 학생 조회
-	public List<Student> selectStudentList(StudentListForm studentListForm, int limit, int offset);
+	public List<Student> selectStudentList(String deptId, String studentId, int limit, int offset);
+
 	public List<Student> selectStudentList(int limit, int offset);
-	
+
 	// 페이지, 과별 학생조회
 	public List<Student> selectByDepartmentId(StudentListForm studentListForm);
-	
+
 	// 학번으로 학생 조회
 	public List<Student> selectByStudentIdList(StudentListForm studentListForm);
-	
+
 	// 페이징 처리 위한 전체 학생 수 조회
 	public Integer selectStudentAmount();
-	public Integer selectStudentAmount(StudentListForm studentListForm);
-	
+
+	public Integer selectStudentAmount(String deptId, String studentId);
+
 	// 페이징 처리 위한 과 학생 수 조회
 	public Integer selectStudentAmountByDeptId(Integer deptId);
-	
+
 	// 학생 grade, semester 업데이트
 	public int updateStudentGradeAndSemester1_2();
+
 	public int updateStudentGradeAndSemester2_1();
+
 	public int updateStudentGradeAndSemester2_2();
+
 	public int updateStudentGradeAndSemester3_1();
+
 	public int updateStudentGradeAndSemester3_2();
+
 	public int updateStudentGradeAndSemester4_1();
+
 	public int updateStudentGradeAndSemester4_2();
-	
-	
-	
+
 }
