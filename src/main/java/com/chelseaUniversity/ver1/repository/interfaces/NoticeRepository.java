@@ -23,8 +23,8 @@ public interface NoticeRepository {
 	public int selectLimit(NoticeFormDto noticeFormDto);
 	
 	// 페이징
-	public List<Notice> selectByNoticeDtoOrderBy();
-	public Integer selectNoticeCount(NoticePageFormDto noticePageFormDto);
+	public List<Notice> selectByNoticeDtoOrderBy(int limit,int offset);
+	public Integer selectNoticeCount();
 	
 	// 검색
 	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto);

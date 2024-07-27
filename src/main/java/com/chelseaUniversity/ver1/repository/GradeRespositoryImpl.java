@@ -18,7 +18,32 @@ public class GradeRespositoryImpl implements GradeRespository {
 			+ "    FROM stu_sub_tb AS ss\r\n " + "	JOIN grade_tb AS g\r\n " + "	ON ss.grade = g.grade\r\n "
 			+ "	JOIN subject_tb AS s\r\n " + "	ON ss.subject_id = s.id\r\n "
 			+ "	WHERE sub_year = ? AND semester = ? AND ss.student_id = ? \r\n " + "	GROUP BY student_id ";
-
+	public final String FIND_SUBJECT_GRADE_BY_STUDENT_ID = " select subj.sub_year as year , subj.semester as semester , subj.id as id ,\r\n"
+			+ "subj.name as name , subj.type as type , subj.grade as completegrade , sub.grade as grade\r\n"
+			+ "from student_tb as stu\r\n"
+			+ "join stu_sub_tb as sub\r\n"
+			+ "on sub.student_id = stu.id\r\n"
+			+ "join subject_tb as subj\r\n"
+			+ "on sub.subject_id = subj.id\r\n"
+			+ "WHERE stu.id = ? AND subj.sub_year = ?  AND subj.semester = ? GROUP BY sub.subject_id ";
+	public final String FIND_AVG_GRADE_BY_SEMESTER = " SELECT  st.student_id as id, su.sub_year as year, su.semester as semester, SUM(su.grades) AS sum_grades, mg.my_grades as grade, SUM(gr.grade_value)/COUNT(su.name) AS average\r\n"
+			+ "FROM stu_sub_tb AS st\r\n"
+			+ "INNER JOIN subject_tb AS su\r\n"
+			+ "ON st.subject_id = su.id\r\n"
+			+ "INNER JOIN grade_tb AS gr\r\n"
+			+ "ON st.grade = gr.grade\r\n"
+			+ "INNER JOIN (\r\n"
+			+ "SELECT stu.student_id, SUM(sub.grades) AS my_grades\r\n"
+			+ "FROM stu_sub_tb AS stu\r\n"
+			+ "INNER JOIN subject_tb AS sub\r\n"
+			+ "ON stu.subject_id = sub.id\r\n"
+			+ "INNER JOIN grade_tb AS gra\r\n"
+			+ "ON stu.grade = gra.grade\r\n"
+			+ "WHERE stu.student_id = ? AND sub.sub_year = ? AND sub.semester = ? AND gra.grade != 'F'\r\n"
+			+ ") AS mg\r\n"
+			+ "ON st.student_id = mg.student_id \r\n"
+			+ "WHERE st.student_id = ? AND su.sub_year = ? AND su.semester = ? ";
+	
 	@Override
 	public List<GradeDto> selectSubYearByStudentId(Integer studentId) {
 		// TODO Auto-generated method stub
@@ -51,14 +76,45 @@ public class GradeRespositoryImpl implements GradeRespository {
 
 	@Override
 	public List<GradeDto> selectGradeDtoByStudentIdAndSubYear(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
+		List<GradeDto>GradeDtoList = null;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(FIND_SUBJECT_GRADE_BY_STUDENT_ID)){
+			pstmt.setInt(1, studentId);
+			pstmt.setInt(2, subYear);
+			pstmt.setInt(3, semester);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				GradeDto grade = GradeDto.builder().subYear(rs.getInt("year")).semester(rs.getInt("semester"))
+						.subjectId(rs.getInt("id")).name(rs.getString("name")).type(rs.getString("type"))
+						.grade(rs.getString("completegrade")).gradeValue(rs.getString("grade")).build();
+				GradeDtoList.add(grade);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return GradeDtoList;
 	}
 
 	@Override
 	public MyGradeDto selectMyGradeDtoBySemester(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
+		MyGradeDto myGradeDto = null;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(FIND_AVG_GRADE_BY_SEMESTER)){
+			pstmt.setInt(1, studentId);
+			pstmt.setInt(2, subYear);
+			pstmt.setInt(3, semester);
+			pstmt.setInt(4, studentId);
+			pstmt.setInt(5, subYear);
+			pstmt.setInt(6, semester);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				myGradeDto = MyGradeDto.builder().subYear(rs.getInt("year")).semester(rs.getInt("semester")).sumGrades(rs.getInt("sum_grades"))
+						.myGrades(rs.getInt("grade")).average(rs.getFloat("average")).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return myGradeDto;
 	}
 
 	@Override
@@ -84,7 +140,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 		System.out.println("GradeRepository-gradeForScholarshipDto : " + gradeForScholarshipDto);
 		return gradeForScholarshipDto;
 	}
-
+;
 	@Override
 	public List<MyGradeDto> selectMyGradeDtoByStudentId(Integer studentId) {
 		// TODO Auto-generated method stub

@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.College;
+import com.chelseaUniversity.ver1.model.Room;
 import com.chelseaUniversity.ver1.model.Subject;
 import com.chelseaUniversity.ver1.model.dto.AllSubjectSearchFormDto;
 import com.chelseaUniversity.ver1.model.dto.CurrentSemesterSubjectSearchFormDto;
@@ -34,6 +36,12 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	public static final String ADD_DEPT = " s.dept_id = ? ";
 	public static final String ADD_SUBJECT_NAME = " s.name like ? ";
 	public static final String ADD_LIMIT_AND_OFFSET = " LIMIT ? OFFSET ? ";
+	
+	public static final String INSERT_SUBJECT = " INSERT INTO subject_tb(name, professor_id, room_id, dept_id, type, sub_year, semester, sub_day, start_time, end_time, grades, capacity, num_of_student) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+	public static final String SELECT_SUBJECT = " select * from subject_tb ";
+	
+	public final String SELECT_ALL_SUBJECT = " SELECT * FROM subject_tb ORDER BY id ASC LIMIT ? OFFSET ? ";
+	public final String COUNT_ALL_SUBJECT = " SELECT count(*) AS count FROM subject_tb ";
 	@Override
 	public Integer insert(SubjectFormDto subjectFormDto) {
 		// TODO Auto-generated method stub
@@ -411,6 +419,129 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 			e.printStackTrace();
 		}
 		return totalCount;
+	}
+
+	@Override
+	public List<Subject> selectSubject() {
+		List<Subject> subjectList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(SELECT_SUBJECT)){
+				ResultSet set = pstmt.executeQuery();
+				conn.commit();
+				while (set.next()) {
+					Subject subject = Subject.builder()
+							  			.id(set.getInt("id"))
+							  			.name(set.getString("name"))
+							  			.professorId(set.getInt("professor_id"))
+							  			.roomId(set.getString("room_id"))
+							  			.deptId(set.getInt("dept_id"))
+							  			.type(set.getString("type"))
+							  			.subYear(set.getInt("sub_year"))
+							  			.semester(set.getInt("semester"))
+							  			.subDay(set.getString("sub_day"))
+							  			.startTime(set.getInt("start_time"))
+							  			.endTime(set.getInt("end_time"))
+							  			.grades(set.getInt("grades"))
+							  			.capacity(set.getInt("capacity"))
+							  			.numOfStudent(set.getInt("num_of_student"))
+							  			.build();
+					subjectList.add(subject);				
+					}
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			}
+		return subjectList;
+	}
+
+	@Override
+	public int insert(String subjectName, int professorId, String roomId, int deptId, String type, int subYear,
+			int semester, String subDay, int startTime, int endTime, int grades, int capacity, int numOfStudent) {
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection()){
+			conn.setAutoCommit(false);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_SUBJECT)){
+				pstmt.setString(1, subjectName);
+				pstmt.setInt(2, professorId);
+				pstmt.setString(3, roomId);
+				pstmt.setInt(4, deptId);
+				pstmt.setString(5, type);
+				pstmt.setInt(6, subYear);
+				pstmt.setInt(7, semester);
+				pstmt.setString(8, subDay);
+				pstmt.setInt(9, startTime);
+				pstmt.setInt(10, endTime);
+				pstmt.setInt(11, grades);
+				pstmt.setInt(12, capacity);
+				pstmt.setInt(13, numOfStudent);
+				rowCount = pstmt.executeUpdate();
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			}
+		return rowCount;
+	}
+
+	@Override
+	public List<Subject> getAllSubject(int limit, int offset) {
+		List<Subject> subjectList = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_SUBJECT)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				subjectList.add(
+						Subject
+						.builder()
+			  			.id(rs.getInt("id"))
+			  			.name(rs.getString("name"))
+			  			.professorId(rs.getInt("professor_id"))
+			  			.roomId(rs.getString("room_id"))
+			  			.deptId(rs.getInt("dept_id"))
+			  			.type(rs.getString("type"))
+			  			.subYear(rs.getInt("sub_year"))
+			  			.semester(rs.getInt("semester"))
+			  			.subDay(rs.getString("sub_day"))
+			  			.startTime(rs.getInt("start_time"))
+			  			.endTime(rs.getInt("end_time"))
+			  			.grades(rs.getInt("grades"))
+			  			.capacity(rs.getInt("capacity"))
+			  			.numOfStudent(rs.getInt("num_of_student"))
+			  			.build());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	return subjectList;
+	}
+
+	@Override
+	public int getTotalSubjectCount() {
+		int count = 0; 
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(COUNT_ALL_SUBJECT)){
+ 			ResultSet rs = pstmt.executeQuery();
+ 			if(rs.next()) {
+ 				count = rs.getInt("count");
+ 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(" 로깅 totalCount : " + count);
+		
+		return count;
 	}
 
 }

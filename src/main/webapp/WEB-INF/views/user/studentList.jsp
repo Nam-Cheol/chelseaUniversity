@@ -95,7 +95,7 @@
 					<th>졸업일(졸업예정일)</th>
 				</tr>
 			</thead>
-			<c:forEach var="studentList" items="${allStudentList}">
+			<c:forEach var="studentList" items="${studentList}">
 				<tbody>
 					<tr>
 						<td>${studentList.id}</td>

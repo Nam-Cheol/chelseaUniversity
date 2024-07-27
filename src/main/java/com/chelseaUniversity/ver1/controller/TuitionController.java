@@ -8,7 +8,9 @@ import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 import com.chelseaUniversity.ver1.service.StuStatService;
 import com.chelseaUniversity.ver1.service.TuitionService;
@@ -24,10 +26,12 @@ import jakarta.servlet.http.HttpSession;
 public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	TuitionRepository tuitionRepository;
+	CollegeRepository collegeRepository;
 
 	@Override
 	public void init() throws ServletException {
 		tuitionRepository = new TuitionRepositoryImpl();
+		collegeRepository = new CollegeRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -115,6 +119,15 @@ public class TuitionController extends HttpServlet {
 			paymentTuition(request, response, session);
 			break;
 			
+			// 등록금 금액 생성
+		case "/create-tuition":
+			createTuition(request, response);
+			break;
+			// 등록금 금액 수정
+		case "/edit-tuition":
+			editTuition(request, response);
+			break;
+			
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -122,6 +135,24 @@ public class TuitionController extends HttpServlet {
 
 	}
 
+
+	private void createTuition(HttpServletRequest request, HttpServletResponse response) {
+		String collegeName = request.getParameter("college-name");
+		int collegeTuition = Integer.parseInt(request.getParameter("college-tuition"));
+		System.out.println(collegeName);
+		System.out.println(collegeTuition);
+		
+	
+	}
+
+	private void editTuition(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("editTuition 성공");
+		int collegeId = Integer.parseInt(request.getParameter("tuition-id"));
+		int collegeAmount = Integer.parseInt(request.getParameter("college-tuition-amount"));
+		tuitionRepository.updateByIdAndAmount(collegeId, collegeAmount);
+		
+		response.sendRedirect(request.getContextPath() + "/admin/tuition");
+	}
 
 
 	/**

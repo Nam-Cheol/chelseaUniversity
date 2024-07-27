@@ -53,7 +53,7 @@
 <a href="${pageContext.request.contextPath}/index.jsp">학사관리</a>
 </li>
 <li>
-<a href="${pageContext.request.contextPath}/admin/registration">등록</a>
+<a href="${pageContext.request.contextPath}/admin/college">등록</a>
 </li>
 <li>
 <a href="${pageContext.request.contextPath}/index.jsp">학사정보</a>

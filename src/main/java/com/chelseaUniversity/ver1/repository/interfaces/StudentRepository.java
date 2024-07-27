@@ -51,16 +51,17 @@ public interface StudentRepository {
 	
 	// 페이지별 학생 조회
 	public List<Student> selectStudentList(StudentListForm studentListForm, int limit, int offset);
-	public List<Student> selectStudentList(StudentListForm studentListForm);
+	public List<Student> selectStudentList(int limit, int offset);
 	
 	// 페이지, 과별 학생조회
 	public List<Student> selectByDepartmentId(StudentListForm studentListForm);
 	
 	// 학번으로 학생 조회
-	public List<Student> selectByStudentId(StudentListForm studentListForm);
+	public List<Student> selectByStudentIdList(StudentListForm studentListForm);
 	
 	// 페이징 처리 위한 전체 학생 수 조회
 	public Integer selectStudentAmount();
+	public Integer selectStudentAmount(StudentListForm studentListForm);
 	
 	// 페이징 처리 위한 과 학생 수 조회
 	public Integer selectStudentAmountByDeptId(Integer deptId);

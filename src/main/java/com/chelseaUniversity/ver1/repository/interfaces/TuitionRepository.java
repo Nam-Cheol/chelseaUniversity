@@ -30,4 +30,13 @@ public interface TuitionRepository {
 	// 등록금 납부
 	public int updateStatus(Integer studentId, Integer tuiYear, Integer semester);
 	
+	// 등록금 금액 전체 리스트
+	public List<Tuition> selectAmount();
+	
+	// 등록금 금액 생성
+	public int insertAmount(int id, int amount);
+	
+	// 등록금 금약 변경 id --> amount
+	public int updateByIdAndAmount(int id, int amount);
+	
 }

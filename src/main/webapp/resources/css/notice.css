@@ -99,3 +99,25 @@
 	margin-top: -20px;
 	margin-bottom: 20px;
 }
+.page {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+.pageNum {
+	margin: 0 15px;
+}
+.pageNum:hover {
+	color: blue;
+}
+.room--table {
+	display: flex;
+	justify-content: space-between;
+}
+.information {
+	margin:0 30px;
+}
+.container {
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}

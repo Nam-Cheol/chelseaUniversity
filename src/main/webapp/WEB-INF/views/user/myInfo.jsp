@@ -14,6 +14,7 @@
 </c:choose>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myinfo.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
 	<!-- 세부 메뉴 div-->
@@ -31,6 +32,7 @@
 					<td><a href="/chelseaUniversity/user/password">비밀번호 변경</a></td>
 				</tr>
 				<c:if test="${user.userRole ne 'professor'}">
+				<c:if test="${user.userRole ne 'staff'}">
 				<tr>
 					<td><a href="/chelseaUniversity/break/application">휴학 신청</a></td>
 				</tr>
@@ -43,6 +45,7 @@
 				<tr>
 					<td><a href="/chelseaUniversity/tuition/payment">등록금 납부 고지서</a></td>
 				</tr>
+				</c:if>
 				</c:if>
 			</table>
 		</div>
@@ -126,8 +129,8 @@
     			</tr>
 			</table>
 			</form>
-			<button type="submit" onclick="openCheckWindow()" class="btn btn-dark send--button" style="visibility:hidden" >변경하기</button>
-			<button type="button" onclick="update()" class="btn btn-dark update--button">수정하기</button>
+			<button type="submit" onclick="openCheckWindow()" class="demon--slayer" style="visibility:hidden;margin: 10px 0 20px;" id="send--button">변경하기</button>
+			<button type="button" onclick="update()" class="demon--slayer" id="update--button" style="margin: 10px 0 20px;">수정하기</button>
 			<script>
 				let checkWindow;
 				
@@ -144,8 +147,8 @@
 				  }, false);
 				
 				function update() {
-					let updateButton = document.querySelector(".update--button");
-					let sendButton = document.querySelector(".send--button");
+					let updateButton = document.querySelector("#update--button");
+					let sendButton = document.querySelector("#send--button");
 					sendButton.style.visibility = "visible";
 					updateButton.style.visibility = "hidden";
 					// 필드 정의
@@ -169,6 +172,7 @@
 				}
 			</script>
 			<hr>
+			<c:if test="${user.userRole ne 'professor'}">
 			<h4>
 				<span style="font-weight: 600;">학적 변동 내역</span>
 			</h4>
@@ -186,6 +190,7 @@
 					
 				</tbody>
 			</table>
+			</c:if>
 			
 	</main>
 </div>
@@ -196,6 +201,5 @@
 			<!-- 필요 시 -->
 		</footer>
 
-</div>
 </body>
 </html>
