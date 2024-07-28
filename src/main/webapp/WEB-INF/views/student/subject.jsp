@@ -126,14 +126,7 @@
 						list="subName">
 
 					<!-- 검색 버튼 -->
-					<button type="submit">
-						<ul class="d-flex justify-content-center" style="margin: 0;">
-							<li style="height: 24px; margin-right: 2px;">조회
-							<li style="height: 24px;"><span
-								class="material-symbols-outlined"
-								style="font-size: 18px; padding-top: 4px;">search</span>
-						</ul>
-					</button>
+					<button type="submit" class="btn btn-primary mx-2">조회</button>
 				</div>
 			</form>
 		</div>

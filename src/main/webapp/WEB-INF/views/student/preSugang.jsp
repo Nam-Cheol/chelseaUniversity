@@ -18,7 +18,7 @@
 	<!-- 세부 메뉴 div-->
 	<div class="sub--menu">
 		<div class="sub--menu--top">
-			<h2>수강신청</h2>
+			<h2 style="color: white;">수강신청</h2>
 		</div>
 		<!-- 메뉴 -->
 		<div class="sub--menu--mid">
@@ -196,14 +196,7 @@
 						<option value="한국무역법">
 					</datalist>
 					<!-- 검색 버튼 -->
-					<button type="submit">
-						<ul class="d-flex justify-content-center" style="margin: 0;">
-							<li style="height: 24px; margin-right: 2px;">조회
-							<li style="height: 24px;"><span
-								class="material-symbols-outlined"
-								style="font-size: 18px; padding-top: 4px;">search</span>
-						</ul>
-					</button>
+					<button type="submit" class="btn btn-primary mx-2">조회</button>
 				</div>
 			</form>
 		</div>

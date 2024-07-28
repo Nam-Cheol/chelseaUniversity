@@ -106,17 +106,6 @@ public class SubjectController extends HttpServlet {
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("currentPage", page);
 
-//		// 현재 로그인한 사용자 ID 설정
-//		if (session != null) {
-//			try {
-//				StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-//				if (principal != null) {
-//					request.setAttribute("userId", principal.getId());
-//				}			
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
 		request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
 	}
 

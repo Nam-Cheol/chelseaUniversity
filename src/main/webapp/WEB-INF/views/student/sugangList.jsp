@@ -20,7 +20,7 @@
 	<!-- 세부 메뉴 div-->
 	<div class="sub--menu">
 		<div class="sub--menu--top">
-			<h2>수강신청</h2>
+			<h2 style="color: white;">수강신청</h2>
 		</div>
 		<!-- 메뉴 -->
 		<div class="sub--menu--mid">
@@ -143,19 +143,18 @@
 							</c:forEach>
 						</tbody>
 					</table>
-				</c:if>
-				<c:if test="${failCheck&&successCheck}">
-					<p>수강 신청 내역이 존재하지 않습니다.</p>
-				</c:if>
-			</div>
-
-			<!-- 강의 검색으로 가기 -->
-
-			<a href="/chelseaUniversity/sugang/application?page=1">
-				<button class="preStuSubList--button">강의 검색</button>
-			</a>
-		</div>
-
+					</c:if>
+					<c:if test="${failCheck&&successCheck}">
+						<p
+							style="font-size: 18px; color: #666666; font-weight: bold; text-align: center; margin-top: 20px; background-color: #f9f9f9; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+							수강 신청 내역이 존재하지 않습니다.</p>
+					</c:if>
+					<div style="text-align: center; margin-top: 20px;">
+						<a href="/chelseaUniversity/sugang/application?page=1"
+							style="display: inline-block; margin-top: 20px;">
+							<button class="preStuSubList--button">강의 검색</button>
+						</a>
+					</div>
 	</main>
 </div>
 
