@@ -15,8 +15,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myinfo.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
-<!-- 세부 메뉴 + 메인 -->
-<div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
+
+<div class="d-flex justify-content-start align-items-start" style="display:flex; min-width: 100em;">
 	<!-- 세부 메뉴 div-->
 	<div class="sub--menu">
 		<div class="sub--menu--top">
@@ -55,7 +55,7 @@
 	<main>
 		<h1>내 정보 조회</h1>
 		<div class="split--div"></div>
-			<table border="1" class="input--table" >
+			<table border="1" class="input--table">
 			<colgroup>
 				<col class="col1">
 				<col class="col2">
@@ -102,7 +102,7 @@
 			</c:choose>
 			</table>
 			<form id="data" action="${pageContext.request.contextPath}/user/update" method="post">
-			<table border="1" class="input--table" style="margin-left:-30px">
+			<table border="1" class="input--table">
 			<colgroup>
 				<col class="col1">
 				<col class="col2">
@@ -129,8 +129,8 @@
     			</tr>
 			</table>
 			</form>
-			<button type="submit" onclick="openCheckWindow()" class="demon--slayer" style="visibility:hidden;margin: 10px 0 20px;" id="send--button">변경하기</button>
 			<button type="button" onclick="update()" class="demon--slayer" id="update--button" style="margin: 10px 0 20px;">수정하기</button>
+			<button type="submit" onclick="openCheckWindow()" class="demon--slayer" style="visibility:hidden;margin: 10px 0 20px;" id="send--button">변경하기</button>
 			<script>
 				let checkWindow;
 				
@@ -176,30 +176,30 @@
 			<h4>
 				<span style="font-weight: 600;">학적 변동 내역</span>
 			</h4>
-			<table border="1" class="stat--table">
-				<thead>
-					<tr>
-						<th>변동 일자</th>
-						<th>변동 구분</th>
-						<th>세부</th>
-						<th>승인 여부</th>
-						<th>복학 예정 연도/학기</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-			</table>
+			<div class="table-container">
+				<table border="1" class="stat--table">
+					<thead>
+						<tr>
+							<th>변동 일자</th>
+							<th>변동 구분</th>
+							<th>세부</th>
+							<th>승인 여부</th>
+							<th>복학 예정 연도/학기</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
 			</c:if>
 			
 	</main>
 </div>
 
-
-
-  		<footer>
-			<!-- 필요 시 -->
-		</footer>
+<footer>
+	<!-- 필요 시 -->
+</footer>
 
 </body>
 </html>
