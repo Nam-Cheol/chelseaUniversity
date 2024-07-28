@@ -50,7 +50,7 @@
 	<main>
 		<h1>공지사항</h1>
 		<div class="split--div"></div>
-		<form action="${pageContext.request.contextPath}/notice/search" method="post">
+		<form action="${pageContext.request.contextPath}/notice/search?page=0" method="post">
 		<div class="search">
 			<select name="type">
 			<option value="title">제목</option>
@@ -85,7 +85,14 @@
 		</table>
 		<div class="page">
 			<c:forEach var="i" begin="0" end="${page}">
-			<a href="${pageContext.request.contextPath}/notice/list?page=${i}" class="pageNum">${i + 1}</a>
+			<c:if test="${param.search eq null}">
+			<a href="${pageContext.request.contextPath}/notice/list?page=${i}" class="pageNum"
+			<c:if test="${now eq i}"> style="color:blue"</c:if>>${i + 1}</a>
+			</c:if>
+			<c:if test="${param.search eq true}">
+			<a href="${pageContext.request.contextPath}/notice/searchList?page=${i}&type=${type}&order=${order}" class="pageNum"
+			<c:if test="${now eq i}"> style="color:blue"</c:if>>${i + 1}</a>
+			</c:if>
 			</c:forEach>
 			</div>
 

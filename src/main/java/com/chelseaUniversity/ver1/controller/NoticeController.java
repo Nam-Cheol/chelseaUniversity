@@ -39,10 +39,55 @@ public class NoticeController extends HttpServlet {
 		case "/detail":
 			showDetailPage(request,response);
 			break;
+		case "/searchList":
+			showSearchListPage(request,response);
 		default:
 			break;
 		}
 		
+	}
+
+	/*
+	 * 검색창 리스트 페이지 처리
+	 */
+	private void showSearchListPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String type = request.getParameter("type");
+		String order = request.getParameter("order");
+		int pageSize = 10;
+		int now = Integer.parseInt(request.getParameter("page"));
+		int offset = now * pageSize;
+			if(type != null && order != null) {
+				NoticePageFormDto notice = NoticePageFormDto.builder().keyword(order).build();
+				if(type.equals("title")) {
+					int count = noticeRepository.selectNoticeCountByTitle(notice);
+					int page = count / pageSize;
+					List<Notice>noticeList = noticeRepository.selectNoticeByTitle(notice,pageSize,offset);
+					request.setAttribute("now", now);
+					request.setAttribute("page", page);
+					request.setAttribute("noticeList", noticeList);
+					request.setAttribute("order", order);
+					request.setAttribute("type", type);
+					request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp?search=true").forward(request, response);
+				} else{
+					int count = noticeRepository.selectNoticeCountByKeyword(notice);
+					int page = count / pageSize;
+					List<Notice>noticeList = noticeRepository.selectNoticeByKeyword(notice,pageSize,offset);
+					request.setAttribute("now", now);
+					request.setAttribute("page", page);
+					request.setAttribute("noticeList", noticeList);
+					request.setAttribute("order", order);
+					request.setAttribute("type", type);
+					request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp?search=true").forward(request, response);
+				}
+			} else {
+				int count = noticeRepository.selectNoticeCount();
+				int page = count / pageSize;
+				List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(pageSize,offset);
+				request.setAttribute("now", now);
+				request.setAttribute("page", page);
+				request.setAttribute("noticeList", noticeList);
+				request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
+			}
 	}
 
 	/*
@@ -65,8 +110,10 @@ public class NoticeController extends HttpServlet {
 		int count = noticeRepository.selectNoticeCount();
 		int pageSize = 10;
 		int page = count / pageSize;
-		int offset = Integer.parseInt(request.getParameter("page"));
+		int now = Integer.parseInt(request.getParameter("page"));
+		int offset = now * pageSize;
 		List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(pageSize,offset);
+		request.setAttribute("now", now);
 		request.setAttribute("page", page);
 		request.setAttribute("noticeList", noticeList);
 		request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
@@ -90,19 +137,40 @@ public class NoticeController extends HttpServlet {
 	private void searchNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			String type = request.getParameter("type");
 			String order = request.getParameter("order");
+			int pageSize = 10;
+			int now = Integer.parseInt(request.getParameter("page"));
+			int offset = now * pageSize;
 				if(type != null && order != null) {
 					NoticePageFormDto notice = NoticePageFormDto.builder().keyword(order).build();
 					if(type.equals("title")) {
-						List<Notice>noticeList = noticeRepository.selectNoticeByTitle(notice);
+						int count = noticeRepository.selectNoticeCountByTitle(notice);
+						int page = count / pageSize;
+						List<Notice>noticeList = noticeRepository.selectNoticeByTitle(notice,pageSize,offset);
+						request.setAttribute("now", now);
+						request.setAttribute("page", page);
 						request.setAttribute("noticeList", noticeList);
-						request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
+						request.setAttribute("order", order);
+						request.setAttribute("type", type);
+						request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp?search=true").forward(request, response);
 					} else{
-						List<Notice>noticeList = noticeRepository.selectNoticeByKeyword(notice);
+						int count = noticeRepository.selectNoticeCountByKeyword(notice);
+						int page = count / pageSize;
+						List<Notice>noticeList = noticeRepository.selectNoticeByKeyword(notice,pageSize,offset);
+						request.setAttribute("now", now);
+						request.setAttribute("page", page);
 						request.setAttribute("noticeList", noticeList);
-						request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
+						request.setAttribute("order", order);
+						request.setAttribute("type", type);
+						request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp?search=true").forward(request, response);
 					}
 				} else {
-					
+					int count = noticeRepository.selectNoticeCount();
+					int page = count / pageSize;
+					List<Notice> noticeList = noticeRepository.selectByNoticeDtoOrderBy(pageSize,offset);
+					request.setAttribute("now", now);
+					request.setAttribute("page", page);
+					request.setAttribute("noticeList", noticeList);
+					request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
 				}
 			} 
 }
