@@ -40,16 +40,13 @@ h1 {
 
 </style>
 
-<!-- Sidebar Menu and Main Content -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
-    <!-- Sidebar Menu -->
     <div class="sub--menu">
         <div class="sub--menu--top">
-            <h2>MY</h2>
+            <h2>학사관리</h2>
         </div>
         <div class="sub--menu--mid">
             <table class="sub--menu--table" border="1">
-                <tbody>
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/user/studentList">학생 명단 조회</a></td>
                     </tr>
@@ -74,32 +71,24 @@ h1 {
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/sugang/period">수강신청 기간 설정</a></td>
                     </tr>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-    <!-- Main Content -->
-    <section>
-        <h1>교수 명단 조회</h1>
-
-        <!-- Search Form -->
-        <div>
+		 <main style="width: 100%; padding: 20px;">
+		        <h1>교수 명단 조회</h1>
+		        <br>	
+       			 <div class="sub--filter">	
             <form action="${pageContext.request.contextPath}/user/professorList" method="get">
-                <label for="dept_id">학과 번호</label>
-                <input type="search" id="dept_id" name="dept_id">
-                <label for="pro_id">사번</label>
-                <input type="number" id="pro_id" name="pro_id">
-                <button type="submit" class="submit-btn">
-                    조회
-                </button>
+           		<div>
+	                <label for="dept_id">학과 번호  <input type="search" id="dept_id" name="dept_id"></label>
+	                <label for="pro_id">사번  <input type="number" id="pro_id" name="pro_id"></label>
+					<button type="submit" class="submit-btn">조회</button>
+       			 </div>
             </form>
         </div>
 
-        <!-- Professor List Table -->
-        <div>
-            <table class="table-container" border="1">
+            <table class="table table-striped sub--list--table">
                 <thead>
                     <tr>
                         <th>사번</th>
@@ -131,7 +120,6 @@ h1 {
             </table>
 
             <!-- Pagination -->
-<<<<<<< HEAD
 			<div class="pagination">
 			    <c:forEach begin="1" end="${totalPages}" var="i">
 			        <c:choose>
@@ -144,38 +132,7 @@ h1 {
 			        </c:choose>
 			    </c:forEach>
 			</div>
-=======
-<!-- Pagination -->
-
-<ul class="page--list">
-                <c:forEach begin="1" end="${totalPages}" var="i">
-                    <c:choose>
-                        <c:when test="${i == currentPage}">
-                            <c:choose>
-                                <c:when test="${deptId != null || proId != null}">
-                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}&dept_id=${deptId}&pro_id=${proId}" class="selected--page">${i}</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}" class="selected--page">${i}</a></li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:when>
-                        
-                        <c:otherwise>
-                            <c:choose>
-                                <c:when test="${deptId != null || proId != null}">
-                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}&dept_id=${deptId}&pro_id=${proId}">${i}</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}">${i}</a></li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:otherwise>
-                        
-                    </c:choose>
-        </c:forEach>
-
->>>>>>> main
+			</main>
         </div>
-    </section>
-</div>
+        
+        <%@ include file="footer.jsp"%>

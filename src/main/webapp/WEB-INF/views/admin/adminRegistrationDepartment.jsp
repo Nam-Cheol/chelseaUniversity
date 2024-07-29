@@ -35,7 +35,7 @@
 	</div>
 
 	<main style="width: 100%; padding: 20px;">
-		<h2>학과 등록</h2>
+		<h1>학과 등록</h1>
 		<div class="split--div"></div>
 		<div class="sub--filter">
 			<form action="${pageContext.request.contextPath}/admin/department/create-department" method="post">

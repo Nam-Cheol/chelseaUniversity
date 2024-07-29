@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 
-<section>
     <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
         <div class="sub--menu">
             <div class="sub--menu--top">
@@ -12,7 +11,6 @@
             </div>
             <div class="sub--menu--mid">
                 <table class="sub--menu--table" border="1">
-                    <tbody>
                         <tr>
                             <td><a href="${pageContext.request.contextPath}/user/studentList">학생 명단 조회</a></td>
                         </tr>
@@ -37,15 +35,14 @@
                         <tr>
                             <td><a href="${pageContext.request.contextPath}/sugang/period">수강신청 기간 설정</a></td>
                         </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <main>
+     <main style="width: 100%; padding: 20px;">
             <h1>휴학 처리</h1>
-            <table border="1">
+            <div class="split--div"></div>
+          <table class="table table-striped sub--list--table">
                 <thead>
                     <tr>
                         <th>신청일자</th>
@@ -69,12 +66,12 @@
                     </c:forEach>
                 </tbody>
             </table>
-        </main>
 
         <c:if test="${not empty acceptBreak}">
             <%
             out.println("<script>alert('" + request.getAttribute("acceptBreak") + "휴학 승인처리 되었습니다.'); history.back(); </script>");
             %>
         </c:if>
+        </main>
     </div>
-</section>
+     <%@ include file="footer.jsp"%>;
