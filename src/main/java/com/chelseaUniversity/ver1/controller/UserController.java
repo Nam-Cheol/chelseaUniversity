@@ -254,7 +254,7 @@ public class UserController extends HttpServlet {
 		request.setAttribute("currentPage", page);
 		request.setAttribute("deptId", deptId);
 		request.setAttribute("stuId", studentId);
-		request.getRequestDispatcher("/WEB-INF/views/management/studentList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/staff/studentList.jsp").forward(request, response);
 	}
 
 
