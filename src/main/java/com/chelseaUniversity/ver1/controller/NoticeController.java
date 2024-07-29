@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Notice;
+import com.chelseaUniversity.ver1.model.Staff;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.NoticePageFormDto;
 import com.chelseaUniversity.ver1.repository.NoticeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.NoticeRepository;
@@ -13,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/notice/*")
 public class NoticeController extends HttpServlet {
@@ -31,7 +34,9 @@ public class NoticeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
-		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		request.setAttribute("user", user);
 		switch (action) {
 		case "/list":
 			showListPage(request,response);
@@ -41,11 +46,16 @@ public class NoticeController extends HttpServlet {
 			break;
 		case "/searchList":
 			showSearchListPage(request,response);
+			break;
+		case "/createNotice":
+			request.getRequestDispatcher("/WEB-INF/views/board/createNotice.jsp").forward(request, response);
+			break;
 		default:
 			break;
 		}
 		
 	}
+	
 
 	/*
 	 * 검색창 리스트 페이지 처리
@@ -122,9 +132,15 @@ public class NoticeController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 			String action = request.getPathInfo();
+			
+			HttpSession session = request.getSession();
+			
 			switch (action) {
 			case "/search":
 				searchNotice(request,response);
+				break;
+			case "/createNotice":
+				createNotice(request, response, session);
 				break;
 			default:
 				break;
@@ -173,4 +189,16 @@ public class NoticeController extends HttpServlet {
 					request.getRequestDispatcher("/WEB-INF/views/board/notice.jsp").forward(request, response);
 				}
 			} 
+	private void createNotice(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		System.out.println("여기 들어옴");
+		Staff principal = (Staff) session.getAttribute("principal");
+		String category = request.getParameter("category");
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+		
+		noticeRepository.insertCreateNotice(category, title, content);
+		System.out.println("실행됨");
+		response.sendRedirect(request.getContextPath() + "/notice/list?page=0");
+	}
+	
 }

@@ -21,16 +21,16 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/notice/list" class="selected--menu">공지사항</a></td>
+					<td><a href="/chelseaUniversity/notice/list?page=0" class="selected--menu">공지사항</a></td>
 				</tr>
 				<tr>
 					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
 				</tr>
-				<%-- <c:if test="${principal.userRole.equals(\"staff\") }">
+				<c:if test="${user.userRole eq 'staff'}">
 					<tr>
-						<td><a href="/schedule/list"> 학사일정 등록</a></td>
+						<td><a href="/chelseaUniversity/notice/createNotice"> 학사일정 등록</a></td>
 					</tr>
-				</c:if> --%>
+				</c:if>
 			</table>
 		</div>
 	</div>
@@ -42,7 +42,7 @@
 		<p> &nbsp;제목&emsp; ${notice.category} ${notice.title}</p>
 		<hr style="border-color:#F4FFFF; height:1px; width:85%">
 		<div class="contentBox"><p> &nbsp;내용</p><div class="content">${notice.content}</div></div>
-		<div class="list"><button onclick="location=`${pageContext.request.contextPath}/notice/list?page=0`">목록</button></div>
+		<div class="list"><button onclick="location=`${pageContext.request.contextPath}/notice/list?page=0">목록</button></div>
 		</main>
 		</div>
 </body>
