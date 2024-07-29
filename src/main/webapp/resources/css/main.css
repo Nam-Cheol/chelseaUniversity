@@ -1,164 +1,165 @@
 @charset "UTF-8";
 
 /* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+@import
+	url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap')
+	;
 
 /* General Styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Noto Sans KR', sans-serif;
 }
 
 a {
-    text-decoration: none;
-    color: black;
+	text-decoration: none;
+	color: black;
 }
 
 a:hover {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 li {
-    list-style: none;
+	list-style: none;
 }
 
 /* Material Symbols */
 .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+	font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
 }
 
 .material--li {
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
+	display: flex;
+	align-items: center;
+	margin-right: 5px;
 }
 
 /* Header Styles */
 header {
-    margin-bottom: 40px;
+	margin-bottom: 40px;
 }
 
 .logo {
-    width: 320px;
-    height: 80px;
-    margin: 5px 50px 5px 10px;
+	width: 320px;
+	height: 80px;
+	margin: 5px 50px 5px 10px;
 }
 
 .header--top {
-    min-width: 100em;
-    height: 40px;
-    background-color: #031734;
-    display: flex;
-    justify-content: right;
+	min-width: 100em;
+	height: 40px;
+	background-color: #031734;
+	display: flex;
+	justify-content: right;
 }
 
 .header--top ul {
-    display: flex;
-    align-items: center;
-    margin: 0 30px;
+	display: flex;
+	align-items: center;
+	margin: 0 30px;
 }
 
 .header--top ul li {
-    color: white;
+	color: white;
 }
 
 .header--top ul li a {
-    color: white;
+	color: white;
 }
 
 /* Main Menu Styles */
 .main--menu {
-    padding: 10px 5px;
-    min-width: 100em;
-    height: 100px;
-    background-color: white; /* #031734 */
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e5e5e5;
+	padding: 10px 5px;
+	min-width: 100em;
+	height: 100px;
+	background-color: white; /* #031734 */
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid #e5e5e5;
 }
 
 .main--menu ul {
-    display: flex;
-    align-items: center;
-    margin: 0;
+	display: flex;
+	align-items: center;
+	margin: 0;
 }
 
 .main--menu ul li {
-    margin: 0 20px;
+	margin: 0 20px;
 }
 
 .main--menu ul li a {
-    padding: 27px 50px;
-    font-size: 27px;
-    font-weight: 600;
+	padding: 27px 50px;
+	font-size: 27px;
+	font-weight: 600;
 }
 
 .main--menu ul li a:hover {
-    border-bottom: 4px solid #075AA4;
-    color: #075AA4;
+	border-bottom: 4px solid #075AA4;
+	color: #075AA4;
 }
 
 /* Main Content Styles */
 main {
-    min-width: 1150px;
-    padding: 20px;
-    margin-bottom: 50px;
+	min-width: 1150px;
+	padding: 20px;
+	margin-bottom: 50px;
 }
 
 main h1:first-of-type {
-    font-weight: 600;
+	font-weight: 600;
 }
 
 .split--div {
-    min-width: 1100px;
-    height: 2px;
-    background-color: gray;
-    margin: 20px 0 50px;
+	min-width: 1100px;
+	height: 2px;
+	background-color: gray;
+	margin: 20px 0 50px;
 }
 
 .no--list--p {
-    font-size: 20px;
-    color: #6c6a6a;
-    font-weight: 600;
+	font-size: 20px;
+	color: #6c6a6a;
+	font-weight: 600;
 }
-
 
 /* Pagination Container */
 .page--list {
-    display: flex; /* Use flexbox to align items horizontally */
-    justify-content: center; /* Center pagination items horizontally */
-    list-style-type: none; /* Remove default list styles */
-    padding: 0;
-    margin: 20px 0; /* Adjust margin as needed */
+	display: flex; /* Use flexbox to align items horizontally */
+	justify-content: center; /* Center pagination items horizontally */
+	list-style-type: none; /* Remove default list styles */
+	padding: 0;
+	margin: 20px 0; /* Adjust margin as needed */
 }
 
 /* Pagination Item */
 .page--list li {
-    margin: 0 5px; /* Space between pagination items */
+	margin: 0 5px; /* Space between pagination items */
 }
 
 /* Pagination Link */
 .page--list li a {
-    text-decoration: none; /* Remove underline from links */
-    color: #001489; /* Link color */
-    padding: 10px 15px; /* Padding around the text */
-    border: 1px solid #ddd; /* Border for the links */
-    border-radius: 5px; /* Rounded corners */
-    display: inline-block; /* Ensure padding is respected */
+	text-decoration: none; /* Remove underline from links */
+	color: #001489; /* Link color */
+	padding: 10px 15px; /* Padding around the text */
+	border: 1px solid #ddd; /* Border for the links */
+	border-radius: 5px; /* Rounded corners */
+	display: inline-block; /* Ensure padding is respected */
 }
 
 /* Pagination Link Hover State */
 .page--list li a:hover {
-    background-color: #f0f0f0; /* Background color on hover */
-    border-color: #007bff; /* Change border color on hover */
+	background-color: #f0f0f0; /* Background color on hover */
+	border-color: #007bff; /* Change border color on hover */
 }
 
 /* Active Pagination Item */
 .page--list li a.active {
-    font-weight: 700; /* Bold text for the active page */
-    color: #007bff; /* Active link color */
-    background-color: #e9ecef; /* Active link background color */
-    border-color: #007bff; /* Active link border color */
+	font-weight: 700; /* Bold text for the active page */
+	color: #007bff; /* Active link color */
+	background-color: #e9ecef; /* Active link background color */
+	border-color: #007bff; /* Active link border color */
 }

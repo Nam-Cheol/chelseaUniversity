@@ -112,17 +112,3 @@ main {
 .btn-edit:hover {
     background-color: #2a4b6f;
 }
-
-@media (max-width: 768px) {
-    .list--table, .form-table {
-        font-size: 14px;
-    }
-
-    .form-input {
-        padding: 6px;
-    }
-
-    .btn-edit {
-        padding: 8px 16px;
-    }
-}
