@@ -9,15 +9,15 @@
             <table class="form-table">
                 <tr>
                     <td><label for="overview">강의 개요:</label></td>
-                    <td><input type="text" id="overview" name="overview" value="${syllabusInfo.overview}" class="form-input"></td>
+                    <td><input type="text" id="overview" name="overview" value="${syllabusInfo.overview}" class="form-input" maxlength="255"></td>
                 </tr>
                 <tr>
                     <td><label for="objective">수업 목표:</label></td>
-                    <td><input type="text" id="objective" name="objective" value="${syllabusInfo.objective}" class="form-input"></td>
+                    <td><input type="text" id="objective" name="objective" value="${syllabusInfo.objective}" class="form-input" maxlength="255"></td>
                 </tr>
                 <tr>
                     <td><label for="textbook">교재:</label></td>
-                    <td><input type="text" id="textbook" name="textbook" value="${syllabusInfo.textbook}" class="form-input"></td>
+                    <td><input type="text" id="textbook" name="textbook" value="${syllabusInfo.textbook}" class="form-input" maxlength="30"></td>
                 </tr>
                 <tr>
                     <td><label for="program">주별 계획:</label></td>
