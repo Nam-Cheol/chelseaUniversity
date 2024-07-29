@@ -32,7 +32,7 @@
 						<td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
 					</tr>
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/schedule">학사일정</a></td>
+						<td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정</a></td>
 					</tr>
 				</table>
 			</div>

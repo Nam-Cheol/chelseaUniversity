@@ -54,6 +54,9 @@ button:hover {
                         <td><a href="${pageContext.request.contextPath}/user/professor">교수 등록</a></td>
                     </tr>
                     <tr>
+                            <td><a href="${pageContext.request.contextPath}/user/staff">교직원 등록</a></td>
+                        </tr>
+                    <tr>
                         <td><a href="${pageContext.request.contextPath}/tuition/bill" class="selected--menu">등록금 고지서 발송</a></td>
                     </tr>
                     <tr>
@@ -61,6 +64,7 @@ button:hover {
                     </tr>
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/sugang/period">수강신청 기간 설정</a></td>
+                    </tr>
                     </tr>
                 </tbody>
             </table>
