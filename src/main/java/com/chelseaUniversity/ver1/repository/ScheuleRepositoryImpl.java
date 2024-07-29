@@ -16,11 +16,11 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class ScheuleRepositoryImpl implements ScheuleRepository{
 
-	private static final String SELECT_SCHEDULE = " SELECT * FROM schedule_tb limit ? offset ?";
+	private static final String SELECT_SCHEDULE = " SELECT * FROM schedule_tb ORDER BY start_day ASC limit ? offset ?";
 	
-	public final String SELECT_ALL_SCHEDUE = " SELECT * FROM schedule_tb ORDER BY id ASC LIMIT ? OFFSET ? ";
+	public final String SELECT_ALL_SCHEDUE = " SELECT * FROM schedule_tb ORDER BY start_day ASC LIMIT ? OFFSET ? ";
 	public final String COUNT_ALL_SCHEDULE = " SELECT count(*) AS count FROM schedule_tb ";
-	public final String SELECT_SCHEDULE_ALL_LIST = " SELECT * FROM schedule_tb ";
+	public final String SELECT_SCHEDULE_ALL_LIST = " SELECT * FROM schedule_tb ORDER BY start_day ASC";
 	public final String INSERT_SCHEDULE = " INSERT INTO schedule_tb( staff_id, start_day, end_day, information ) VALUES ( ? , ? , ? , ? ) ";
 	private static final String UPDATE_SCHEDULE = " UPDATE schedule_tb SET staff_id = ?, start_day = ?, end_day = ?, information = ? WHERE id = ? ";
 	
@@ -207,7 +207,7 @@ List<Schedule> scheduleList = new ArrayList<>();
 				conn.commit();
 				while (set.next()) {
 					Schedule schedule = Schedule.builder()
-							  			.id(set.getInt("id"))
+										.id(set.getInt("id"))
 										.staffId(set.getInt("staff_id"))
 										.startDay(set.getDate("start_day"))
 										.endDay(set.getDate("end_day"))

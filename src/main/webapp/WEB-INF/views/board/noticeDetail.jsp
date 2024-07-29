@@ -28,7 +28,10 @@
 				</tr>
 				<c:if test="${user.userRole eq 'staff'}">
 					<tr>
-						<td><a href="/chelseaUniversity/notice/createNotice"> 학사일정 등록</a></td>
+						<td><a href="/chelseaUniversity/notice/createNotice"> 공지사항 등록</a></td>
+					</tr>
+					<tr>
+						<td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정 등록</a></td>
 					</tr>
 				</c:if>
 			</table>
@@ -51,8 +54,7 @@
         </div>
 		</main>
 		</div>
-</body>
-</html>
+    <%@ include file="footer.jsp"%>
 
 
 

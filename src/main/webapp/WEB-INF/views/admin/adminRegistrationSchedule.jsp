@@ -12,31 +12,30 @@
 	<div class="d-flex justify-content-center align-items-start" style="display: flex; min-width: 100em;">
 		<div class="sub--menu">
 			<div class="sub--menu--top">
-				<h2>등록</h2>
-			</div>
-			<div class="sub--menu--mid">
-				<table class="sub--menu--table" border="1">
-					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/college">단과대학</a></td>
-					</tr>
-					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/department">학과</a></td>
-					</tr>
-					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/room">강의실</a></td>
-					</tr>
-					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/subject">강의</a></td>
-					</tr>
-					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
-					</tr>
-					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정</a></td>
-					</tr>
-				</table>
-			</div>
+			<h2>학사정보</h2>
 		</div>
+		<!-- 메뉴 -->
+		<!-- 선택된 메뉴에 class="selected--menu" 추가해주세요 -->
+		<div class="sub--menu--mid">
+			<table class="sub--menu--table" border="1">
+				<tr>
+					<td><a href="/chelseaUniversity/notice/list?page=0">공지사항</a></td>
+				</tr>
+				<tr>
+					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
+				</tr>
+				<c:if test="${user.userRole eq 'staff'}">
+					<tr>
+						<td><a href="/chelseaUniversity/notice/createNotice"
+							class="selected--menu"> 공지사항 등록</a></td>
+					</tr>
+					<tr>
+						<td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정 등록</a></td>
+					</tr>
+				</c:if>
+			</table>
+		</div>
+	</div>
 		
 			 <main style="width: 100%; padding: 20px;">
 				<h1>학사일정</h1>
@@ -92,7 +91,7 @@
 				
 				</div>
 				
-				<p>단과 대학 리스트</p>
+				<p>학사일정</p>
 				<br>
 				<div>
             		<table class="table table-striped sub--list--table">
