@@ -129,7 +129,7 @@ public class UserController extends HttpServlet {
 	// 홈페이지 페이지 처리
 	private void showHomePage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-		User user = (User) session.getAttribute("user");
+		User user = (User)session.getAttribute("user");
 		int id = user.getId();
 		if (user != null) {
 			if (user.getUserRole().equals("student")) {

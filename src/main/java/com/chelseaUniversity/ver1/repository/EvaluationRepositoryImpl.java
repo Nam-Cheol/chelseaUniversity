@@ -17,8 +17,24 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
 
 	@Override
 	public int insert(Evaluation evaluation) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rowCount = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(INSERT)){
+			pstmt.setInt(1, evaluation.getStudentId());
+			pstmt.setInt(2, evaluation.getSubjectId());
+			pstmt.setInt(3, evaluation.getAnswer1());
+			pstmt.setInt(4, evaluation.getAnswer2());
+			pstmt.setInt(5, evaluation.getAnswer3());
+			pstmt.setInt(6, evaluation.getAnswer4());
+			pstmt.setInt(7, evaluation.getAnswer5());
+			pstmt.setInt(8, evaluation.getAnswer6());
+			pstmt.setInt(9, evaluation.getAnswer7());
+			pstmt.setString(10, evaluation.getSuggestions());
+			rowCount = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rowCount;
 	}
 
 	@Override

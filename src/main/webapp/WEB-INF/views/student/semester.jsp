@@ -34,6 +34,7 @@
 	<!-- 메인 div -->
 	<main>
 		<h1>학기별 성적 조회</h1>
+		<form action="${pageContext.request.contextPath}/grade/semester" method="post">
 		<div class="split--div"></div>
 		<div class="search" style="margin-bottom:10px;">
 		<select name="year">
@@ -46,7 +47,9 @@
 			<option value="1" selected>1학기</option>
 			<option value="2">2학기</option>
 			</select>
+		<input type="submit" value="검색" style="width:40px">
 		</div>
+		</form>
 		<div>
 			<h4 style="font-weight: 600">과목별 성적</h4>
 			<c:if test="${gradeList != null}">

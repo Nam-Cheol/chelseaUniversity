@@ -10,20 +10,25 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+import com.chelseaUniversity.ver1.model.Evaluation;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.response.GradeDto;
 import com.chelseaUniversity.ver1.model.dto.response.MyGradeDto;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
+import com.chelseaUniversity.ver1.repository.EvaluationRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.GradeRespositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.EvaluationRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.GradeRespository;
 
 @WebServlet("/grade/*")
 public class GradeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public GradeRespository gradeRespository;
-	
+	public EvaluationRepository evaluationRepository;
 	@Override
 	public void init() throws ServletException {
 		gradeRespository = new GradeRespositoryImpl();
+		evaluationRepository = new EvaluationRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,12 +46,21 @@ public class GradeController extends HttpServlet {
 			showTotalGrade(request,response,session);
 			break;
 		case "/evaluation":
-			request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
+			showEvaluationPage(request,response,session);
 			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
+	}
+
+	/*
+	 * 강의평가 페이지 처리
+	 */
+	private void showEvaluationPage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		int subId = Integer.parseInt(request.getParameter("subjectId"));
+		request.setAttribute("subId", subId);
+		request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
 	}
 
 	/*
@@ -93,7 +107,7 @@ public class GradeController extends HttpServlet {
 		HttpSession session = request.getSession();
 		switch (action) {
 		case "/evaluation":
-			request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
+			sendEvaluation(request,response,session);
 			break;
 		case "/semester":
 			searchSemesterHandler(request,response,session);
@@ -102,6 +116,27 @@ public class GradeController extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
+	}
+
+	/*
+	 * 강의평가 전송
+	 */
+	private void sendEvaluation(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+		StudentInfoDto user = (StudentInfoDto)session.getAttribute("principal");
+		int subId = Integer.parseInt(request.getParameter("subjectId"));
+		int userId = user.getId();
+		int answer1 = Integer.parseInt(request.getParameter("answer1"));
+		int answer2 = Integer.parseInt(request.getParameter("answer2"));
+		int answer3 = Integer.parseInt(request.getParameter("answer3"));
+		int answer4 = Integer.parseInt(request.getParameter("answer4"));
+		int answer5 = Integer.parseInt(request.getParameter("answer5"));
+		int answer6 = Integer.parseInt(request.getParameter("answer6"));
+		int answer7 = Integer.parseInt(request.getParameter("answer7"));
+		String suggestions = request.getParameter("improvements");
+		Evaluation evaluation = Evaluation.builder().answer1(answer1).answer2(answer2).answer3(answer3).answer4(answer4).answer5(answer5)
+				.answer6(answer6).answer7(answer7).studentId(userId).subjectId(subId).suggestions(suggestions).build();
+		evaluationRepository.insert(evaluation);
+		request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
 	}
 
 	/*

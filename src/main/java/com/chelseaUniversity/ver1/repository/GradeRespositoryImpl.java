@@ -20,7 +20,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 			+ "	JOIN subject_tb AS s\r\n " + "	ON ss.subject_id = s.id\r\n "
 			+ "	WHERE sub_year = ? AND semester = ? AND ss.student_id = ? \r\n " + "	GROUP BY student_id ";
 	public final String FIND_SUBJECT_GRADE_BY_STUDENT_ID = " select subj.sub_year as year , subj.semester as semester , subj.id as id ,\r\n"
-			+ "subj.name as name , subj.type as type , subj.grade as completegrade , sub.grade as grade\r\n"
+			+ "subj.name as name , subj.type as type , subj.grades as completegrade , sub.grade as grade\r\n"
 			+ "from student_tb as stu\r\n"
 			+ "join stu_sub_tb as sub\r\n"
 			+ "on sub.student_id = stu.id\r\n"
@@ -45,20 +45,23 @@ public class GradeRespositoryImpl implements GradeRespository {
 			+ "ON st.student_id = mg.student_id \r\n"
 			+ "WHERE st.student_id = ? AND su.sub_year = ? AND su.semester = ? ";
 	public final String FIND_GRADE_BY_SEMESTER = " select s.id as id, s.name as name,  sub.name as subject, stu.grade as grade, \r\n"
-			+ "stu.complete_grade as completeGrade, sub.type as type , sub.sub_year as year , sub.semester as semester\r\n"
+			+ "sub.grades as completeGrade, sub.type as type , sub.sub_year as year , sub.semester as semester , sub.id as subId\r\n"
 			+ "from stu_sub_tb as stu\r\n"
 			+ "join subject_tb as sub\r\n"
 			+ "on stu.subject_id = sub.id\r\n"
 			+ "join student_tb as s\r\n"
 			+ "on s.id = stu.student_id\r\n"
-			+ "where sub.sub_year = ? and s.semester = ? and s.id = ? ";
+			+ "where sub.sub_year = ? and sub.semester = ? and s.id = ? ";
 	public final String FIND_ALL_GRADE_BY_ID = " select sum(stu.complete_grade) as my , sum(sub.grades) as sum , sub.sub_year as year , sub.semester as semester ,avg(stu.complete_grade) as avg\r\n"
+			+ ",SUM(gr.grade_value)/COUNT(sub.name) AS average\r\n"
 			+ "from student_tb as s\r\n"
 			+ "join stu_sub_tb as stu\r\n"
 			+ "on s.id = stu.student_id\r\n"
 			+ "join subject_tb as sub\r\n"
 			+ "on stu.subject_id = sub.id\r\n"
-			+ "where s.id = ?; ";
+			+ "join grade_tb as gr\r\n"
+			+ "on stu.grade = gr.grade\r\n"
+			+ "where s.id = ? ";
 	
 	@Override
 	public List<GradeDto> selectSubYearByStudentId(Integer studentId) {
@@ -82,9 +85,9 @@ public class GradeRespositoryImpl implements GradeRespository {
 			pstmt.setInt(3, studentId);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				GradeDto grade = GradeDto.builder().subYear(rs.getInt("year"))
+				GradeDto grade = GradeDto.builder().subYear(rs.getInt("year")).subjectId(rs.getInt("subId"))
 						.semester(rs.getInt("semester")).name(rs.getString("subject"))
-						.type(rs.getString("type")).grade(rs.getString("grade")).gradeValue(rs.getString("completeGrade"))
+						.type(rs.getString("type")).grade(rs.getString("completeGrade")).gradeValue(rs.getString("grade"))
 						.build();
 				gradeList.add(grade);
 			}
@@ -107,7 +110,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 
 	@Override
 	public List<GradeDto> selectGradeDtoByStudentIdAndSubYear(Integer studentId, Integer subYear, Integer semester) {
-		List<GradeDto>GradeDtoList = null;
+		List<GradeDto>GradeDtoList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(FIND_SUBJECT_GRADE_BY_STUDENT_ID)){
 			pstmt.setInt(1, studentId);
@@ -118,6 +121,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 				GradeDto grade = GradeDto.builder().subYear(rs.getInt("year")).semester(rs.getInt("semester"))
 						.subjectId(rs.getInt("id")).name(rs.getString("name")).type(rs.getString("type"))
 						.grade(rs.getString("completegrade")).gradeValue(rs.getString("grade")).build();
+				System.out.println(grade.getName());
 				GradeDtoList.add(grade);
 			}
 		} catch (Exception e) {
@@ -180,7 +184,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 			pstmt.setInt(1, studentId);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				MyGradeDto myGrade = MyGradeDto.builder().average(rs.getFloat("avg")).subYear(rs.getInt("year"))
+				MyGradeDto myGrade = MyGradeDto.builder().average(rs.getFloat("average")).subYear(rs.getInt("year"))
 						.semester(rs.getInt("semester")).sumGrades(rs.getInt("sum")).myGrades(rs.getInt("my")).build();
 				myGradeList.add(myGrade);
 			}
