@@ -234,21 +234,29 @@ public class UserController extends HttpServlet {
 		}
 		int offset = (page - 1) * pageSize; // 시작 위치 계산
 
-		String deptId = request.getParameter("deptId");
-		String studentId = request.getParameter("studentId");
+		String deptId = request.getParameter("dept_id");
+		String studentId = request.getParameter("stu_id");
+
+		System.out.println("deptId 파라미터 : " + deptId);
+		System.out.println("studentId 파라미터 : " + studentId);
+
 		List<Student> studentList = null;
 		int totalStudents = 0;
 
 		if (deptId == null && studentId == null) {
+			System.out.println("처음 들어왔을 때");
 			studentList = studentRepository.selectStudentList(pageSize, offset);
 			totalStudents = studentRepository.selectStudentAmount();
 		} else {
+			System.out.println("검색했을 때");
 			studentList = studentRepository.selectStudentList(deptId, studentId, pageSize, offset);
+			System.out.println("학생 리스트 : " + studentList);
 			totalStudents = studentRepository.selectStudentAmount(deptId, studentId);
 		}
 
 		int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
 
+		System.out.println("전체 페이지 양 : " + totalPages);
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("studentList", studentList);
 		request.setAttribute("currentPage", page);
@@ -283,7 +291,7 @@ public class UserController extends HttpServlet {
 
 		String deptId = request.getParameter("deptId");
 		String proId = request.getParameter("studentId");
-		
+
 		List<Professor> professorList = null;
 		int totalProfessors = 0;
 
@@ -291,13 +299,13 @@ public class UserController extends HttpServlet {
 			professorList = professorRepository.selectProfessorList(pageSize, offset);
 			totalProfessors = professorRepository.selectProfessorAmount();
 			System.out.println("처음 들어왔을 때");
-			System.out.println("교수 리스트 : "+professorList);
+			System.out.println("교수 리스트 : " + professorList);
 			System.out.println("총 양 : " + totalProfessors);
 		} else {
 			professorList = professorRepository.selectProfessorList(deptId, proId, pageSize, offset);
-			totalProfessors = professorRepository.selectProfessorAmount(deptId,proId);
+			totalProfessors = professorRepository.selectProfessorAmount(deptId, proId);
 			System.out.println("검색 들어왔을 때");
-			System.out.println("교수 리스트 : "+professorList);
+			System.out.println("교수 리스트 : " + professorList);
 			System.out.println("총 양 : " + totalProfessors);
 		}
 

@@ -141,7 +141,7 @@ h1 {
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="student" items="${allStudentList}">
+                    <c:forEach var="student" items="${studentList}">
                         <tr>
                             <td>${student.id}</td>
                             <td>${student.name}</td>
@@ -157,38 +157,39 @@ h1 {
                             <td>${student.graduationDate}</td>
                         </tr>
                     </c:forEach>
-                    <c:if test="${not empty oneStudent}">
-                        <tr>
-                            <td>${oneStudent.id}</td>
-                            <td>${oneStudent.name}</td>
-                            <td>${oneStudent.birthDate}</td>
-                            <td>${oneStudent.gender}</td>
-                            <td>${oneStudent.address}</td>
-                            <td>${oneStudent.tel}</td>
-                            <td>${oneStudent.email}</td>
-                            <td>${oneStudent.deptId}</td>
-                            <td>${oneStudent.grade}</td>
-                            <td>${oneStudent.semester}</td>
-                            <td>${oneStudent.entranceDate}</td>
-                            <td>${oneStudent.graduationDate}</td>
-                        </tr>
-                    </c:if>
                 </tbody>
             </table>
 
             <!-- Pagination -->
-			<div class="pagination">
-			    <c:forEach begin="1" end="${totalPages}" var="i">
-			        <c:choose>
-			            <c:when test="${i == page}">
-			                <span class="page-item current-page">${i}</span>
-			            </c:when>
-			            <c:otherwise>
-			                <span class="page-item"><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="page-link">${i}</a></span>
-			            </c:otherwise>
-			        </c:choose>
-			    </c:forEach>
-			</div>
+
+<ul class="page--list">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <c:choose>
+                        <c:when test="${i == currentPage}">
+                            <c:choose>
+                                <c:when test="${deptId != null || studentId != null}">
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}&dept_id=${deptId}&stu_id=${stuId}" class="selected--page">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="selected--page">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${deptId != null || studentId != null}">
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}&dept_id=${deptId}&stu_id=${stuId}">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                        
+                    </c:choose>
+        </c:forEach>
+
         </div>
     </section>
 </div>
