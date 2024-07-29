@@ -35,11 +35,55 @@
 	<main>
 		<h1>학기별 성적 조회</h1>
 		<div class="split--div"></div>
-
-		<p class="no--list--p">강의 신청 및 수강 이력 확인 바랍니다.</p>
-
-		<br> <br>
-
+		<div class="search" style="margin-bottom:10px;">
+		<select name="year">
+			<option value="2021">2021년</option>
+			<option value="2022">2022년</option>
+			<option value="2023" selected>2023년</option>
+			<option value="2024">2024년</option>
+			</select>
+		<select name="semester">
+			<option value="1" selected>1학기</option>
+			<option value="2">2학기</option>
+			</select>
+		</div>
+		<div>
+			<h4 style="font-weight: 600">과목별 성적</h4>
+			<c:if test="${gradeList != null}">
+			<table border="1" class="sub--list--table">
+				<thead>
+					<tr>
+						<th>연도</th>
+						<th>학기</th>
+						<th>과목명</th>
+						<th>강의구분</th>
+						<th>이수학점</th>
+						<th>성적
+						<th>강의평가
+					</tr>
+				</thead>
+				<tbody>
+			<c:forEach var="grade" items="${gradeList}">
+					<tr>
+						<td>${grade.subYear}</td>
+						<td>${grade.semester}</td>
+						<td class="sub--list--name">${grade.name}</td>
+						<td>${grade.type}</td>
+						<td>${grade.grade}</td>
+						<td>${grade.gradeValue}</td>
+						<td><a
+							href="/chelseaUniversity/grade/evaluation?subjectId=${grade.subjectId}"
+							onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">Click</a>
+						</td>
+					</tr>
+			</c:forEach>
+				</tbody>
+			</table>
+			</c:if>
+			<c:if test="${gradeList == null}">
+					<br><h3>해당하는 학기에 들은 과목이 없습니다.</h3><br>
+				</c:if>
+			</div>
 	</main>
 </div>
 

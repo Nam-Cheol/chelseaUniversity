@@ -3,6 +3,7 @@ package com.chelseaUniversity.ver1.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.dto.response.GradeDto;
@@ -43,10 +44,25 @@ public class GradeRespositoryImpl implements GradeRespository {
 			+ ") AS mg\r\n"
 			+ "ON st.student_id = mg.student_id \r\n"
 			+ "WHERE st.student_id = ? AND su.sub_year = ? AND su.semester = ? ";
+	public final String FIND_GRADE_BY_SEMESTER = " select s.id as id, s.name as name,  sub.name as subject, stu.grade as grade, \r\n"
+			+ "stu.complete_grade as completeGrade, sub.type as type , sub.sub_year as year , sub.semester as semester\r\n"
+			+ "from stu_sub_tb as stu\r\n"
+			+ "join subject_tb as sub\r\n"
+			+ "on stu.subject_id = sub.id\r\n"
+			+ "join student_tb as s\r\n"
+			+ "on s.id = stu.student_id\r\n"
+			+ "where sub.sub_year = ? and s.semester = ? and s.id = ? ";
+	public final String FIND_ALL_GRADE_BY_ID = " select sum(stu.complete_grade) as my , sum(sub.grades) as sum , sub.sub_year as year , sub.semester as semester ,avg(stu.complete_grade) as avg\r\n"
+			+ "from student_tb as s\r\n"
+			+ "join stu_sub_tb as stu\r\n"
+			+ "on s.id = stu.student_id\r\n"
+			+ "join subject_tb as sub\r\n"
+			+ "on stu.subject_id = sub.id\r\n"
+			+ "where s.id = ?; ";
 	
 	@Override
 	public List<GradeDto> selectSubYearByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -58,13 +74,28 @@ public class GradeRespositoryImpl implements GradeRespository {
 
 	@Override
 	public List<GradeDto> selectGradeDtoBySemester(Integer studentId, Integer semester, Integer subYear) {
-		// TODO Auto-generated method stub
-		return null;
+		List<GradeDto>gradeList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(FIND_GRADE_BY_SEMESTER)){
+			pstmt.setInt(1, subYear);
+			pstmt.setInt(2, semester);
+			pstmt.setInt(3, studentId);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				GradeDto grade = GradeDto.builder().subYear(rs.getInt("year"))
+						.semester(rs.getInt("semester")).name(rs.getString("subject"))
+						.type(rs.getString("type")).grade(rs.getString("grade")).gradeValue(rs.getString("completeGrade"))
+						.build();
+				gradeList.add(grade);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return gradeList;
 	}
 
 	@Override
 	public List<GradeDto> selectGradeDtoByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -143,8 +174,20 @@ public class GradeRespositoryImpl implements GradeRespository {
 ;
 	@Override
 	public List<MyGradeDto> selectMyGradeDtoByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<MyGradeDto>myGradeList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(FIND_ALL_GRADE_BY_ID)){
+			pstmt.setInt(1, studentId);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MyGradeDto myGrade = MyGradeDto.builder().average(rs.getFloat("avg")).subYear(rs.getInt("year"))
+						.semester(rs.getInt("semester")).sumGrades(rs.getInt("sum")).myGrades(rs.getInt("my")).build();
+				myGradeList.add(myGrade);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return myGradeList;
 	}
 
 	@Override
