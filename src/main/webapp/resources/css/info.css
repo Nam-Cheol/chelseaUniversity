@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+/* 메인 스타일 */
+main {
+    flex-grow: 1;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 전체 테이블 스타일 */
+.list--table {
+    width: 100%;
+    border-collapse: collapse; /* Ensure borders are combined for visual consistency */
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+/* Outer border for the entire table */
+.list--table {
+    border: 1px solid #000; /* Outer border pitch black */
+}
+
+/* Main header styles */
+.list--table th[colspan="4"] {
+    border: 1px solid #000; /* Pitch black border for main header */
+    background-color: #33688F; /* Primary header background color */
+    color: white;
+    text-align: center;
+    padding: 12px 15px; /* Matching padding to align with table cells */
+}
+
+/* Inner borders for header cells */
+.list--table th {
+    border: 1px solid #000; /* Pitch black border for all header cells */
+    background-color: #33688F; /* Primary header background color */
+    color: white;
+    padding: 12px 15px; /* Ensure padding is consistent */
+}
+
+/* Inner borders for regular cells */
+.list--table td {
+    padding: 12px 15px;
+    border: 1px solid #000; /* Pitch black border for all sides of cells */
+}
+
+/* Sub-header styles */
+.list--table th.sub--th {
+    background-color: #87CEEB; /* Light Sky Blue for sub-headers */
+    color: #333; /* Darker text for contrast */
+    border: 1px solid #000; /* Pitch black border for sub-headers */
+}
+
+/* Specific styles for table cells */
+.list--table td {
+    text-align: center;
+}
+
+/* 홀수 행 배경색 */
+.list--table tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+/* 세 번째 테이블의 특정 스타일 */
+.table-with-custom-width th {
+    width: 20%;
+}
+
+.table-with-custom-width td {
+    width: 80%;
+}
+
+/* Form styling */
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+.form-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #000; /* Black border for consistent look */
+}
+
+.form-table label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #000; /* Black border for input fields */
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn-edit {
+    background-color: #33688F;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-edit:hover {
+    background-color: #2a4b6f;
+}
