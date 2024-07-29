@@ -59,8 +59,7 @@
 			</div>
 			<div class="actions">
 				<button type="submit">저장</button>
-				<button type="button"
-					onclick="location.href='${pageContext.request.contextPath}/notice/list?page=0">목록</button>
+				<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/notice/list?page=0'">목록</button>
 			</div>
 		</form>
 	</main>

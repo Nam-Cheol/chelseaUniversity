@@ -42,11 +42,11 @@
 					<td><a href="/chelseaUniversity/schedule/list"
 						class="selected--menu">학사일정</a></td>
 				</tr>
-				<%-- <c:if test="${principal.userRole.equals(\"staff\") }">
+				<c:if test="${user.userRole eq 'staff'}">
 					<tr>
-						<td><a href="/schedule/list"> 학사일정 등록</a></td>
+						<td><a href="/chelseaUniversity/notice/createNotice"> 학사일정 등록</a></td>
 					</tr>
-				</c:if> --%>
+				</c:if>
 			</table>
 		</div>
 	</div>
@@ -72,12 +72,7 @@
 
 
 
-	<footer>
-		<!-- 필요 시 -->
-	</footer>
 
 </div>
 
-</body>
-</html>
-
+     <%@ include file="footer.jsp"%>

@@ -34,7 +34,7 @@
     </div>
 
    <main style="width: 100%; padding: 20px;">
-        <h2>단대별 등록금</h2>
+        <h1>단대별 등록금 등록</h1>
         <div class="split--div"></div>
         <div class="sub--filter">
             <form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-name" method="post">

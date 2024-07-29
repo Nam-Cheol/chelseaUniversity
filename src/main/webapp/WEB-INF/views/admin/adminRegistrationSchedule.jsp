@@ -39,35 +39,59 @@
 		</div>
 		
 			 <main style="width: 100%; padding: 20px;">
-				<h2>학사일정</h2>
+				<h1>학사일정</h1>
 			  <div class="split--div"></div>
-       		 <div class="sub--filter">
+       		 <div class="sub--filter" >
 				<form action="${pageContext.request.contextPath}/admin/schedule/create-schedule" method="post">
-				 <div>
-		        	<input type="hidden" name="page" value="1">
-					<label for="type">교직원id <input type="text" id="staff-id" name="staff-id" placeholder="230001  fk"></label>
-					<label for="type">시작날짜 <input type="text" id="start-date" name="start-date" placeholder="2024-01-01"></label>
-					<label for="type">종료날짜 <input type="text" id="end-date" name="end-date" placeholder="2024-01-01"></label>
-					<label for="type">일정내용 <input type="text" id="schedule-information" name="schedule-information" placeholder="예비수강신청"></label>
+				 <table class="table-container">
+                     <tr>
+                        <td><label for="type">교직원사번<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="text" id="staff-id" name="staff-id" placeholder="교직원사번을 입력하세요" required="required"></td>
+                    </tr>
+                     <tr>
+                        <td><label for="type">시작날짜<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="date" id="start-date" name="start-date" min="2024-01-01" max="2024-12-31" value="2024-01-01" required></td>
+                    </tr>
+                     <tr>
+                        <td><label for="type">종료날짜<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="date" id="end-date" name="end-date" min="2024-01-01" max="2024-12-31" value="2024-01-01" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="type">일정내용<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="text" id="schedule-information" name="schedule-information" placeholder="일정내용을 입력하세요" required="required"></td>
+                    </tr>
+                  </table>
 					<button type="submit">생성</button>
-       			 </div>
 				</form>
-       			 </div>
- 				<div class="sub--filter">
+				
 				<form action="${pageContext.request.contextPath}/admin/schedule/edit-schedule" method="post">
-				<div>
-		        	<input type="hidden" name="page" value="1">
-					<label for="type">id <input type="text" id="schedule-id" name="schedule-id" placeholder="1 , 2 , 3 ...."></label>
-					<label for="type">교직원id <input type="text" id="staff-id" name="staff-id" placeholder="230001  fk"></label>
-					<label for="type">시작날짜 <input type="text" id="start-date" name="start-date" placeholder="2024-01-01"></label>
-					<br>
-					<label for="type">종료날짜 <input type="text" id="end-date" name="end-date" placeholder="2024-01-01"></label>
-					<label for="type">일정내용 <input type="text" id="schedule-information" name="schedule-information" placeholder="예비수강신청"></label>
+				<table class="table-container">
+                     <tr>
+                        <td><label for="type">수정할id<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="text" id="schedule-id" name="schedule-id" placeholder="id을 입력하세요" required="required"></td>
+                    </tr>
+                     <tr>
+                        <td><label for="type">교직원사번<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="text" id="staff-id" name="staff-id" placeholder="교직원사번을 입력하세요" required="required"></td>
+                    </tr>
+                     <tr>
+                        <td><label for="type">시작날짜<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="date" id="start-date" name="start-date" min="2024-01-01" max="2024-12-31" value="2024-01-01" required></td>
+                    </tr>
+                     <tr>
+                        <td><label for="type">종료날짜<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="date" id="end-date" name="end-date" min="2024-01-01" max="2024-12-31" value="2024-01-01" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="type">일정내용<span class="essential-sign">&#42;</span></label></td>
+                        <td><input type="text" id="schedule-information" name="schedule-information" placeholder="일정내용을 입력하세요" required="required"></td>
+                    </tr>
+                  </table>
 					<button type="submit">변경</button>
-		        </div>
 				</form>
-		        </div>
-
+				
+				</div>
+				
 				<p>단과 대학 리스트</p>
 				<br>
 				<div>
@@ -109,4 +133,4 @@
 			</main>
 		</div>
 
-<%@ include file="footer.jsp"%>;
+<%@ include file="footer.jsp"%>

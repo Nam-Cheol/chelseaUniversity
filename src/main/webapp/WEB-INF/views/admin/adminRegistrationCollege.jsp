@@ -34,25 +34,20 @@
     </div>
 
     <main style="width: 100%; padding: 20px;">
-        <h2>단과대학 등록</h2>
+        <h1>단과대학 등록</h1>
         <div class="split--div"></div>
        <div class="sub--filter">
-        <form action="${pageContext.request.contextPath}/admin/create-college" method="post">
         
-			<div>
+        <form action="${pageContext.request.contextPath}/admin/create-college" method="post">
 			<input type="hidden" name="page" value="1">
 			<label for="type">단과이름  <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></label>
             <button type="submit">생성</button>
-             </div>
         </form>
-        </div>   
-        <div class="sub--filter">
+        
         <form action="${pageContext.request.contextPath}/admin/edit-college" method="post">
-        <div>
         <label for="type">수정할 id  <input type="text" id="college-id" name="college-id" placeholder="1 , 2 , 3 ...."></label>
         <label for="type">단과이름  <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></label>
         <button type="submit">수정</button>
-        </div>
         </form>  
                 </div>
      

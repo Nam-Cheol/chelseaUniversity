@@ -4,17 +4,25 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 
-<section>
+<style>
+	main form button{
+	padding: 10px;
+	margin: 10px;
+	}
+	
+	p {
+	font-size: 22px;
+	}
+	
+	
+</style>
     <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
-        <!-- Sidebar Menu -->
         <div class="sub--menu">
             <div class="sub--menu--top">
-                <h2>MY</h2>
+                <h2>학사관리</h2>
             </div>
-            <!-- Menu Table -->
             <div class="sub--menu--mid">
                 <table class="sub--menu--table" border="1">
-                    <tbody>
                         <tr>
                             <td><a href="${pageContext.request.contextPath}/user/studentList">학생 명단 조회</a></td>
                         </tr>
@@ -39,17 +47,16 @@
                         <tr>
                             <td><a href="${pageContext.request.contextPath}/sugang/period" class="selected--menu">수강신청 기간 설정</a></td>
                         </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <main>
+         <main style="width: 100%; padding: 20px;">
             <h1>수강 신청 기간 설정</h1>
-            <!-- 기본값 -->
+            <div class="split--div"></div>
             <c:if test="${SUGANG_PERIOD == 0}">
                 <p>현재 예비 수강 신청 기간입니다.</p>
+                <br>
                 <form action="${pageContext.request.contextPath}/sugang/updatePeriod1" method="post">
                     <button type="submit">수강신청 기간 시작하기</button>
                 </form>
@@ -58,6 +65,7 @@
             <!-- 수강신청 시작 버튼 눌렀을 때 -->
             <c:if test="${SUGANG_PERIOD == 1}">
                 <p>현재 수강 신청 기간입니다.</p>
+                 <br>
                 <form action="${pageContext.request.contextPath}/sugang/updatePeriod2" method="post">
                     <button type="submit">수강신청 종료하기</button>
                 </form>
@@ -66,10 +74,12 @@
             <!-- 수강신청 종료 버튼 눌렀을 때 -->
             <c:if test="${SUGANG_PERIOD == 2}">
                 <p>이번 학기 수강 신청 기간이 종료되었습니다. 예비 수강신청 기간을 시작하시겠습니까?</p>
+                 <br>
                 <form action="${pageContext.request.contextPath}/sugang/updatePeriod0" method="post">
                     <button type="submit">예비수강신청 기간 시작하기</button>
                 </form>
             </c:if>
         </main>
     </div>
-</section>
+  <%@ include file="footer.jsp"%>
+
