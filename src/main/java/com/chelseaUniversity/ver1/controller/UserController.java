@@ -77,14 +77,8 @@ public class UserController extends HttpServlet {
 		case "/studentList":
 			showStudentListPage(request, response, session);
 			break;
-		case "/studentList/search":
-			showStudentListSearch(request, response, session);
-			break;
 		case "/professorList":
 			showProfessorListPage(request, response, session);
-			break;
-		case "/professorList/pro_list_page{i}":
-			showProfessorListByPage(request, response, session);
 			break;
 		case "/student":
 			showStudentCreatePage(request, response, session);
@@ -227,9 +221,8 @@ public class UserController extends HttpServlet {
 	 */
 	private void showStudentListPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
-		System.out.println("*** showStudentListPage 메소드 동작***");
-		int page = 1;
-		int pageSize = 20;
+		int page = 1; 
+		int pageSize = 20; // limit
 
 		try {
 			String pageStr = request.getParameter("page");
@@ -239,91 +232,31 @@ public class UserController extends HttpServlet {
 		} catch (Exception e) {
 			page = 1;
 		}
-
-		int offset = (page - 1) * pageSize; // 시작 위치 계산( offset 값 계산)
-		List<Student> allStudentList = studentRepository.selectStudentList(pageSize, offset);
-		System.out.println("전체학생 리스트 : " + allStudentList);
-		// 전체 학생 수
-		int totalStudents = studentRepository.selectStudentAmount();
-		System.out.println("전체 학생 수 : " + totalStudents);
-		// 총 페이지 수 계산
-		int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
-		System.out.println("총 페이지 수 : " + totalPages);
-
-		request.setAttribute("allStudentList", allStudentList);
-		request.setAttribute("totalStudents", totalStudents);
-		request.setAttribute("totalPages", totalPages);
-		request.setAttribute("currentPage", page);
-		request.getRequestDispatcher("/WEB-INF/views/staff/studentList.jsp").forward(request, response);
-
-	}
-
-	/**
-	 * 교직원 -> 학생 리스트 검색
-	 * 
-	 * @param request
-	 * @param response
-	 * @param session
-	 * @throws IOException
-	 * @throws ServletException
-	 */
-	private void showStudentListSearch(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-			throws ServletException, IOException {
-		System.out.println("*** 학생 검색 메소드 동작 ***");
-		String deptId = request.getParameter("dept_id");
-		String stuId = request.getParameter("stu_id");
-		System.out.println("검색한 학과 : " + deptId);
-		System.out.println("검색한 학번 : " + stuId);
-
-		if (deptId.equals("") && stuId.equals("")) {
-			request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
-		}
-
-		int page = 1;
-		int pageSize = 20;
-
-		try {
-			String pageStr = request.getParameter("page");
-			if (pageStr != null) {
-				page = Integer.parseInt(pageStr);
-			}
-		} catch (Exception e) {
-			page = 1;
-		}
-
-		int deptIdNum;
-		int stuIdNum;
+		int offset = (page - 1) * pageSize; // 시작 위치 계산
 		
-		if (deptId != null && stuId.equals("")) {
-			System.out.println("if - 학과 아이디로 검색!!!!");
-			deptIdNum = Integer.parseInt(deptId);
-			studentListForm.setDeptId(deptIdNum);
-			System.out.println("studentListForm에서 학과 아이디 : " + studentListForm.getDeptId());
-			List<Student> allStudentList = studentRepository.selectByDepartmentId(studentListForm);
-			System.out.println("학과 번호로 검색한 학생 리스트 : " + allStudentList);
-			int rowCount = allStudentList.size();
-			// 총 페이지 수 계산
-			int totalPages = (int) Math.ceil((double) rowCount / pageSize);
-			request.setAttribute("allStudentList", allStudentList);
-			request.setAttribute("totalPages", totalPages);
-			request.setAttribute("totalStudents", rowCount);
-		}
-		if (deptId.equals("") && stuId != null) {
-			System.out.println("if - 학번으로 검색!!!!");
-			stuIdNum = Integer.parseInt(stuId);
-			studentListForm.setStudentId(stuIdNum);
-			List<Student> allStudentList = studentRepository.selectByStudentIdList(studentListForm);
-			System.out.println("학번으로 검색한 학생 리스트 : " + allStudentList);
-			int rowCount = allStudentList.size();
-			// 총 페이지 수 계산
-			int totalPages = (int) Math.ceil((double) rowCount / pageSize);
-			request.setAttribute("allStudentList", allStudentList);
-			request.setAttribute("totalPages", totalPages);
-			request.setAttribute("totalStudents", rowCount);
+		String deptId = request.getParameter("deptId");
+		String studentId = request.getParameter("studentId");
+		List<Student> studentList = null;
+		int totalStudents = 0;
+
+		if (deptId == null && studentId == null) {
+			studentList = studentRepository.selectStudentList(pageSize, offset);
+			totalStudents = studentRepository.selectStudentAmount();
+		} else {
+			studentList = studentRepository.selectStudentList(deptId, studentId, pageSize, offset);
+			totalStudents = studentRepository.selectStudentAmount(deptId, studentId);
 		}
 
-		request.getRequestDispatcher("/WEB-INF/views/user/studentList.jsp").forward(request, response);
+		int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
+
+		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("studentList", studentList);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("deptId", deptId);
+		request.setAttribute("stuId", studentId);
+		request.getRequestDispatcher("/WEB-INF/views/management/studentList.jsp").forward(request, response);
 	}
+
 
 	/**
 	 * 교직원 -> 교수 명단 조회

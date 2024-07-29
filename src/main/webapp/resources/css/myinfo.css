@@ -1,60 +1,41 @@
-@charset "UTF-8";
-
-form {
-	margin-left: 30px;
+.input--table {
+    width: 100%;
+    margin-left: 0; /* Align the table to the left */
+    border-collapse: collapse;
 }
 
-.input--table {
-	margin: 10px 0;
-	width: 900px;
+.input--table th, .input--table td {
+    padding: 8px;
+    text-align: left; /* Align text to the left */
 }
 
 .input--table th {
-	text-align: center;
-	background-color: #F0EFEF;
+    background-color: #f2f2f2;
 }
 
-.half--table {
-	width: 450px;
-}
-
-.col1 {
-	width: 15%;
-}
-
-.col2 {
-	width: 35%;
-}
-
-.col3 {
-	width: 15%;
-}
-
-.col4 {
-	width: 35%;
-}
-
-.input--table td {
-	padding: 5px 10px;
+.input--table colgroup .col1,
+.input--table colgroup .col2,
+.input--table colgroup .col3,
+.input--table colgroup .col4 {
+    width: 25%; /* Make columns of equal width */
 }
 
 .stat--table {
-	width: 800px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.stat--table th, .stat--table td {
+    padding: 8px;
+    text-align: left; /* Align text to the left */
 }
 
 .stat--table th {
-	background-color: #F0EFEF;
-	text-align: center;
+    background-color: #f2f2f2;
 }
 
-.stat--table td {
-	text-align: center;
-	width: 20%;
+.table-container {
+    overflow-x: auto;
 }
 
-.update--button {
-	
-}
-.send--button {
-	margin: 10px 0 20px;
-}

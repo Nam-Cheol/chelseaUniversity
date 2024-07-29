@@ -26,6 +26,8 @@ public class StudentRepositoryImpl implements StudentRepository {
 	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id LIKE ? ";
 	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id LIKE ?";
 	public static final String SELECT_ALL_STUDENTS_ID = " SELECT id FROM student_tb ";
+	public static final String SELECT_STU_DEPT_AND_STU_ID = " SELECT * FROM student_tb WHERE id LIKE ? AND dept_id LIKE ? LIMIT ? OFFSET ? ";
+	public static final String COUNT_STU_BY_ID = " SELECT count(*) FROM student_tb where id LIKE ? AND dept_id LIKE ? ";
 
 	@Override
 	public int insertToStudent(CreateStudentDto createStudentDto) {
@@ -65,7 +67,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	@Override
 	public List<Integer> selectIdList() {
-		List<Integer> list = new ArrayList<>(); 
+		List<Integer> list = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection()) {
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENTS_ID);
 			ResultSet rs = pstmt.executeQuery();
@@ -109,29 +111,40 @@ public class StudentRepositoryImpl implements StudentRepository {
 	}
 
 	/**
-	 * 교직원 -> 학생 전체 조회
+	 * 교직원 -> 학생 검색 조회
 	 */
 	@Override
-	public List<Student> selectStudentList(int limit, int offset) {
-		List<Student> allStudentList = new ArrayList<>();
+	public List<Student> selectStudentList(String deptId, String studentId, int limit, int offset) {
+		List<Student> studentList = new ArrayList<>();
+		if (deptId == null) {
+			deptId = "";
+		}
+		if (studentId == null) {
+			studentId = "";
+		}
+		try (Connection conn = DBUtil.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_STU_DEPT_AND_STU_ID);
+			pstmt.setString(1, "%" + studentId + "%");
+			pstmt.setString(2, "%" + deptId + "%");
+			pstmt.setInt(3, limit);
+			pstmt.setInt(4, offset);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					studentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+							.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+							.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+							.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+							.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+							.build());
+				}
 
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)) {
-			pstmt.setInt(1, limit);
-			pstmt.setInt(2, offset);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
-						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
-						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
-						.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
-						.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
-						.build());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return allStudentList;
+		return studentList;
 	}
 
 	@Override
@@ -141,7 +154,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_DEPT_ID)) {
-			pstmt.setString(1, "%"+studentListForm.getDeptId()+"%");
+			pstmt.setString(1, "%" + studentListForm.getDeptId() + "%");
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					student.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
@@ -167,7 +180,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 		List<Student> student = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_BY_ID)) {
-			pstmt.setString(1, "%"+studentListForm.getStudentId()+"%");
+			pstmt.setString(1, "%" + studentListForm.getStudentId() + "%");
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
 					student.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
@@ -185,7 +198,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 		}
 
 		return student;
-		
+
 	}
 
 	/**
@@ -258,10 +271,58 @@ public class StudentRepositoryImpl implements StudentRepository {
 		return 0;
 	}
 
-	@Override
 	public Student selectByStudentId(Integer studentId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Student> selectStudentList(int limit, int offset) {
+		List<Student> allStudentList = new ArrayList<>();
+
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_STUDENT_SQL)) {
+			pstmt.setInt(1, limit);
+			pstmt.setInt(2, offset);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				allStudentList.add(Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).grade(rs.getInt("grade")).semester(rs.getInt("semester"))
+						.entranceDate(rs.getDate("entrance_date")).graduationDate(rs.getDate("graduation_date"))
+						.build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allStudentList;
+	}
+
+	@Override
+	public Integer selectStudentAmount(String deptId, String studentId) {
+		int totalStudents = 0;
+
+		if (deptId == null) {
+			deptId = "";
+		}
+		if (studentId == null) {
+			studentId = "";
+		}
+		try (Connection conn = DBUtil.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(COUNT_STU_BY_ID);
+			pstmt.setString(1, "%" + deptId + "%");
+			pstmt.setString(2, "%" + studentId + "%");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				totalStudents = rs.getInt("count(*)");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return totalStudents;
 	}
 
 }

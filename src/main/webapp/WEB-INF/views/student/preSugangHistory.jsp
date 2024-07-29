@@ -6,13 +6,15 @@
 	href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/subject.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
 	<!-- 세부 메뉴 div-->
 	<div class="sub--menu">
 		<div class="sub--menu--top">
-			<h2>수강신청</h2>
+			<h2 style="color: white;">수강신청</h2>
 		</div>
 		<!-- 메뉴 -->
 		<div class="sub--menu--mid">

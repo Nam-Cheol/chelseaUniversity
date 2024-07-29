@@ -1,60 +1,263 @@
 @charset "UTF-8";
 
-.sub--menu {
-	min-width: 230px; 
-	margin-right: 80px;	
+/* 색상 팔레트 */
+:root {
+    --primary-color: #075AA4; /* 기본 색상 */
+    --secondary-color: #33688F; /* 보조 색상 */
+    --accent-color: #133c63; /* 강조 색상 */
+    --border-color: #d2d2d2; /* 테두리 색상 */
+    --background-color: #f9f9f9; /* 배경 색상 */
+    --hover-color: #054a8a; /* 호버 색상 */
 }
 
+/* 전체 레이아웃 스타일 */
+.d-flex {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    min-width: 100em;
+    gap: 2em; /* Add some spacing between the menu and main content */
+}
+
+/* Ensure the main content area takes the remaining space */
+main {
+    flex-grow: 1;
+    padding: 1em;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Sub Menu Container */
+.sub--menu {
+    min-width: 230px; 
+    margin-right: 80px;    
+    background-color: var(--background-color); /* 배경 색상 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    overflow: hidden;
+}
+
+/* Sub Menu Top Section */
 .sub--menu--top {
-	text-align: center;
-	padding: 25px 0;
-	border-bottom: 3px solid #33688F;
+    text-align: center;
+    padding: 1em;
+    background-color: #001489; /* 주어진 색상 */
+    color: white; /* 주어진 색상 */
+    border-radius: 8px 8px 0 0; /* 모서리 둥글게 */
 }
 
 .sub--menu--top h2 {
-	margin: 0;
-	font-weight: 600;
-	color: #133c63;
+    margin: 0;
+    font-weight: 600;
+    color: white; /* 주어진 색상 */
+    font-size: 24px; /* 글꼴 크기 */
 }
 
+/* Sub Menu Middle Section */
 .sub--menu--mid {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
+    padding: 20px; /* 여백 추가 */
 } 
 
+/* Sub Menu Table */
 .sub--menu--table {
-	border-color: #d2d2d2;
-	border-top: hidden;
-	border-left: hidden;
-	border-right: hidden;
+    width: 100%; /* 전체 너비 사용 */
+    border-collapse: collapse; /* 테이블 테두리 겹치지 않게 */
 }
 
 .sub--menu--table td {
-	border-left: hidden;
-	border-right: hidden;
-	border-bottom: hidden;
-	width: 200px;
-	height: 71px;
-	padding: 20px 0;
-	font-size: 20px;
+    border: none; /* 테두리 제거 */
+    width: 200px;
+    height: 71px;
+    padding: 20px 0;
+    font-size: 20px;
+    text-align: center; /* 가운데 정렬 */
+    background-color: white; /* 배경 색상 */
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
 }
 
-.sub--menu--table td a{
-	padding: 20px 10px;
-	border-bottom: hidden;
+.sub--menu--table td a {
+    padding: 20px 10px;
+    color: var(--accent-color);
+    transition: color 0.3s; /* 글꼴 색상 전환 효과 */
 }
 
 .sub--menu--table tr:nth-last-of-type(1) td {
-	border-bottom: hidden;
-	height: 72px !important;
+    height: 72px !important;
 }
 
 .sub--menu--table tr:nth-of-type(1) td {
-	border-top: hidden;
+    border-top: none; /* 상단 테두리 제거 */
 }
 
+/* Selected Menu and Hover Effects */
 .selected--menu,
 .sub--menu--table td a:hover {
-	color: #075AA4;
-	font-weight: 600;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.sub--menu--table td:hover {
+    background-color: var(--hover-color); /* 호버 시 배경 색상 */
+    color: white; /* 호버 시 글꼴 색상 */
+}
+
+.sub--menu--table td a:hover {
+    color: white; /* 호버 시 링크 색상 */
+}
+
+/* 필터 폼 스타일 */
+.sub--filter {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.sub--filter form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #f0f8ff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sub--filter label {
+    margin-right: 5px;
+    color: #003366;
+}
+
+.sub--filter input,
+.sub--filter select {
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #33688F;
+    padding: 8px;
+    color: #003366;
+}
+
+.sub--filter button {
+    background-color: #33688F;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sub--filter button:hover {
+    background-color: #244d6b;
+}
+
+/* 전체 테이블 스타일 */
+.sub--list--table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+.sub--list--table th, .sub--list--table td {
+    padding: 12px 15px;
+}
+
+.sub--list--table thead th {
+    background-color: #33688F;
+    color: white;
+    border: 1px solid #33688F;
+}
+
+.sub--list--table tbody td {
+    border-bottom: 1px solid #d2d2d2;
+}
+
+.sub--list--table tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.sub--list--table tr:hover {
+    background-color: #e0f7ff;
+}
+
+.sub--list--table th {
+    text-align: center;
+}
+
+.sub--list--table td {
+    text-align: center;
+}
+
+.sub--list--name {
+    text-align: left !important;
+    padding-left: 20px;
+    color: #003366;
+}
+
+.sub--list--table td button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    width: auto;
+    color: white;
+    background-color: #33688F;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sub--list--table td button:hover {
+    background-color: #244d6b;
+}
+
+.sub--list--button--row {
+    padding: 2px !important;
+}
+
+/* 계획 보기 스타일 */
+.sub--plan--view li a:hover {
+    color: #003366;
+}
+
+/* 버튼 스타일 */
+.preStuSubList--button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #33688F;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 20px;
+}
+
+.preStuSubList--button:hover {
+    background-color: #244d6b;
+}
+
+/* Pagination */
+.page--list {
+    list-style: none;
+    display: flex;
+    gap: 0.5em;
+    padding: 1em 0;
+}
+
+.page--list li {
+    display: inline;
+}
+
+.page--list a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.page--list a:hover {
+    text-decoration: underline;
 }
