@@ -125,7 +125,7 @@
 								<span class="page-item current-page">${i}</span>
 							</c:when>
 							<c:otherwise>
-								<span class="page-item"><a href="${pageContext.request.contextPath}/admin/department?page=${i}" class="page-link">${i}</a></span>
+								<span class="page-item"><a href="${pageContext.request.contextPath}/admin/schedule?page=${i}" class="page-link">${i}</a></span>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>

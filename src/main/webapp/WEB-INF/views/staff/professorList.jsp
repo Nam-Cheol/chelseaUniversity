@@ -38,23 +38,6 @@ h1 {
 	border-radius: 5px;
 }
 
-.pagination {
-	margin-top: 20px;
-}
-
-.pagination span {
-	margin: 0 5px;
-}
-
-.pagination a {
-	text-decoration: none;
-	color: #001489;
-}
-
-.pagination .current-page {
-	font-weight: bold;
-	color: #001489;
-}
 </style>
 
 <!-- Sidebar Menu and Main Content -->
@@ -151,7 +134,7 @@ h1 {
 			                <span class="page-item current-page">${i}</span>
 			            </c:when>
 			            <c:otherwise>
-			                <span class="page-item"><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="page-link">${i}</a></span>
+			                <span class="page-item"><a href="${pageContext.request.contextPath}/user/professorList?page=${i}" class="page-link">${i}</a></span>
 			            </c:otherwise>
 			        </c:choose>
 			    </c:forEach>

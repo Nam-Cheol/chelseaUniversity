@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
-
 <style>
 h1 {
 	color: #001489;
@@ -36,32 +35,9 @@ h1 {
 	color: #fff;
 	background-color: #001489;
 	border-radius: 5px;
-	cursor: pointer;
-}
-
-.submit-btn:hover {
-	background-color: #0036a0;
-}
-
-.pagination {
-	margin-top: 20px;
-}
-
-.pagination span {
-	margin: 0 5px;
-}
-
-.pagination a {
-	text-decoration: none;
-	color: #001489;
-}
-
-.pagination .current-page {
-	font-weight: bold;
-	color: #001489;
 }
 </style>
-
+    <section>
 <!-- Sidebar Menu and Main Content -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
     <!-- Sidebar Menu -->
@@ -99,11 +75,9 @@ h1 {
     </div>
 
     <!-- Main Content -->
-    <section>
+       <main>
         <h1>학생 명단 조회</h1>
-
         <!-- Search Form -->
-        <div>
             <form action="${pageContext.request.contextPath}/user/studentList" method="get">
                 <label for="dept_id">학과 번호</label>
                 <input type="search" id="dept_id" name="dept_id">
@@ -119,10 +93,8 @@ h1 {
                     새학기 적용
                 </button>
             </form>
-        </div>
 
         <!-- Student List Table -->
-        <div>
             <table border="1" class="table-container">
                 <thead>
                     <tr>
@@ -189,6 +161,6 @@ h1 {
 			        </c:choose>
 			    </c:forEach>
 			</div>
+			</main>
         </div>
     </section>
-</div>
