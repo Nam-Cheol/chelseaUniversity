@@ -15,12 +15,14 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class NoticeRepositoryImpl implements NoticeRepository {
 	
 	private static final String SELECT_COUNT_NOTICE = " SELECT count(id) as count FROM notice_tb ";
+	private static final String SELECT_SELECT_COUNT_BYTITLE = " SELECT count(id) as count FROM notice_tb WHERE title LIKE ?";
+	private static final String SELECT_SELECT_COUNT_BYKEYWORD = " SELECT count(id) as count FROM notice_tb WHERE title LIKE ? or content LIKE ?";
 	private static final String SELECT_NOTICE_ALL_ORDER_BY = " SELECT * FROM notice_tb ORDER BY id DESC limit ? OFFSET ?";
 	private static final String SELECT_NOTICE_BYID = " SELECT * FROM notice_tb WHERE id = ? ";
 	private static final String UPDATE_NOTICE_VIEW_BYID = " update notice_tb SET views = views + 1 WHERE id = ? ";
-	private static final String SELECT_NOTICE_BYTITLE = " SELECT * FROM notice_tb WHERE title LIKE ? ";
+	private static final String SELECT_NOTICE_BYTITLE = " SELECT * FROM notice_tb WHERE title LIKE ? ORDER BY id DESC limit ? OFFSET ? ";
 	private static final String SELECT_NOTICE_BYKEYWORD = " SELECT * FROM notice_tb WHERE title LIKE ?"
-			+ "UNION SELECT * FROM notice_tb WHERE content LIKE ?";
+			+ "UNION SELECT * FROM notice_tb WHERE content LIKE ? ORDER BY id DESC limit ? OFFSET ? ";
 	
 	@Override
 	public int insert(NoticeFormDto noticeFormDto) {
@@ -124,12 +126,14 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	}
 
 	@Override
-	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto) {
+	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto,int limit,int offset) {
 		List<Notice>noticeList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYKEYWORD)){
 			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
 			pstmt.setString(2, "%"+noticePageFormDto.getKeyword()+"%");
+			pstmt.setInt(3, limit);
+			pstmt.setInt(4, offset);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Notice notice = Notice.builder().id(rs.getInt("id")).category(rs.getString("category"))
@@ -145,11 +149,13 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	}
 
 	@Override
-	public List<Notice> selectNoticeByTitle(NoticePageFormDto noticePageFormDto) {
+	public List<Notice> selectNoticeByTitle(NoticePageFormDto noticePageFormDto,int limit,int offset) {
 		List<Notice>noticeList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_NOTICE_BYTITLE)){
 			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
+			pstmt.setInt(2, limit);
+			pstmt.setInt(3, offset);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Notice notice = Notice.builder().id(rs.getInt("id")).category(rs.getString("category"))
@@ -166,14 +172,35 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 
 	@Override
 	public Integer selectNoticeCountByTitle(NoticePageFormDto noticePageFormDto) {
-		// TODO Auto-generated method stub
-		return null;
+		int count = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_SELECT_COUNT_BYTITLE)){
+			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 	@Override
 	public Integer selectNoticeCountByKeyword(NoticePageFormDto noticePageFormDto) {
-		// TODO Auto-generated method stub
-		return null;
+		int count = 0;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_SELECT_COUNT_BYKEYWORD)){
+			pstmt.setString(1, "%"+noticePageFormDto.getKeyword()+"%");
+			pstmt.setString(2, "%"+noticePageFormDto.getKeyword()+"%");
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 	@Override

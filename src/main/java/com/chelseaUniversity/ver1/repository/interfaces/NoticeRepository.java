@@ -27,8 +27,8 @@ public interface NoticeRepository {
 	public Integer selectNoticeCount();
 	
 	// 검색
-	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto);
-	public List<Notice> selectNoticeByTitle(NoticePageFormDto noticePageFormDto);
+	public List<Notice> selectNoticeByKeyword(NoticePageFormDto noticePageFormDto,int limit,int offset);
+	public List<Notice> selectNoticeByTitle(NoticePageFormDto noticePageFormDto,int limit,int offset);
 	public Integer selectNoticeCountByTitle(NoticePageFormDto noticePageFormDto);
 	public Integer selectNoticeCountByKeyword(NoticePageFormDto noticePageFormDto);
 	
