@@ -252,6 +252,7 @@ public class UserController extends HttpServlet {
 			studentList = studentRepository.selectStudentList(deptId, studentId, pageSize, offset);
 			System.out.println("학생 리스트 : " + studentList);
 			totalStudents = studentRepository.selectStudentAmount(deptId, studentId);
+			
 		}
 
 		int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
