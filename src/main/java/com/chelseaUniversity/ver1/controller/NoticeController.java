@@ -50,6 +50,27 @@ public class NoticeController extends HttpServlet {
 		case "/createNotice":
 			request.getRequestDispatcher("/WEB-INF/views/board/createNotice.jsp").forward(request, response);
 			break;
+		case "/updateNotice":
+			String updateIdStr = request.getParameter("id");
+			if(updateIdStr != null || updateIdStr.trim().isEmpty()) {
+				try {
+					int id = Integer.parseInt(updateIdStr);
+					Notice notice = noticeRepository.selectById(id);
+					request.setAttribute("notice", notice);
+					request.getRequestDispatcher("/WEB-INF/views/board/updateNotice.jsp").forward(request, response);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					response.sendRedirect(request.getContextPath() + "/notice/list?page=0");
+				}
+			} else {
+				response.sendRedirect(request.getContextPath() + "/notice/list?page=0");
+			}
+			break;
+		case "/deleteNotice":
+			String deleteId = request.getParameter("id");
+			noticeRepository.deleteNotice(deleteId);
+			response.sendRedirect(request.getContextPath() + "/notice/list?page=0");
+			break;
 		default:
 			break;
 		}
@@ -142,6 +163,21 @@ public class NoticeController extends HttpServlet {
 			case "/createNotice":
 				createNotice(request, response, session);
 				break;
+				
+			case "/updateNotice":
+				String category = request.getParameter("category");
+				String title = request.getParameter("title");
+				String content = request.getParameter("content");
+				String updateId = request.getParameter("id");
+				System.out.println("category : " + category);
+				System.out.println("title : " + title);
+				System.out.println("content : " + content);
+				System.out.println("updateId : " + updateId);
+				
+				noticeRepository.updateNotice(category, title, content, updateId);
+				response.sendRedirect(request.getContextPath() + "/notice/detail?page=" + updateId);
+				break;
+			
 			default:
 				break;
 			}

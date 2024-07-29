@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Schedule;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.repository.ScheuleRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.ScheuleRepository;
 
@@ -27,6 +28,8 @@ public class ScheduleController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		request.setAttribute("user", user);
 		switch (action) {
 		case "/list":
 			showSchedulePage(request,response,session);

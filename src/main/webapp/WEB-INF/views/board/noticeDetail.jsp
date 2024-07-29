@@ -42,7 +42,13 @@
 		<p> &nbsp;제목&emsp; ${notice.category} ${notice.title}</p>
 		<hr style="border-color:#F4FFFF; height:1px; width:85%">
 		<div class="contentBox"><p> &nbsp;내용</p><div class="content">${notice.content}</div></div>
-		<div class="list"><button onclick="location=`${pageContext.request.contextPath}/notice/list?page=0">목록</button></div>
+		<div class="list">
+            <button onclick="location.href='${pageContext.request.contextPath}/notice/list?page=0'">목록</button>
+            <c:if test="${user.userRole eq 'staff'}">
+                <button onclick="location.href='${pageContext.request.contextPath}/notice/updateNotice?id=${notice.id}'">수정</button>
+                <button onclick="if(confirm('정말 삭제하시겠습니까?')) { location.href='${pageContext.request.contextPath}/notice/deleteNotice?id=${notice.id}'; }">삭제</button>
+            </c:if>
+        </div>
 		</main>
 		</div>
 </body>

@@ -17,6 +17,25 @@ p {
 }
 
 .list {
-	margin-left: 320px;
-	margin-top: 25px;
+    display: inline;
+    justify-content: space-between;
+    width: 30%;
+}
+
+.list button {
+    background-color: navy;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.list button:hover {
+    background-color: darkblue;
 }
