@@ -36,7 +36,7 @@ button:hover {
     <!-- Sidebar Menu -->
     <div class="sub--menu">
         <div class="sub--menu--top">
-            <h2>MY</h2>
+            <h2>학사관리</h2>
         </div>
         <div class="sub--menu--mid">
             <table class="sub--menu--table" border="1">
@@ -54,8 +54,8 @@ button:hover {
                         <td><a href="${pageContext.request.contextPath}/user/professor">교수 등록</a></td>
                     </tr>
                     <tr>
-                            <td><a href="${pageContext.request.contextPath}/user/staff">교직원 등록</a></td>
-                        </tr>
+                        <td><a href="${pageContext.request.contextPath}/user/staff">교직원 등록</a></td>
+                    </tr>
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/tuition/bill" class="selected--menu">등록금 고지서 발송</a></td>
                     </tr>
@@ -65,7 +65,6 @@ button:hover {
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/sugang/period">수강신청 기간 설정</a></td>
                     </tr>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -73,8 +72,9 @@ button:hover {
 
     <!-- Main Content -->
     <main>
+    
         <h1>등록금 고지서 발송</h1>
-
+		<br>
         <!-- Form for Sending Tuition Bills -->
         <form action="${pageContext.request.contextPath}/tuition/create" method="post">
             <button type="submit">등록금 고지서 발송</button>

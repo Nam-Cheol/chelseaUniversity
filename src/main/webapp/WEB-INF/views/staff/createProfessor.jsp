@@ -39,12 +39,11 @@ h1 {
 }
 </style>
 
-<section>
     <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
         <!-- Sidebar Menu -->
         <div class="sub--menu">
             <div class="sub--menu--top">
-                <h2>MY</h2>
+                <h2>학사관리</h2>
             </div>
             <div class="sub--menu--mid">
                 <table class="sub--menu--table" border="1">
@@ -78,9 +77,9 @@ h1 {
             </div>
         </div>
 
-        <!-- Main Content -->
-        <main>
+    <main style="width: 100%; padding: 20px;">
             <h1>교수 등록</h1>
+            <br>
             <form action="${pageContext.request.contextPath}/user/professor" method="post">
                 <table class="table-container">
                     <tr>
@@ -127,4 +126,3 @@ h1 {
             </c:if>
         </main>
     </div>
-</section>

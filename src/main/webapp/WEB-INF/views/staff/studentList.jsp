@@ -37,17 +37,13 @@ h1 {
 	border-radius: 5px;
 }
 </style>
-    <section>
-<!-- Sidebar Menu and Main Content -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
-    <!-- Sidebar Menu -->
     <div class="sub--menu">
         <div class="sub--menu--top">
-            <h2>MY</h2>
+            <h2>학사관리</h2>
         </div>
         <div class="sub--menu--mid">
             <table class="sub--menu--table" border="1">
-                <tbody>
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/user/studentList" class="selected--menu">학생 명단 조회</a></td>
                     </tr>
@@ -72,33 +68,29 @@ h1 {
                     <tr>
                         <td><a href="${pageContext.request.contextPath}/sugang/period">수강신청 기간 설정</a></td>
                     </tr>
-                </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Main Content -->
-       <main>
+       <main style="width: 100%; padding: 20px;">
         <h1>학생 명단 조회</h1>
-        <!-- Search Form -->
+        <br>
+       		 <div class="sub--filter">	
             <form action="${pageContext.request.contextPath}/user/studentList" method="get">
-                <label for="dept_id">학과 번호</label>
-                <input type="search" id="dept_id" name="dept_id">
-                <label for="stu_id">학번</label>
-                <input type="search" id="stu_id" name="stu_id">
-                <button type="submit" class="submit-btn">
-                    조회
-                </button>
+            	 <div>
+	                <label for="dept_id">학과 번호 <input type="search" id="dept_id" name="dept_id"></label>
+	                <label for="stu_id">학번 <input type="search" id="stu_id" name="stu_id"></label>
+					<button type="submit" class="submit-btn">조회</button>
+       			 </div>
             </form>
-
+		</div>
+		
             <form action="">
-                <button type="submit" class="submit-btn">
-                    새학기 적용
-                </button>
+                <button type="submit" class="submit-btn">새학기 적용</button>
             </form>
 
-        <!-- Student List Table -->
-            <table border="1" class="table-container">
+
+            <table class="table table-striped sub--list--table">
                 <thead>
                     <tr>
                         <th>학번</th>
@@ -135,8 +127,6 @@ h1 {
                 </tbody>
             </table>
 
-            <!-- Pagination -->
-<<<<<<< HEAD
 			<div class="pagination">
 			    <c:forEach begin="1" end="${totalPages}" var="i">
 			        <c:choose>
@@ -150,36 +140,5 @@ h1 {
 			    </c:forEach>
 			</div>
 			</main>
-=======
-
-<ul class="page--list">
-                <c:forEach begin="1" end="${totalPages}" var="i">
-                    <c:choose>
-                        <c:when test="${i == currentPage}">
-                            <c:choose>
-                                <c:when test="${deptId != null || studentId != null}">
-                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}&dept_id=${deptId}&stu_id=${stuId}" class="selected--page">${i}</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="selected--page">${i}</a></li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:when>
-                        
-                        <c:otherwise>
-                            <c:choose>
-                                <c:when test="${deptId != null || studentId != null}">
-                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}&dept_id=${deptId}&stu_id=${stuId}">${i}</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}">${i}</a></li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:otherwise>
-                        
-                    </c:choose>
-        </c:forEach>
-
->>>>>>> main
-        </div>
-    </section>
+			</div>
+<%@ include file="footer.jsp"%>;

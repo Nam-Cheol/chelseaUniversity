@@ -42,6 +42,11 @@
 				<tr>
 					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
 				</tr>
+				<c:if test="${user.userRole eq 'staff'}">
+					<tr>
+						<td><a href="/chelseaUniversity/notice/createNotice"> 학사일정 등록</a></td>
+					</tr>
+				</c:if>
 			</table>
 		</div>
 	</div>
@@ -136,7 +141,7 @@
 				<c:forEach var="index" begin="1" end="${listCount}">
 					<a href="/notice/list/${index}">${index}</a> &nbsp;&nbsp;
 			</c:forEach>
-				<c:if test="${principal.userRole.equals(\"staff\")}">
+				<c:if test="${user.userRole eq 'staff'}">
 					<a href="/notice?crud=write" class="button">등록</a>
 				</c:if>
 			</div>
@@ -249,4 +254,4 @@
 
 
 
-
+     <%@ include file="footer.jsp"%>

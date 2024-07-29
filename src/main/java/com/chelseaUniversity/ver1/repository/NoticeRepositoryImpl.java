@@ -23,6 +23,9 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	private static final String SELECT_NOTICE_BYTITLE = " SELECT * FROM notice_tb WHERE title LIKE ? ORDER BY id DESC limit ? OFFSET ? ";
 	private static final String SELECT_NOTICE_BYKEYWORD = " SELECT * FROM notice_tb WHERE title LIKE ?"
 			+ "UNION SELECT * FROM notice_tb WHERE content LIKE ? ORDER BY id DESC limit ? OFFSET ? ";
+	private static final String INSERT_CREATE_NOTICE = " INSERT INTO notice_tb (category, title, content) values (?, ?, ?) ";
+	private static final String UPDATE_NOTICE = " UPDATE notice_tb SET category = ?, title = ?, content = ? WHERE id = ? ";
+	private static final String DELETE_NOTICE = " DELETE FROM notice_tb WHERE id = ? ";
 	
 	@Override
 	public int insert(NoticeFormDto noticeFormDto) {
@@ -118,7 +121,9 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 		try (Connection conn = DBUtil.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_COUNT_NOTICE)){
 			ResultSet rs = pstmt.executeQuery();
-			count = rs.getInt("count");
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -220,6 +225,83 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	public List<NoticeFormDto> selectLimit5() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void insertCreateNotice(String category, String title, String content) {
+		
+		try (Connection conn = DBUtil.getConnection()){
+
+			conn.setAutoCommit(false);
+
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_CREATE_NOTICE)){
+
+				pstmt.setString(1, category);
+				pstmt.setString(2, title);
+				pstmt.setString(3, content);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void updateNotice(String category, String title, String content, String id) {
+
+		try (Connection conn = DBUtil.getConnection()){
+			
+			conn.setAutoCommit(false);
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(UPDATE_NOTICE)){
+				
+				pstmt.setString(1, category);
+				pstmt.setString(2, title);
+				pstmt.setString(3, content);
+				pstmt.setString(4, id);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void deleteNotice(String id) {
+
+	try (Connection conn = DBUtil.getConnection()){
+			
+			conn.setAutoCommit(false);
+			
+			try (PreparedStatement pstmt = conn.prepareStatement(DELETE_NOTICE)){
+				
+				pstmt.setString(1, id);
+				pstmt.executeUpdate();
+				
+				conn.commit();
+			} catch (Exception e) {
+				conn.rollback();
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
