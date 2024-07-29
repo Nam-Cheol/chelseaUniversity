@@ -144,18 +144,36 @@ h1 {
             </table>
 
             <!-- Pagination -->
-			<div class="pagination">
-			    <c:forEach begin="1" end="${totalPages}" var="i">
-			        <c:choose>
-			            <c:when test="${i == page}">
-			                <span class="page-item current-page">${i}</span>
-			            </c:when>
-			            <c:otherwise>
-			                <span class="page-item"><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="page-link">${i}</a></span>
-			            </c:otherwise>
-			        </c:choose>
-			    </c:forEach>
-			</div>
+<!-- Pagination -->
+
+<ul class="page--list">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <c:choose>
+                        <c:when test="${i == currentPage}">
+                            <c:choose>
+                                <c:when test="${deptId != null || proId != null}">
+                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}&dept_id=${deptId}&pro_id=${proId}" class="selected--page">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}" class="selected--page">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${deptId != null || proId != null}">
+                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}&dept_id=${deptId}&pro_id=${proId}">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="${pageContext.request.contextPath}/user/professorList?page=${i}">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                        
+                    </c:choose>
+        </c:forEach>
+
         </div>
     </section>
 </div>

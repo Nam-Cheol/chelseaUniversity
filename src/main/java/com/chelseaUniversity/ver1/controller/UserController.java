@@ -237,27 +237,19 @@ public class UserController extends HttpServlet {
 		String deptId = request.getParameter("dept_id");
 		String studentId = request.getParameter("stu_id");
 
-		System.out.println("deptId 파라미터 : " + deptId);
-		System.out.println("studentId 파라미터 : " + studentId);
-
 		List<Student> studentList = null;
 		int totalStudents = 0;
 
 		if (deptId == null && studentId == null) {
-			System.out.println("처음 들어왔을 때");
 			studentList = studentRepository.selectStudentList(pageSize, offset);
 			totalStudents = studentRepository.selectStudentAmount();
 		} else {
-			System.out.println("검색했을 때");
 			studentList = studentRepository.selectStudentList(deptId, studentId, pageSize, offset);
-			System.out.println("학생 리스트 : " + studentList);
 			totalStudents = studentRepository.selectStudentAmount(deptId, studentId);
-			
 		}
 
 		int totalPages = (int) Math.ceil((double) totalStudents / pageSize);
 
-		System.out.println("전체 페이지 양 : " + totalPages);
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("studentList", studentList);
 		request.setAttribute("currentPage", page);
@@ -290,8 +282,8 @@ public class UserController extends HttpServlet {
 		}
 		int offset = (page - 1) * pageSize; // 시작 위치 계산
 
-		String deptId = request.getParameter("deptId");
-		String proId = request.getParameter("studentId");
+		String deptId = request.getParameter("dept_id");
+		String proId = request.getParameter("pro_id");
 
 		List<Professor> professorList = null;
 		int totalProfessors = 0;
@@ -299,61 +291,19 @@ public class UserController extends HttpServlet {
 		if (deptId == null && proId == null) {
 			professorList = professorRepository.selectProfessorList(pageSize, offset);
 			totalProfessors = professorRepository.selectProfessorAmount();
-			System.out.println("처음 들어왔을 때");
-			System.out.println("교수 리스트 : " + professorList);
-			System.out.println("총 양 : " + totalProfessors);
 		} else {
 			professorList = professorRepository.selectProfessorList(deptId, proId, pageSize, offset);
 			totalProfessors = professorRepository.selectProfessorAmount(deptId, proId);
-			System.out.println("검색 들어왔을 때");
-			System.out.println("교수 리스트 : " + professorList);
-			System.out.println("총 양 : " + totalProfessors);
 		}
 
 		int totalPages = (int) Math.ceil((double) totalProfessors / pageSize);
 
 		request.setAttribute("totalPages", totalPages);
-		request.setAttribute("studentList", professorList);
+		request.setAttribute("professorList", professorList);
 		request.setAttribute("currentPage", page);
 		request.setAttribute("deptId", deptId);
-		request.setAttribute("stuId", proId);
+		request.setAttribute("proId", proId);
 		request.getRequestDispatcher("/WEB-INF/views/staff/professorList.jsp").forward(request, response);
-
-		// ProfessorService professorService;
-//		professorService = new ProfessorService();
-//		String deptId = null;
-//		try {
-//			professorListForm.setPage(0);
-//
-//			deptId = request.getParameter("dept_id");
-//			String proId = request.getParameter("pro_id");
-//			System.out.println("getparameter deptId : " + request.getParameter("dept_id"));
-//
-//			if (request.getParameter("dept_id") != null) {
-//				professorListForm.setDeptId(Integer.parseInt(deptId));
-//			} else if (proId != null) {
-//				professorListForm.setProfessorId(Integer.parseInt(proId));
-//			}
-//
-//			Integer amount = professorService.readProfessorAmount(professorListForm);
-//			if (proId != null) {
-//				amount = 1;
-//			}
-//
-//			System.out.println("userController에서 amount" + amount);
-//
-//			List<Professor> list = professorService.readProfessorList(professorListForm);
-//
-//			System.out.println("userController에서 교수list : " + list);
-//
-//			request.setAttribute("professorList", list);
-//			request.setAttribute("listCount", Math.ceil(amount / 20.0));
-//			request.setAttribute("pro_deptId", deptId);
-//			request.setAttribute("page", 1);
-//			request.getRequestDispatcher("/WEB-INF/views/staff/professorList.jsp").forward(request, response);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	/**

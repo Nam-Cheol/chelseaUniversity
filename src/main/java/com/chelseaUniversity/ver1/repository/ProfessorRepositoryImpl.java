@@ -148,19 +148,13 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 		if (proId == null) {
 			proId = "";
 		}
-
 		try (Connection conn = DBUtil.getConnection()) {
 
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_PRO_DEPT_AND_PRO_ID);
-			pstmt.setString(1, "%"+deptId+"%");
-			pstmt.setString(2, "%"+proId+"%");
+			pstmt.setString(1, "%" + proId + "%");
+			pstmt.setString(2, "%" + deptId + "%");
 			pstmt.setInt(3, limit);
 			pstmt.setInt(4, offset);
-			System.out.println("impl**********");
-			System.out.println(deptId);
-			System.out.println(proId);
-			System.out.println(limit);
-			System.out.println(offset);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				list.add(Professor.builder().id(rs.getInt("id")).name(rs.getString("name"))
@@ -246,8 +240,8 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 		try (Connection conn = DBUtil.getConnection()) {
 
 			PreparedStatement pstmt = conn.prepareStatement(COUNT_PRO_BY_ID);
-			pstmt.setString(1, "%"+proId+"%");
-			pstmt.setString(2, "%"+deptId+"%");
+			pstmt.setString(1, "%" + proId + "%");
+			pstmt.setString(2, "%" + deptId + "%");
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				totalProfessors = rs.getInt("count(*)");
