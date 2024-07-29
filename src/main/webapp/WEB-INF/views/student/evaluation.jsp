@@ -13,7 +13,7 @@
 			<h1>강의 평가</h1>
 		</div>
 		<hr>
-		<form action="/chelseaUniversity/grade/evaluation?subjectId=10001" method="post">
+		<form action="/chelseaUniversity/grade/evaluation?subjectId=${subId}" method="post">
 			<ul class="radio--check">
 				<li>1.&nbsp;강의 내용은 자신에게 학습 욕구를 불러일으킬 만큼 적절한 수준이었는가?</li>
 				<li>&nbsp;<input type="radio" name="answer1" value="5" id="a11">
@@ -109,7 +109,6 @@
 				<li><span>기타</span></li>
 				<li><textarea cols="80" rows="5" name="improvements"> </textarea></li>
 			</ul>
-
 			<div class="button--row">
 				<button type="submit" class="btn btn-dark update--button">제출하기</button>
 			</div>

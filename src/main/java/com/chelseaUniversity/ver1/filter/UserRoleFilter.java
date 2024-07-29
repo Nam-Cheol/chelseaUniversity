@@ -40,6 +40,10 @@ public class UserRoleFilter extends HttpFilter implements Filter {
         		chain.doFilter(request, response);
         		return;
         	}
+        	if(action.startsWith(httpRequest.getContextPath() + "/grade/evaluation")) {
+        		chain.doFilter(request, response);
+        		return;
+        	}
         } 
         if(session.getAttribute("principal") == null) {
         	System.out.println("1발동");

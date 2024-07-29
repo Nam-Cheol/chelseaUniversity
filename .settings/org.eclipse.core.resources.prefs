@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/views/admin/collegeForm.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/admin/scheduleForm.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/admin/tuitionForm.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/sign/footer.jsp=UTF-8
 encoding/<project>=UTF-8
