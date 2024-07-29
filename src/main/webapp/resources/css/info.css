@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+main {
+    flex-grow: 1;
+    padding: 1em;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.list--table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #000;
+}
+
+.list--table th[colspan="4"] {
+    border: 1px solid #000;
+    background-color: #33688F;
+    color: white;
+    text-align: center;
+    padding: 12px 15px;
+}
+
+.list--table th {
+    border: 1px solid #000;
+    background-color: #33688F;
+    color: white;
+    padding: 12px 15px;
+}
+
+.list--table td {
+    padding: 12px 15px;
+    border: 1px solid #000;
+    text-align: center;
+}
+
+.list--table th.sub--th {
+    background-color: #87CEEB;
+    color: #333;
+    border: 1px solid #000;
+}
+
+.list--table tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.table-with-custom-width th {
+    width: 20%;
+}
+
+.table-with-custom-width td {
+    width: 80%;
+}
+
+.form-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+}
+
+.form-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #000;
+}
+
+.form-table label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn-edit {
+    background-color: #33688F;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.btn-edit:hover {
+    background-color: #2a4b6f;
+}
+
+/* Remove the border-bottom for the button container */
+.form-table tr:last-child td {
+    border-bottom: none;
+}
+
+.btn-edit:hover {
+    background-color: #2a4b6f;
+}
+
+@media (max-width: 768px) {
+    .list--table, .form-table {
+        font-size: 14px;
+    }
+
+    .form-input {
+        padding: 6px;
+    }
+
+    .btn-edit {
+        padding: 8px 16px;
+    }
+}

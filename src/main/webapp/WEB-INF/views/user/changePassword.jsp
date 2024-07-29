@@ -29,16 +29,9 @@
         <!-- 메뉴 -->
         <div class="sub--menu--mid">
             <table class="sub--menu--table" border="1">
-                <c:if test="${user.userRole ne 'professor'}">
                 <tr>
-                    <td><a href="/chelseaUniversity/student/info">내 정보 조회</a></td>
+                    <td><a href="/chelseaUniversity/user/myinfo">내 정보 조회</a></td>
                 </tr>
-                </c:if>
-                <c:if test="${user.userRole eq 'professor'}">
-                <tr>
-                    <td><a href="/chelseaUniversity/professor/info">내 정보 조회</a></td>
-                </tr>
-                </c:if>
                 <tr>
                     <td><a href="/chelseaUniversity/user/password" class="selected--menu">비밀번호 변경</a></td>
                 </tr>

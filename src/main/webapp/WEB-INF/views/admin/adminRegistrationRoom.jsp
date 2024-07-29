@@ -11,7 +11,7 @@
     <!-- 세부 메뉴 div-->
     <div class="sub--menu">
         <div class="sub--menu--top">
-            <h2>MY</h2>
+            <h2>등록</h2>
         </div>
         <!-- 메뉴 -->
         <div class="sub--menu--mid">
@@ -31,57 +31,58 @@
                 <tr>
                     <td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
                 </tr>
+                <tr>	
+				<td><a href="${pageContext.request.contextPath}/admin/schedule">학사일정</a></td>
+				</tr>
             </table>
         </div>
     </div>
 
     <!-- 메인 div -->
-    <main>
+    <main style="width: 100%; padding: 20px;">
         <h2>강의실 등록</h2>
-        <br>
+        <div class="split--div"></div>
+        <div class="sub--filter">
         <form action="${pageContext.request.contextPath}/admin/room/create-room" method="post">
-            <table border="1" class="create-room-table">
-                <tr>
-                    <th>강의실id :</th>
-                    <th><input type="text" id="room-id" name="room-id" placeholder="A001"></th>
-                </tr>
-                <tr>
-                    <th>단과대id :</th>
-                    <th><input type="text" id="college-id" name="college-id" placeholder="1, 2, 3, 4 ..."></th>
-                </tr>
-            </table>
-            <button type="submit">생성</button>
+        <div>
+        	<input type="hidden" name="page" value="1">
+			<label for="type">강의실id <input type="text" id="room-id" name="room-id" placeholder="A001"></label>
+			<label for="type">단과대id <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3, 4 ..."></label>
+			<button type="submit">생성</button>
+        </div>
         </form>
+        </div>
 
+		<div class="sub--filter">
         <form action="${pageContext.request.contextPath}/admin/room/edit-room" method="post">
-            <table border="1" class="edit-room-table">
-                <tr>
-                    <th>강의실id :</th>
-                    <th><input type="text" id="room-id" name="room-id" placeholder="A001"></th>
-                </tr>
-                <tr>
-                    <th>단과대id :</th>
-                    <th><input type="text" id="college-id" name="college-id" placeholder="1, 2, 3, 4 ..."></th>
-                </tr>
-            </table>
+         <div>
+        	<input type="hidden" name="page" value="1">
+			<label for="type">수정할 강의실id <input type="text" id="room-id" name="room-id" placeholder="A001"></label>
+			<label for="type">단과대id <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3, 4 ..."></label>
             <button type="submit">수정</button>
+        </div>
         </form>
+        </div>
 
         <p>강의실 목록</p>
         <br>
 
         <div>
-            <table>
+            <table class="table table-striped sub--list--table">
+             <thead>
                 <tr>
                     <th>강의실id</th>
                     <th>단과대id</th>
                 </tr>
+               </thead>
+                <tbody>
                 <c:forEach var="room" items="${roomList}">
                     <tr>
                         <th>${room.id}</th>
                         <th>${room.collegeId}</th>
                     </tr>
                 </c:forEach>
+                 </tbody>
             </table>
             <div class="pagination">
 			    <c:forEach begin="1" end="${totalPages}" var="i">
@@ -90,7 +91,7 @@
 			                <span class="page-item current-page">${i}</span>
 			            </c:when>
 			            <c:otherwise>
-			                <span class="page-item"><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="page-link">${i}</a></span>
+			                <span class="page-item"><a href="${pageContext.request.contextPath}/admin/room?page=${i}" class="page-link">${i}</a></span>
 			            </c:otherwise>
 			        </c:choose>
 			    </c:forEach>

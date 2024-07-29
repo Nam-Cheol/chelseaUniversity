@@ -9,10 +9,11 @@ import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.response.StudentInfoDto;
 import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
-import com.chelseaUniversity.ver1.service.StuStatService;
 import com.chelseaUniversity.ver1.service.TuitionService;
 
 import jakarta.servlet.ServletException;
@@ -27,11 +28,13 @@ public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	TuitionRepository tuitionRepository;
 	CollegeRepository collegeRepository;
+	StudentRepository studentRepository;
 
 	@Override
 	public void init() throws ServletException {
 		tuitionRepository = new TuitionRepositoryImpl();
 		collegeRepository = new CollegeRepositoryImpl();
+		studentRepository = new StudentRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -50,15 +53,13 @@ public class TuitionController extends HttpServlet {
 		Staff principalSta = null;
 		List<Tuition> tuitionList = null;
 		User userRole = (User) session.getAttribute("user");
-		if("student".equalsIgnoreCase(userRole.getUserRole())) {
+		if ("student".equalsIgnoreCase(userRole.getUserRole())) {
 			principalStu = (StudentInfoDto) session.getAttribute("principal");
 			tuitionList = checkTuitionList(principalStu.getId());
-		} else if("staff".equalsIgnoreCase(userRole.getUserRole())) {
+		} else if ("staff".equalsIgnoreCase(userRole.getUserRole())) {
 			principalSta = (Staff) session.getAttribute("principal");
 		}
-		
-		
-		
+
 		switch (action) {
 
 		// 교직원 -> 학사관리 -> 등록금 고지서 페이지
@@ -67,7 +68,7 @@ public class TuitionController extends HttpServlet {
 			break;
 
 		case "/list":
-			if(tuitionList != null) {
+			if (tuitionList != null) {
 				boolean checkList = !tuitionList.isEmpty();
 				request.setAttribute("tuitionList", tuitionList);
 				request.setAttribute("checkList", checkList);
@@ -76,10 +77,10 @@ public class TuitionController extends HttpServlet {
 			break;
 
 		case "/payment":
-			if(principalStu != null) {
+			if (principalStu != null) {
 				tuitionList = tuitionRepository.selectByStudentId(principalStu.getId());
 				boolean checkTuition = false;
-				if(tuitionList.isEmpty() == false) {
+				if (tuitionList.isEmpty() == false) {
 					Tuition tuition = tuitionList.get(0);
 					checkTuition = tuition != null ? true : false;
 					request.setAttribute("tuition", tuition);
@@ -88,14 +89,13 @@ public class TuitionController extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/student/tuitionBill.jsp").forward(request, response);
 			}
 			break;
-			
+
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 
 	}
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -114,20 +114,20 @@ public class TuitionController extends HttpServlet {
 		case "/create":
 			handleCreateBill(request, response, session);
 			break;
-		
+
 		case "/payment":
 			paymentTuition(request, response, session);
 			break;
-			
-			// 등록금 금액 생성
+
+		// 등록금 금액 생성
 		case "/create-tuition":
 			createTuition(request, response);
 			break;
-			// 등록금 금액 수정
+		// 등록금 금액 수정
 		case "/edit-tuition":
 			editTuition(request, response);
 			break;
-			
+
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -135,14 +135,12 @@ public class TuitionController extends HttpServlet {
 
 	}
 
-
 	private void createTuition(HttpServletRequest request, HttpServletResponse response) {
 		String collegeName = request.getParameter("college-name");
 		int collegeTuition = Integer.parseInt(request.getParameter("college-tuition"));
 		System.out.println(collegeName);
 		System.out.println(collegeTuition);
-		
-	
+
 	}
 
 	private void editTuition(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -150,10 +148,9 @@ public class TuitionController extends HttpServlet {
 		int collegeId = Integer.parseInt(request.getParameter("tuition-id"));
 		int collegeAmount = Integer.parseInt(request.getParameter("college-tuition-amount"));
 		tuitionRepository.updateByIdAndAmount(collegeId, collegeAmount);
-		
+
 		response.sendRedirect(request.getContextPath() + "/admin/tuition");
 	}
-
 
 	/**
 	 * 교직원 -> 등록금 납부서 발송버튼 눌렀을때
@@ -162,14 +159,14 @@ public class TuitionController extends HttpServlet {
 	 * @param response
 	 * @param session
 	 * @throws IOException
-	 * @throws ServletException 
+	 * @throws ServletException
 	 */
 	private void handleCreateBill(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws IOException, ServletException {
-		StuStatService stuStatService = new StuStatService();
 		TuitionService tuitionService = new TuitionService();
-		List<Integer> studentIdList = stuStatService.readIdList();
 
+		List<Integer> studentIdList = studentRepository.selectIdList();
+		
 		int insertCount = 0;
 
 		for (Integer studentId : studentIdList) {
@@ -178,7 +175,6 @@ public class TuitionController extends HttpServlet {
 
 		request.setAttribute("insertCount", insertCount);
 		request.getRequestDispatcher("/WEB-INF/views/tuition/createPayment.jsp").forward(request, response);
-//		response.sendRedirect(request.getContextPath() + "/tuition/bill");
 	}
 
 	/**
@@ -189,27 +185,29 @@ public class TuitionController extends HttpServlet {
 		List<Tuition> tuitionList = new ArrayList<>();
 		for (Tuition tuition : temp) {
 			System.out.println(tuition.getStatus());
-			if(tuition.getStatus() == true) {
+			if (tuition.getStatus() == true) {
 				tuitionList.add(tuition);
 			}
 		}
 		return tuitionList;
 	}
-	
-	private void paymentTuition(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-		
+
+	private void paymentTuition(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
+
 		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		
-		if(principal != null) {
+
+		if (principal != null) {
 			try {
-				tuitionRepository.updateStatus(principal.getId(), Integer.parseInt(request.getParameter("tuiYear")), Integer.parseInt(request.getParameter("semester")));
+				tuitionRepository.updateStatus(principal.getId(), Integer.parseInt(request.getParameter("tuiYear")),
+						Integer.parseInt(request.getParameter("semester")));
 				response.sendRedirect(request.getContextPath() + "/tuition/payment");
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			}
 		}
-		
+
 	}
-	
+
 }

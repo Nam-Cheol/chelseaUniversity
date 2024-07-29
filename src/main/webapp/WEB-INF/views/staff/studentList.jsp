@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
-
 <style>
 h1 {
 	color: #001489;
@@ -36,32 +35,9 @@ h1 {
 	color: #fff;
 	background-color: #001489;
 	border-radius: 5px;
-	cursor: pointer;
-}
-
-.submit-btn:hover {
-	background-color: #0036a0;
-}
-
-.pagination {
-	margin-top: 20px;
-}
-
-.pagination span {
-	margin: 0 5px;
-}
-
-.pagination a {
-	text-decoration: none;
-	color: #001489;
-}
-
-.pagination .current-page {
-	font-weight: bold;
-	color: #001489;
 }
 </style>
-
+    <section>
 <!-- Sidebar Menu and Main Content -->
 <div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
     <!-- Sidebar Menu -->
@@ -85,6 +61,9 @@ h1 {
                         <td><a href="${pageContext.request.contextPath}/user/professor">교수 등록</a></td>
                     </tr>
                     <tr>
+                            <td><a href="${pageContext.request.contextPath}/user/staff">교직원 등록</a></td>
+                        </tr>
+                    <tr>
                         <td><a href="${pageContext.request.contextPath}/tuition/bill">등록금 고지서 발송</a></td>
                     </tr>
                     <tr>
@@ -99,11 +78,9 @@ h1 {
     </div>
 
     <!-- Main Content -->
-    <section>
+       <main>
         <h1>학생 명단 조회</h1>
-
         <!-- Search Form -->
-        <div>
             <form action="${pageContext.request.contextPath}/user/studentList" method="get">
                 <label for="dept_id">학과 번호</label>
                 <input type="search" id="dept_id" name="dept_id">
@@ -119,10 +96,8 @@ h1 {
                     새학기 적용
                 </button>
             </form>
-        </div>
 
         <!-- Student List Table -->
-        <div>
             <table border="1" class="table-container">
                 <thead>
                     <tr>
@@ -141,7 +116,7 @@ h1 {
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="student" items="${allStudentList}">
+                    <c:forEach var="student" items="${studentList}">
                         <tr>
                             <td>${student.id}</td>
                             <td>${student.name}</td>
@@ -157,26 +132,11 @@ h1 {
                             <td>${student.graduationDate}</td>
                         </tr>
                     </c:forEach>
-                    <c:if test="${not empty oneStudent}">
-                        <tr>
-                            <td>${oneStudent.id}</td>
-                            <td>${oneStudent.name}</td>
-                            <td>${oneStudent.birthDate}</td>
-                            <td>${oneStudent.gender}</td>
-                            <td>${oneStudent.address}</td>
-                            <td>${oneStudent.tel}</td>
-                            <td>${oneStudent.email}</td>
-                            <td>${oneStudent.deptId}</td>
-                            <td>${oneStudent.grade}</td>
-                            <td>${oneStudent.semester}</td>
-                            <td>${oneStudent.entranceDate}</td>
-                            <td>${oneStudent.graduationDate}</td>
-                        </tr>
-                    </c:if>
                 </tbody>
             </table>
 
             <!-- Pagination -->
+<<<<<<< HEAD
 			<div class="pagination">
 			    <c:forEach begin="1" end="${totalPages}" var="i">
 			        <c:choose>
@@ -189,6 +149,37 @@ h1 {
 			        </c:choose>
 			    </c:forEach>
 			</div>
+			</main>
+=======
+
+<ul class="page--list">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <c:choose>
+                        <c:when test="${i == currentPage}">
+                            <c:choose>
+                                <c:when test="${deptId != null || studentId != null}">
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}&dept_id=${deptId}&stu_id=${stuId}" class="selected--page">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}" class="selected--page">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${deptId != null || studentId != null}">
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}&dept_id=${deptId}&stu_id=${stuId}">${i}</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="${pageContext.request.contextPath}/user/studentList?page=${i}">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                        
+                    </c:choose>
+        </c:forEach>
+
+>>>>>>> main
         </div>
     </section>
-</div>

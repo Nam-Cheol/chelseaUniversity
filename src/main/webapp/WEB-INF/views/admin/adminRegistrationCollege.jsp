@@ -33,46 +33,50 @@
         </div>
     </div>
 
-    <main>
+    <main style="width: 100%; padding: 20px;">
         <h2>단과대학 등록</h2>
-        <br>
+        <div class="split--div"></div>
+       <div class="sub--filter">
         <form action="${pageContext.request.contextPath}/admin/create-college" method="post">
-            <table border=1 class="create-table">
-                <tr>
-                    <th>단과이름 : </th>
-                    <td><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></td>
-                </tr>
-            </table>
+        
+			<div>
+			<input type="hidden" name="page" value="1">
+			<label for="type">단과이름  <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></label>
             <button type="submit">생성</button>
-        </form>       
-        <br>
+             </div>
+        </form>
+        </div>   
+        <div class="sub--filter">
         <form action="${pageContext.request.contextPath}/admin/edit-college" method="post">
-            <table border=1 class="edit-table">
-                <tr>
-                    <th>id : </th>
-                    <td><input type="text" id="college-id" name="college-id" placeholder="1 , 2 , 3 ...."></td>
-                </tr>
-                <tr>
-                    <th>단과이름 : </th>
-                    <td><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></td>
-                </tr>
-            </table>
-            <button type="submit">수정</button>
-        </form>        
-        <br><br>
+        <div>
+        <label for="type">수정할 id  <input type="text" id="college-id" name="college-id" placeholder="1 , 2 , 3 ...."></label>
+        <label for="type">단과이름  <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></label>
+        <button type="submit">수정</button>
+        </div>
+        </form>  
+                </div>
+     
         <p>단과 대학 리스트</p>
+        
         <br>
-        <table border="1" class="list-table">
+        
+        <table class="table table-striped sub--list--table">
+        <thead>
             <tr>
                 <th>id</th>
                 <th>단과이름</th>
             </tr>
+            </thead>
+            <tbody>
             <c:forEach var="college" items="${collegeList}">
             <tr>
                 <td>${college.id}</td>
                 <td>${college.name}</td>
             </tr>
             </c:forEach>
+            </tbody>
         </table>
     </main>
 </div>
+
+<%@ include file="footer.jsp"%>
