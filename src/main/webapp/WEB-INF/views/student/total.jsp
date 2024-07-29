@@ -47,13 +47,8 @@
 	<main>
 		<h1>총 누계 성적</h1>
 		<div class="split--div"></div>
-
-		<p class="no--list--p">강의 신청 및 수강 이력 확인 바랍니다.</p>
-		
-		<!-- <h1>총 누계 성적</h1>
-		<div class="split--div"></div>
-		
-			
+		<c:choose>
+			<c:when test="${mygradeList.isEmpty() == false}">
 				<h4 style="font-weight: 600">평점 평균</h4>
 				<table border="1" class="sub--list--table">
 					<thead>
@@ -66,17 +61,25 @@
 						</tr>
 					</thead>
 					<tbody>
-						
+						<c:forEach var="mygrade" items="${mygradeList}">
 							<tr>
-								<td>2023년</td>
-								<td>1학기</td>
-								<td>14</td>
-								<td></td>
-								<td>0.00</td>
+								<td>${mygrade.subYear}년</td>
+								<td>${mygrade.semester}학기</td>
+								<td>${mygrade.sumGrades}</td>
+								<td>${mygrade.myGrades}</td>
+								<td>${mygrade.average()}</td>
 							</tr>
-						
+						</c:forEach>
 					</tbody>
-				</table> -->
+				</table>
+			</c:when>
+			<c:otherwise>
+				<p class="no--list--p">강의 신청 및 수강 이력 확인 바랍니다.</p>
+			</c:otherwise>
+		</c:choose>
+		<br> <br>
+
+		
 
 	</main>
 </div>
