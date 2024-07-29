@@ -50,6 +50,9 @@ public class Tuition {
 	 */
 	public String paymentFormat() {
 		Integer payAmount = tuiAmount - schAmount;
+		if(payAmount < 0) {
+			payAmount = 0;
+		}
 		return NumberUtil.numberFormat(payAmount);
 	}
 

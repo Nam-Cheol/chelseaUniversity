@@ -30,6 +30,8 @@ public interface ProfessorRepository {
 
 	// 페이지별 교수 조회
 	public List<Professor> selectProfessorList(ProfessorListForm professorListForm);
+	public List<Professor> selectProfessorList(String deptId,String proId,int limit,int offset);
+	public List<Professor> selectProfessorList(int limit, int offset);
 
 	// 페이지, 과별 교수조회
 	public List<Professor> selectByDepartmentId(ProfessorListForm professorListForm);
@@ -39,6 +41,7 @@ public interface ProfessorRepository {
 
 	// 페이징 처리 위한 전체 교수 수 조회
 	public Integer selectProfessorAmount();
+	public Integer selectProfessorAmount(String deptId, String proId);
 
 	// 페이징 처리 위한 과 교수 수 조회
 	public Integer selectProfessorAmountByDeptId(Integer deptId);
