@@ -18,8 +18,7 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="${pageContext.request.contextPath}/subject/list"
-						class="selected--menu">전체 강의 조회</a></td>
+					<td><a href="${pageContext.request.contextPath}/subject/list">전체 강의 조회</a></td>
 				</tr>
 					<tr>
 						<td><a
@@ -27,8 +26,7 @@
 							class="selected--menu">내 강의 조회</a></td>
 					</tr>
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/professor/evaluationList"
-							class="selected--menu">내 강의 평가</a></td>
+						<td><a href="${pageContext.request.contextPath}/professor/evaluationList">내 강의 평가</a></td>
 					</tr>
 			</table>
 		</div>
