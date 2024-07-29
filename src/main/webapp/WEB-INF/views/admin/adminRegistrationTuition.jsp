@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="d-flex justify-content-center align-items-start" style="display:flex; min-width: 100em;">
+<div class="d-flex justi	fy-content-center align-items-start" style="display:flex; min-width: 100em;">
     <div class="sub--menu">
         <div class="sub--menu--top">
             <h2>등록</h2>
@@ -33,67 +33,63 @@
         </div>
     </div>
 
-    <main>
+   <main style="width: 100%; padding: 20px;">
         <h2>단대별 등록금</h2>
-        <br>
-        
-        <form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-name" method="post">
-            <table border="1" class="create-table">
-                <tr>
-                    <th>단과이름 : </th>
-                    <td><input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></td>
-                </tr>
-            </table>
-            <button type="submit">생성</button>
+        <div class="split--div"></div>
+        <div class="sub--filter">
+            <form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-name" method="post">
+             <div>
+        	<input type="hidden" name="page" value="1">
+			<label for="type">단과이름 <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></label>
+			<button type="submit">생성</button>
+        	</div>
         </form>       
-        <br>
+        </div>
         
+        <div class="sub--filter">
         <form action="${pageContext.request.contextPath}/admin/tuition/create-tuition-amount" method="post">
-            <table border="1" class="create-table">
-                <tr>
-                    <th>id : </th>
-                    <td><input type="text" id="college-id" name="college-id" placeholder="1, 2, 3 ....."></td>
-                </tr>
-                <tr>
-                    <th>금액 : </th>
-                    <td><input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000"></td>
-                </tr>
-            </table>
-            <button type="submit">생성</button>
+       	 	<div>
+        	<input type="hidden" name="page" value="1">
+			<label for="type">id <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3 ....."></label>
+			<label for="type">금액 <input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000"></label>
+			<button type="submit">생성</button>
+        	</div>
         </form>
+        </div>
         
-        <br>
-        
+        <div class="sub--filter">
         <form action="${pageContext.request.contextPath}/admin/tuition/edit-tuition" method="post">
-            <table border="1" class="edit-table">
-                <tr>
-                    <th>id : </th>
-                    <td><input type="text" id="tuition-id" name="tuition-id" placeholder="1, 2, 3 ...."></td>
-                </tr>
-                <tr>
-                    <th>금액 : </th>
-                    <td><input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000"></td>
-                </tr>
-            </table>
+          <div>
+        	<input type="hidden" name="page" value="1">
+			<label for="type">수정할 단대id <input type="text" id="tuition-id" name="tuition-id" placeholder="1, 2, 3 ...."></label>
+			<label for="type">금액 <input type="text" id="college-tuition-amount" name="college-tuition-amount" placeholder="4000000"></label>
             <button type="submit">수정</button>
+        </div>
         </form>        
-        <br><br>
+        </div>
         
         <p>단대별 등록금 목록</p>
         <br>
-        <table border="1" class="list-table">
+        
+        <div>
+            <table class="table table-striped sub--list--table">
+             <thead>
             <tr>
                 <th>id</th>
-                <th>단과이름</th>
+                <th>단대이름</th>
                 <th>금액</th>
             </tr>
+             </thead>
+                <tbody>
             <c:forEach var="tuition" items="${tuitionList}">
             <tr>
                 <td>${tuition.id}</td>
                 <td>${tuition.name}</td>
                 <td>${tuition.amount}</td>
-            </tr>
+            </tr> 
             </c:forEach>
+             </tbody>
         </table>
+        </div>
     </main>
 </div>
