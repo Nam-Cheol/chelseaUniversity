@@ -22,7 +22,6 @@ import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.DepartmentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StuStatRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
-import com.chelseaUniversity.ver1.service.BreakAppService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -35,7 +34,6 @@ import jakarta.servlet.http.HttpSession;
 public class BreakController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BreakAppRepository breakAppRepository;
-	BreakAppService breakAppService;
 	StudentRepository studentRepository;
 	DepartmentRepository departmentRepository;
 	CollegeRepository collegeRepository;
@@ -48,7 +46,6 @@ public class BreakController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		breakAppRepository = new BreakAppRepositoryImpl();
-		breakAppService = new BreakAppService();
 		studentRepository = new StudentRepositoryImpl();
 		departmentRepository = new DepartmentRepositoryImpl();
 		collegeRepository = new CollegeRepositoryImpl();

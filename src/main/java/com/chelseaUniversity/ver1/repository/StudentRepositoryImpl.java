@@ -21,11 +21,13 @@ public class StudentRepositoryImpl implements StudentRepository {
 
 	// TODO - 나중에 Define 클래스로 이동
 	public static final String INSERT_STUDENT_SQL = " INSERT INTO student_tb(name,birth_date,gender,address,tel,dept_id,entrance_date,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
-	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id limit ? offset ? ";
+	public static final String SELECT_ALL_STUDENTS_ID = " SELECT id FROM student_tb ";
+	public static final String SELECT_STUDENT_INFO_BY_ID = " SELECT * FROM student_tb WHERE id = ?";
+	// 검색 쿼리
+	public static final String SELECT_ALL_STUDENT_SQL = " SELECT * FROM student_tb ORDER BY id LIMIT ? OFFSET ? ";
 	public static final String COUNT_ALL_STUDENT_SQL = " SELECT count(*) FROM student_tb ";
 	public static final String SELECT_STUDENT_BY_DEPT_ID = " SELECT * FROM student_tb WHERE dept_id LIKE ? ";
 	public static final String SELECT_STUDENT_BY_ID = " SELECT * FROM student_tb WHERE id LIKE ?";
-	public static final String SELECT_ALL_STUDENTS_ID = " SELECT id FROM student_tb ";
 	public static final String SELECT_STU_DEPT_AND_STU_ID = " SELECT * FROM student_tb WHERE id LIKE ? AND dept_id LIKE ? LIMIT ? OFFSET ? ";
 	public static final String COUNT_STU_BY_ID = " SELECT count(*) FROM student_tb where id LIKE ? AND dept_id LIKE ? ";
 
@@ -271,9 +273,24 @@ public class StudentRepositoryImpl implements StudentRepository {
 		return 0;
 	}
 
+	@Override
 	public Student selectByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
+		Student student = null;
+		try (Connection conn = DBUtil.getConnection()) {
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_STUDENT_INFO_BY_ID);
+			pstmt.setInt(1, studentId);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				student = Student.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender")).address(rs.getString("address"))
+						.tel(rs.getString("tel")).email(rs.getString("email")).deptId(rs.getInt("dept_id"))
+						.grade(rs.getInt("grade")).semester(rs.getInt("semester")).entranceDate(rs.getDate("entrance_date"))
+						.graduationDate(rs.getDate("graduation_date")).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return student;
 	}
 
 	@Override

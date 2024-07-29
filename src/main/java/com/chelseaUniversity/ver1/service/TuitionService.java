@@ -9,20 +9,26 @@ import com.chelseaUniversity.ver1.model.StuStat;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.Tuition;
 import com.chelseaUniversity.ver1.model.dto.response.GradeForScholarshipDto;
+import com.chelseaUniversity.ver1.repository.BreakAppRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.ScholarshipRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.StuStatRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.StudentRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.interfaces.BreakAppRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.ScholarshipRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.StuStatRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.StudentRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.TuitionRepository;
 import com.chelseaUniversity.ver1.utill.Define;
 
 public class TuitionService {
 
-	StuStatService stuStatService = new StuStatService();
 	TuitionRepository tuitionRepository = new TuitionRepositoryImpl();
 	ScholarshipRepository scholarshipRepository = new ScholarshipRepositoryImpl();
-	UserService userService = new UserService();
 	GradeService gradeService = new GradeService();
-	BreakAppService breakAppService = new BreakAppService();
+	StudentRepository studentRepository = new StudentRepositoryImpl();
+	StuStatRepository stuStatRepository = new StuStatRepositoryImpl();
+	BreakAppRepository breakAppRepository = new BreakAppRepositoryImpl();
 
 	/**
 	 * 장학금 유형 결정
@@ -34,8 +40,8 @@ public class TuitionService {
 		stuSch.setSchYear(Define.CURRENT_YEAR);
 		stuSch.setSemester(Define.CURRENT_SEMESTER);
 
-		Student studentEntity = userService.readStudent(studentId);
-
+		Student studentEntity = studentRepository.selectByStudentId(studentId);
+		
 		// 1학년 2학기 이상의 학생이라면
 		if (studentEntity.getGrade() > 1 || studentEntity.getSemester() == 2) {
 			// 직전 학기 성적 평균
@@ -86,15 +92,15 @@ public class TuitionService {
 	 */
 	public int createTuition(Integer studentId) {
 
-		StuStat stuStatEntity = stuStatService.readCurrentStatus(studentId);
+		StuStat stuStatEntity = stuStatRepository.selectByStudentIdOrderbyIdDesc(studentId).get(0);
 		if (stuStatEntity.getStatus().equals("졸업") || stuStatEntity.getStatus().equals("자퇴")) {
 			return 0;
 		}
 
 		// 해당 학생이 현재 학기 휴학을 승인받은 상태라면 생성하지 않음
-		List<BreakApp> breakAppList = breakAppService.readByStudentId(studentId); // 최근 순으로 정렬되어 있음
+		List<BreakApp> breakAppList = breakAppRepository.selectByStudentId(studentId); // 최근 순으로 정렬
 		for (BreakApp b : breakAppList) {
-			// 휴학 신청이 승인된 상태일 때
+			// 휴학 승인
 			if (b.getStatus().equals("승인")) {
 				// 휴학 종료 연도가 현재 연도보다 이후라면 생성하지 않음
 				if (b.getToYear() > Define.CURRENT_YEAR) {
