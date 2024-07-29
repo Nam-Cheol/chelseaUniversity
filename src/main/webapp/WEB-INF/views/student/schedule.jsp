@@ -36,11 +36,10 @@
 		<div class="sub--menu--mid">
 			<table class="sub--menu--table" border="1">
 				<tr>
-					<td><a href="/chelseaUniversity/notice/list?page=0">공지사항</a></td>
+					<td><a href="/chelseaUniversity/notice/list?page=0" class="selected--menu">공지사항</a></td>
 				</tr>
 				<tr>
-					<td><a href="/chelseaUniversity/schedule/list"
-						class="selected--menu">학사일정</a></td>
+					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
 				</tr>
 				<c:if test="${user.userRole eq 'staff'}">
 					<tr>

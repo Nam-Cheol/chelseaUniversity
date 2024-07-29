@@ -12,7 +12,16 @@ import com.chelseaUniversity.ver1.model.dto.NoticePageFormDto;
  */
 
 public interface NoticeRepository {
+	
+	// 공지사항 등록
 	public void insertCreateNotice(String category, String title, String content);
+	
+	// 공지사항 수정
+	public void updateNotice(String category, String title, String content, String id);
+	
+	// 공지사항 삭제
+	public void deleteNotice(String id);
+	
 	public int insert(NoticeFormDto noticeFormDto);
 	public List<Notice> selectByNoticeDto(NoticePageFormDto noticePageFormDto);
 	public Notice selectById(Integer id);
