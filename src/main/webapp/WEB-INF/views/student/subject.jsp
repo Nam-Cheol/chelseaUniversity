@@ -25,6 +25,8 @@
 	href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/pagination.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/subject.css">
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -135,7 +137,7 @@
 				style="color: gray; font-size: 18px;"><c:out
 					value="[총 ${rowCount}건]" /></span>
 		</h4>
-		<table border="1" class="sub--list--table">
+		<table border="1" class="table table-striped sub--list--table">
 			<thead>
 				<tr>
 					<th>연도/학기</th>
@@ -174,14 +176,16 @@
 						<td><c:out value="${subject.deptName}"></c:out></td>
 						<td><c:out value="${subject.id}"></c:out></td>
 						<td><c:out value="${subject.type}"></c:out></td>
-						<td><c:out value="${subject.name}"></c:out></td>
+						<td class="sub--list--name"><c:out value="${subject.name}"></c:out></td>
 						<td><c:out value="${subject.professorName}"></c:out></td>
 						<td><c:out value="${subject.grades}"></c:out></td>
 						<td><c:out value="${subject.numOfStudent}"></c:out></td>
 						<td><c:out value="${subject.capacity}"></c:out></td>
 						<td><a
 							href="${pageContext.request.contextPath}/syllabus/info?id=${subject.id}"
-							onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의계획서</a></td>
+							onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">
+						<img alt="강의계획서" src="${pageContext.request.contextPath}/resources/img/subjectDetail.png" style="width:40px;height:40px;">
+						</a></td>
 					</tr>
 				</c:forEach>
 
@@ -213,4 +217,3 @@
 
 </body>
 </html>
-

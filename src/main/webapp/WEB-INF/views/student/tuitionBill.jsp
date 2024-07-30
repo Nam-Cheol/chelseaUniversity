@@ -5,6 +5,46 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/myinfo.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+<style>
+.document--layout h3 {
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+
+.document--layout tr:last-of-type td {
+	padding: 18px 8px 2px;
+}
+
+.form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-container button {
+    margin-top: 20px; /* Adjust the margin as needed */
+}
+
+.demon--slayer {
+	width: 80px;
+	margin: 20px;
+	margin-top: 30px;
+	background-color: #33688F;
+	border-color: #33688F;
+	border-radius: 5px;
+	border: none;
+	padding: 5px; 
+	color: white;
+}
+</style>
 <!-- 세부 메뉴 + 메인 -->
 <div class="d-flex justify-content-center align-items-start"
 	style="display: flex; min-width: 100em;">
@@ -46,7 +86,7 @@
 			<h1>등록금 납부 고지서</h1>
 			<div class="split--div"></div>
 
-			<div class="d-flex flex-column align-items-center"
+			<div class="form-container"
 				style="width: 100%">
 				<div class="document--layout">
 					<h3>등록금 고지서</h3>
@@ -103,7 +143,7 @@
 
 				<c:when test="${tuition.status == false}">
 				<form action="/chelseaUniversity/tuition/payment?tuiYear=${tuition.tuiYear}&semester=${tuition.semester}" method="post">
-					<button type="submit" class="btn btn-dark"
+					<button type="submit" class="demon--slayer"
 						onclick="return confirm('등록금을 납부하시겠습니까?')">납부하기</button>
 				</form>
 				</c:when>

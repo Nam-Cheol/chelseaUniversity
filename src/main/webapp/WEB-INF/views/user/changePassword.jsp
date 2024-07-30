@@ -75,15 +75,18 @@
                         <td><input type="password" name="password" id="second"></td>
                     </tr>
                 </table>
-                <input type="submit" value="변경하기" disabled class="change">
+                <div class="button-group">
+                    <input type="submit" value="변경하기" disabled class="change demon--slayer">
+                    <input type="button" value="확인하기" onclick='check()' class="checkPass demon--slayer">
+                </div>
                 <script>
                     function check() {
                         let original = document.getElementById("original");
                         let first = document.getElementById("first");
                         let second = document.getElementById("second");
-                        if (first.value == "" && second.value == "" && original.value == "") {
+                        if (first.value === "" || second.value === "" || original.value === "") {
                             alert("비밀번호를 입력해주세요");
-                        } else if (first.value == second.value) {
+                        } else if (first.value === second.value) {
                             let pass = document.getElementsByClassName("change");
                             pass[0].disabled = false;
                             console.log(second.value);
@@ -94,7 +97,6 @@
                 </script>
             </form>
         </div>
-        <input type="submit" value="확인하기" onclick='check()' class="checkPass">
     </main>
 </div>
 </body>
