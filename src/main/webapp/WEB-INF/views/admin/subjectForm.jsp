@@ -12,13 +12,25 @@
             <input type="text" id="subject-name" name="subject-name" placeholder="강의이름을 입력해주세요" required="required">
             
             <label for="professor-id">교수id:</label>
-            <input type="text" id="professor-id" name="professor-id" placeholder="교수사번을 입력해주세요" required="required">
+            <select id="professor-id" name="professor-id" required="required">
+            	<c:forEach var="professor" items="${professorList}">
+            		<option value="${professor.id}">${professor.id} - ${professor.name}</option>
+            	</c:forEach>
+            </select>
             
             <label for="room-id">강의실id:</label>
-            <input type="text" id="room-id" name="room-id" placeholder="강의실id를 입력해주세요" required="required">
+            <select id="room-id" name="room-id" required="required">
+            	<c:forEach var="room" items="${roomList}">
+            		<option value="${room.id}">${room.id}</option>
+            	</c:forEach>
+            </select>
             
             <label for="dept-id">학과id:</label>
-            <input type="text" id="dept-id" name="dept-id" placeholder="학과id를 입력해주세요" required="required">
+            <select id="dept-id" name="dept-id" required="required">
+            	<c:forEach var="dept" items="${departmentList}">
+            		<option value="${dept.id}">${dept.id} - ${dept.name}</option>
+            	</c:forEach>
+            </select>
             
             <label for="type">구분:</label>
             <div class="radio-group">

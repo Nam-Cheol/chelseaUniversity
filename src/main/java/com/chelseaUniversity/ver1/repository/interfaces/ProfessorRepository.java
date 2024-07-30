@@ -32,6 +32,9 @@ public interface ProfessorRepository {
 	public List<Professor> selectProfessorList(ProfessorListForm professorListForm);
 	public List<Professor> selectProfessorList(String deptId,String proId,int limit,int offset);
 	public List<Professor> selectProfessorList(int limit, int offset);
+	
+	// 전체 교수 조회
+	public List<Professor> selectProfessorList();
 
 	// 페이지, 과별 교수조회
 	public List<Professor> selectByDepartmentId(ProfessorListForm professorListForm);

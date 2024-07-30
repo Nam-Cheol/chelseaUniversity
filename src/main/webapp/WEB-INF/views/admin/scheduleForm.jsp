@@ -9,8 +9,8 @@
         <form action="${pageContext.request.contextPath}/admin/scheduleAdd" method="post">
             <input type="hidden" name="page" value="1">
 
-            <label for="staff-id">교직원id:</label>
-            <input type="text" id="staff-id" name="staff-id" placeholder="230001" required>
+			<c:set var="user" value="${sessionScope.user}" />
+            <input type="hidden" id="staff-id" name="staff-id" value="${user.id}">
 
             <label for="start-date">시작날짜:</label>
             <input type="date" id="start-date" name="start-date" placeholder="2024-01-01" required>
@@ -33,10 +33,14 @@
             <input type="hidden" name="page" value="1">
 
             <label for="schedule-id">id:</label>
-            <input type="text" id="schedule-id" name="schedule-id" placeholder="id를 입력하세요" required="required">
+            <select id="schedule-id" name="schedule-id" required="required">
+            	<c:forEach var="schedule" items="${scheduleList}">
+            		<option value="${schedule.id}">${schedule.id}</option>
+            	</c:forEach>
+            </select>
 
-            <label for="staff-id">교직원id:</label>
-            <input type="text" id="staff-id" name="staff-id" placeholder="교직원 id를 입력하세요" required="required">
+			<c:set var="user" value="${sessionScope.user}" />
+            <input type="hidden" id="staff-id" name="staff-id" value="${user.id}">
 
             <label for="start-date">시작날짜:</label>
             <input type="date" id="start-date" name="start-date" min="2024-01-01" max="2024-12-31" value="2024-01-01" required>

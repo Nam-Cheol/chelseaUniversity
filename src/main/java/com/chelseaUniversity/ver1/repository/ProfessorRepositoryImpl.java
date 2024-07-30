@@ -19,7 +19,8 @@ import com.chelseaUniversity.ver1.utill.DBUtil;
 public class ProfessorRepositoryImpl implements ProfessorRepository {
 
 	public static final String INSERT_PROFESSOR_SQL = " INSERT INTO professor_tb(name,birth_date,gender,address,tel,dept_id,email) VALUES (?, ?, ?, ?, ?, ?, ?) ";
-	public static final String SELECT_ALL_PROFESSOR_SQL = " SELECT * FROM professor_tb ORDER BY id limit ? offset ? ";
+	public static final String SELECT_ALL_PROFESSOR_LIMIT = " SELECT * FROM professor_tb ORDER BY id limit ? offset ? ";
+	public static final String SELECT_ALL_PROFESSOR = " SELECT * FROM professor_tb ORDER BY id ";
 	public static final String COUNT_ALL_PROFESSOR_SQL = " SELECT count(*) FROM professor_tb ";
 	public static final String COUNT_PROFESSOR_BY_DEPT_ID = " SELECT count(*) FROM professor_tb WHERE dept_id = ? ";
 	public static final String SELECT_PROFESSOR_BY_DEPT_ID = " SELECT * FROM professor_tb WHERE dept_id = ? ";
@@ -100,7 +101,7 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 		List<Professor> list = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection()) {
 
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_SQL);
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_LIMIT);
 			pstmt.setInt(1, 20);
 			pstmt.setInt(2, professorListForm.getPage());
 			ResultSet rs = pstmt.executeQuery();
@@ -122,7 +123,7 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 		List<Professor> list = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection()) {
 
-			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_SQL);
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR_LIMIT);
 			pstmt.setInt(1, limit);
 			pstmt.setInt(2, offset);
 			ResultSet rs = pstmt.executeQuery();
@@ -284,6 +285,26 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 			e.printStackTrace();
 		}
 		return name;
+	}
+
+	@Override
+	public List<Professor> selectProfessorList() {
+		List<Professor> list = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection()) {
+
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL_PROFESSOR);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				list.add(Professor.builder().id(rs.getInt("id")).name(rs.getString("name"))
+						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
+						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
 	}
 
 }
