@@ -29,11 +29,10 @@
 				</tr>
 				<c:if test="${user.userRole eq 'staff'}">
 					<tr>
-						<td><a href="/chelseaUniversity/notice/createNotice"
-							class="selected--menu"> 공지사항 등록</a></td>
+						<td><a href="/chelseaUniversity/notice/createNotice" class="selected--menu"> 공지사항 등록</a></td>
 					</tr>
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정 등록</a></td>
+						<td><a href="${pageContext.request.contextPath}/admin/schedule">학사일정 등록</a></td>
 					</tr>
 				</c:if>
 			</table>

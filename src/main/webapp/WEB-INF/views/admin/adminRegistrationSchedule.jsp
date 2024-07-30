@@ -11,28 +11,24 @@
         <div class="sub--menu--top">
             <h2>등록</h2>
         </div>
-        <div class="sub--menu--mid">
-            <table class="sub--menu--table">
-                <tr>
-                    <td><a href="${pageContext.request.contextPath}/admin/college">단과대학</a></td>
-                </tr>
-                <tr>
-                    <td><a href="${pageContext.request.contextPath}/admin/department">학과</a></td>
-                </tr>
-                <tr>
-                    <td><a href="${pageContext.request.contextPath}/admin/room">강의실</a></td>
-                </tr>
-                <tr>
-                    <td><a href="${pageContext.request.contextPath}/admin/subject">강의</a></td>
-                </tr>
-                <tr>
-                    <td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
-                </tr>
-                <tr>
-                    <td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정</a></td>
-                </tr>
-            </table>
-        </div>
+		<div class="sub--menu--mid">
+			<table class="sub--menu--table" border="1">
+				<tr>
+					<td><a href="/chelseaUniversity/notice/list?page=0">공지사항</a></td>
+				</tr>
+				<tr>
+					<td><a href="/chelseaUniversity/schedule/list">학사일정</a></td>
+				</tr>
+				<c:if test="${user.userRole eq 'staff'}">
+					<tr>
+						<td><a href="/chelseaUniversity/notice/createNotice"> 공지사항 등록</a></td>
+					</tr>
+					<tr>
+						<td><a href="${pageContext.request.contextPath}/admin/schedule" class="selected--menu">학사일정 등록</a></td>
+					</tr>
+				</c:if>
+			</table>
+		</div>
     </div>
     
     <main class="main-content">
