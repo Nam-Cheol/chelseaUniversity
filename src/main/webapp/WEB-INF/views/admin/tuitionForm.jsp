@@ -4,15 +4,6 @@
 
 <main>
     <div class="form-container">
-        <h3>단대별 등록금 생성</h3>
-        <form action="${pageContext.request.contextPath}/admin/tuitionAddName" method="post">
-            <label for="college-name">단과이름:</label>
-            <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학" required>
-            <button type="submit" class="btn-edit">생성</button>
-        </form>
-    </div>
-
-    <div class="form-container">
         <h3>단대별 등록금 금액 생성</h3>
         <form action="${pageContext.request.contextPath}/admin/tuitionAddAmount" method="post">
             <label for="college-id">id:</label>

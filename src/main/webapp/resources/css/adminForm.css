@@ -57,3 +57,9 @@ main {
 .btn-edit:hover {
 	background-color: #2a4b6f;
 }
+
+.radio-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
