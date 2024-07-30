@@ -27,7 +27,6 @@ public class SubjectController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
-		System.out.println("action : " + action);
 		HttpSession session = request.getSession();
 
 		switch (action) {
@@ -45,38 +44,38 @@ public class SubjectController extends HttpServlet {
 		}
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+	}
+
 	private void showSearch(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
+
 		List<ClassesDto> classesList = new ArrayList<>();
+
 		int year = Integer.parseInt(request.getParameter("subYear"));
 		int semester = Integer.parseInt(request.getParameter("semester"));
 		int deptId = Integer.parseInt(request.getParameter("deptId"));
 		String name = request.getParameter("name");
+
 		if (!name.isEmpty() && deptId != -1) {
-			System.out.println("search - id and name");
 			classesList = classesRepository.getClassesBySearchIdName(year, semester, deptId, name);
 		} else if (!name.isEmpty() && deptId == -1) {
-			System.out.println("search - name");
 			classesList = classesRepository.getClassesBySearchName(year, semester, name);
 		} else if (name.isEmpty() && deptId != -1) {
-			System.out.println("search - id");
 			classesList = classesRepository.getClassesBySearchId(year, semester, deptId);
 		} else if (name.isEmpty() && deptId == -1) {
-			System.out.println("search - null");
 			classesList = classesRepository.getClassesBySearch(year, semester);
 		} else {
 
 		}
+
 		int rowCount = classesList.size();
+
 		request.setAttribute("classesList", classesList);
 		request.setAttribute("rowCount", rowCount);
 		request.setAttribute("isSearch", "true");
-
 		request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 	}
 
 	private void showLists(HttpServletRequest request, HttpServletResponse response, HttpSession session)
@@ -105,7 +104,6 @@ public class SubjectController extends HttpServlet {
 		request.setAttribute("rowCount", totalBoards);
 		request.setAttribute("totalPages", totalPages);
 		request.setAttribute("currentPage", page);
-
 		request.getRequestDispatcher("/WEB-INF/views/student/subject.jsp").forward(request, response);
 	}
 

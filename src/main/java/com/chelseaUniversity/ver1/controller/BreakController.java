@@ -6,7 +6,6 @@ import java.util.List;
 import com.chelseaUniversity.ver1.model.BreakApp;
 import com.chelseaUniversity.ver1.model.College;
 import com.chelseaUniversity.ver1.model.Department;
-import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.model.StuStat;
 import com.chelseaUniversity.ver1.model.Student;
 import com.chelseaUniversity.ver1.model.User;
@@ -33,15 +32,12 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/break/*")
 public class BreakController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	BreakAppRepository breakAppRepository;
-	StudentRepository studentRepository;
-	DepartmentRepository departmentRepository;
-	CollegeRepository collegeRepository;
-	StuStatRepository stuStatRepository;
 
-	public BreakController() {
-		super();
-	}
+	private BreakAppRepository breakAppRepository;
+	private StudentRepository studentRepository;
+	private DepartmentRepository departmentRepository;
+	private CollegeRepository collegeRepository;
+	private StuStatRepository stuStatRepository;
 
 	@Override
 	public void init() throws ServletException {
@@ -56,33 +52,29 @@ public class BreakController extends HttpServlet {
 			throws ServletException, IOException {
 
 		String action = request.getPathInfo();
-		System.out.println(action);
 
 		HttpSession session = request.getSession();
 		StudentInfoDto principalStu = null;
-		Staff principalSta = null;
 		User userRole = (User) session.getAttribute("user");
-		if("student".equalsIgnoreCase(userRole.getUserRole())) {
+		if ("student".equalsIgnoreCase(userRole.getUserRole())) {
 			principalStu = (StudentInfoDto) session.getAttribute("principal");
-		} else if("staff".equalsIgnoreCase(userRole.getUserRole())) {
-			principalSta = (Staff) session.getAttribute("principal");
 		}
-		
+
 		BreakApp app = null;
-		if(principalStu != null) {
+		if (principalStu != null) {
 			app = breakAppRepository.selectByStudentIdOne(principalStu.getId());
 			request.setAttribute("app", app);
-			
+
 		}
-		
+
 		boolean status = false;
-		
-		if(app != null) {
+
+		if (app != null) {
 			request.setAttribute("app", app);
 			status = "승인".equals(app.getStatus()) ? true : false;
 			request.setAttribute("status", status);
 		}
-		
+
 		boolean application = app != null ? true : false;
 		request.setAttribute("application", application);
 
@@ -90,9 +82,9 @@ public class BreakController extends HttpServlet {
 
 			switch (action) {
 			case "/application":
-				if(status) {
+				if (status) {
 					String message = "휴학 상태입니다.";
-			        request.setAttribute("message", message);
+					request.setAttribute("message", message);
 				}
 				request.setAttribute("application", application);
 				request.getRequestDispatcher("/WEB-INF/views/student/breakApplication.jsp").forward(request, response);
@@ -113,20 +105,43 @@ public class BreakController extends HttpServlet {
 				break;
 
 			case "/detail":
-				try {
-					boolean check;  
-					int id = Integer.parseInt(request.getParameter("id"));
-					app = breakAppRepository.selectById(id);
-					request.setAttribute("app", app);
-					request.setAttribute("principal", principalStu);
-					request.getRequestDispatcher("/WEB-INF/views/student/breakHistoryDetail.jsp").forward(request,
-							response);
+				readBreakHistoryDetail(request, response, principalStu, app);
+				break;
 
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-					response.sendRedirect("/WEB-INF/views/student/breakHistory.jsp");
-				}
+			default:
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				break;
+			}
 
+		} else {
+			response.sendRedirect(request.getContextPath());
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getPathInfo();
+		HttpSession session = request.getSession();
+		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
+		if (principal == null) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
+
+		if (action != null || action.trim().isEmpty()) {
+
+			switch (action) {
+			case "/application":
+				insertBreakApplication(request, response, principal);
+				response.sendRedirect(request.getContextPath() + "/break/list");
+				break;
+
+			case "/update":
+				updateBreak(request, response, session);
+				break;
+
+			case "/delete":
+				deleteBreak(request, response);
 				break;
 
 			default:
@@ -183,63 +198,16 @@ public class BreakController extends HttpServlet {
 		request.setAttribute("college", college);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String action = request.getPathInfo();
-		System.out.println(action);
-		HttpSession session = request.getSession();
-		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		if (principal == null) {
-			response.sendRedirect("index.jsp");
-			return;
-		}
-
-		if (action != null || action.trim().isEmpty()) {
-
-			switch (action) {
-			case "/application":
-				insertBreakApplication(request, response, principal);
-				response.sendRedirect(request.getContextPath() + "/break/list");
-				break;
-
-			case "/list":
-
-				break;
-			case "/update":
-				updateBreak(request, response, session);
-				break;
-			case "/delete":
-
-				try {
-					int id = Integer.parseInt(request.getParameter("id"));
-					breakAppRepository.deleteById(id);
-					request.getRequestDispatcher("/WEB-INF/views/student/breakHistory.jsp").forward(request, response);
-
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-					response.sendRedirect("/WEB-INF/views/student/breakHistory.jsp");
-				}
-				break;
-
-			default:
-				response.sendError(HttpServletResponse.SC_NOT_FOUND);
-				break;
-			}
-
-		} else {
-			response.sendRedirect(request.getContextPath());
-		}
-	}
-
 	/**
 	 * 교직원 -> 휴학 처리 (승인 혹은 반려)
 	 * 
 	 * @param request
 	 * @param response
 	 * @param session
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	private void updateBreak(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+	private void updateBreak(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws IOException {
 
 		String breakStatus = request.getParameter("status");
 		int breakId = Integer.parseInt(request.getParameter("id"));
@@ -268,20 +236,74 @@ public class BreakController extends HttpServlet {
 			}
 		}
 
-		response.sendRedirect(request.getContextPath()+"/break/list/staff");
-		
+		response.sendRedirect(request.getContextPath() + "/break/list/staff");
+
 	}
 
+	/**
+	 * 휴학 신청을 취소하는 메소드
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void deleteBreak(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			breakAppRepository.deleteById(id);
+			request.getRequestDispatcher("/WEB-INF/views/student/breakHistory.jsp").forward(request, response);
+
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			response.sendRedirect("/WEB-INF/views/student/breakHistory.jsp");
+		}
+
+	}
+
+	/**
+	 * 휴학신청서 생성 메소드
+	 * 
+	 * @param request
+	 * @param response
+	 * @param principal
+	 */
 	private void insertBreakApplication(HttpServletRequest request, HttpServletResponse response,
 			StudentInfoDto principal) {
 		BreakAppFormDto dto = BreakAppFormDto.builder().studentId(principal.getId()).studentGrade(principal.getGrade())
-				// TODO - 년도, 학기 하드코딩 중 수정 필
+				// TODO - 년도, 학기 고정값 >> 동적으로 년도와 학기 가져와야 됨.
 				.fromYear(2024).fromSemester(1).toYear(Integer.parseInt(request.getParameter("toYear")))
 				.toSemester(Integer.parseInt(request.getParameter("toSemester"))).type(request.getParameter("type"))
 				.build();
 
 		if (dto != null) {
 			breakAppRepository.insert(dto);
+		}
+	}
+
+	/**
+	 * 휴학 신청내역 자세히 보는 메소드
+	 * 
+	 * @param request
+	 * @param response
+	 * @param principalStu
+	 * @param app
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	private void readBreakHistoryDetail(HttpServletRequest request, HttpServletResponse response,
+			StudentInfoDto principalStu, BreakApp app) throws ServletException, IOException {
+		try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			app = breakAppRepository.selectById(id);
+			request.setAttribute("app", app);
+			request.setAttribute("principal", principalStu);
+			request.getRequestDispatcher("/WEB-INF/views/student/breakHistoryDetail.jsp").forward(request, response);
+
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			response.sendRedirect("/WEB-INF/views/student/breakHistory.jsp");
 		}
 	}
 
