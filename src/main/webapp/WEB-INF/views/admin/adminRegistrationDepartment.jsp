@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/views/home/staffHeader.jsp"%>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/adminForm.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -27,35 +28,17 @@
 				<tr>
 					<td><a href="${pageContext.request.contextPath}/admin/tuition">단대별 등록금</a></td>
 				</tr>
+				<tr>
+					<td><a href="${pageContext.request.contextPath}/admin/schedule">학사일정</a></td>
+				</tr>
 			</table>
 		</div>
 	</div>
 
 	<main style="width: 100%; padding: 20px;">
-		<h1>학과 등록</h1>
-		<div class="split--div"></div>
-		<div class="sub--filter">
-			<form action="${pageContext.request.contextPath}/admin/department/create-department" method="post">
-				<div>
-					<input type="hidden" name="page" value="1">
-					<label for="type">학과이름 <input type="text" id="department-name" name="department-name" placeholder="ㅇㅇ학과"></label>
-					<label for="type">단과id <input type="text" id="college-id" name="college-id" placeholder="1 , 2 , 3 , 4 ...."></label>
-					<button type="submit">생성</button>
-				</div>
-			</form>
-		</div>
- <div class="sub--filter">
-		<form action="${pageContext.request.contextPath}/admin/department/edit-department" method="post">
-		<div>
-		<label for="type">수정할 id   <input type="text" id="department-id" name="department-id" placeholder="1, 2, 3 ...."></label>
-		<label for="type">학과이름    <input type="text" id="department-name" name="department-name" placeholder="ㅇㅇ학과"></label>
-		<label for="type">단과id    <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3 ...."></label>
-			<button type="submit">수정</button>
-		</div>
-		</form>
-		</div>
-		
-		<p>학과 목록</p>
+		<h1>학과 목록</h1>
+        <div class="split--div"></div>
+		<a href="${pageContext.request.contextPath}/admin/departmentAdd" class="btn-edit" onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">학과 등록</a>
 		<br>
 		<div>
 			 <table class="table table-striped sub--list--table">
@@ -91,5 +74,4 @@
 		</div>
 	</main>
 </div>
-
 <%@ include file="footer.jsp"%>
