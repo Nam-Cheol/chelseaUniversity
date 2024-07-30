@@ -17,48 +17,55 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/student/*")
 public class StudentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private BreakAppRepository breakAppRepository;   
-	
-    public StudentController() {
-        super();
-        breakAppRepository = new BreakAppRepositoryImpl();
-    }
+	// TODO - Controller 통합 필요
+	private BreakAppRepository breakAppRepository;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void init() throws ServletException {
+		breakAppRepository = new BreakAppRepositoryImpl();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String action = request.getPathInfo();
-		System.out.println(action);
 		HttpSession session = request.getSession();
 		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		if(principal == null) {
+		if (principal == null) {
 			response.sendRedirect("index.jsp");
 			return;
 		}
-		
-		if(action != null || action.trim().isEmpty()) {
-			
+
+		if (action != null || action.trim().isEmpty()) {
+
 			switch (action) {
 			case "/info":
-				BreakApp app = breakAppRepository.selectByStudentIdOne(principal.getId());
-				if(app != null) {
-					request.setAttribute("app", app);
-				}
-				request.getRequestDispatcher("/WEB-INF/views/user/myInfo.jsp").forward(request, response);
+				showBreakHistory(request, response, principal);
 				break;
-				
+
 			default:
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;
 			}
-			
+
 		} else {
 			response.sendRedirect(request.getContextPath());
 		}
-		
+
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+	}
+
+	private void showBreakHistory(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
+			throws ServletException, IOException {
+		BreakApp app = breakAppRepository.selectByStudentIdOne(principal.getId());
+		if (app != null) {
+			request.setAttribute("app", app);
+		}
+		request.getRequestDispatcher("/WEB-INF/views/user/myInfo.jsp").forward(request, response);
 	}
 
 }

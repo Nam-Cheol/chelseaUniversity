@@ -26,38 +26,27 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/tuition/*")
 public class TuitionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	TuitionRepository tuitionRepository;
-	CollegeRepository collegeRepository;
-	StudentRepository studentRepository;
+	
+	private TuitionRepository tuitionRepository;
+	private StudentRepository studentRepository;
 
 	@Override
 	public void init() throws ServletException {
 		tuitionRepository = new TuitionRepositoryImpl();
-		collegeRepository = new CollegeRepositoryImpl();
 		studentRepository = new StudentRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// 인증처리
-		/*
-		 * HttpSession session = request.getSession(false); if (session == null ||
-		 * session.getAttribute("") == null) {
-		 * response.sendRedirect(request.getContextPath() + "/user/signin"); return; }
-		 */
-
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
 		StudentInfoDto principalStu = null;
-		Staff principalSta = null;
 		List<Tuition> tuitionList = null;
 		User userRole = (User) session.getAttribute("user");
 		if ("student".equalsIgnoreCase(userRole.getUserRole())) {
 			principalStu = (StudentInfoDto) session.getAttribute("principal");
 			tuitionList = checkTuitionList(principalStu.getId());
-		} else if ("staff".equalsIgnoreCase(userRole.getUserRole())) {
-			principalSta = (Staff) session.getAttribute("principal");
 		}
 
 		switch (action) {
@@ -100,13 +89,7 @@ public class TuitionController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// 인증처리
 		HttpSession session = request.getSession(false);
-//		if (session == null || session.getAttribute("") == null) {
-//			response.sendRedirect(request.getContextPath() + "/user/signin");
-//			return;
-//		}
-
 		String action = request.getPathInfo();
 		switch (action) {
 
@@ -119,11 +102,6 @@ public class TuitionController extends HttpServlet {
 			paymentTuition(request, response, session);
 			break;
 
-		// 등록금 금액 생성
-		case "/create-tuition":
-			createTuition(request, response);
-			break;
-		// 등록금 금액 수정
 		case "/edit-tuition":
 			editTuition(request, response);
 			break;
@@ -135,20 +113,17 @@ public class TuitionController extends HttpServlet {
 
 	}
 
-	private void createTuition(HttpServletRequest request, HttpServletResponse response) {
-		String collegeName = request.getParameter("college-name");
-		int collegeTuition = Integer.parseInt(request.getParameter("college-tuition"));
-		System.out.println(collegeName);
-		System.out.println(collegeTuition);
-
-	}
-
+	/**
+	 * 등록금 수정 메소드
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void editTuition(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("editTuition 성공");
 		int collegeId = Integer.parseInt(request.getParameter("tuition-id"));
 		int collegeAmount = Integer.parseInt(request.getParameter("college-tuition-amount"));
 		tuitionRepository.updateByIdAndAmount(collegeId, collegeAmount);
-
 		response.sendRedirect(request.getContextPath() + "/admin/tuition");
 	}
 
@@ -166,7 +141,7 @@ public class TuitionController extends HttpServlet {
 		TuitionService tuitionService = new TuitionService();
 
 		List<Integer> studentIdList = studentRepository.selectIdList();
-		
+
 		int insertCount = 0;
 
 		for (Integer studentId : studentIdList) {
@@ -178,13 +153,15 @@ public class TuitionController extends HttpServlet {
 	}
 
 	/**
-	 * 등록금 납부 여부
+	 * 등록금 납부 여부 확인 메소드
+	 * 
+	 * @param studentId
+	 * @return
 	 */
 	private List<Tuition> checkTuitionList(int studentId) {
 		List<Tuition> temp = tuitionRepository.selectByStudentId(studentId);
 		List<Tuition> tuitionList = new ArrayList<>();
 		for (Tuition tuition : temp) {
-			System.out.println(tuition.getStatus());
 			if (tuition.getStatus() == true) {
 				tuitionList.add(tuition);
 			}
@@ -192,6 +169,14 @@ public class TuitionController extends HttpServlet {
 		return tuitionList;
 	}
 
+	/**
+	 * 등록급 납부 메소드
+	 * 
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @throws IOException
+	 */
 	private void paymentTuition(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws IOException {
 
