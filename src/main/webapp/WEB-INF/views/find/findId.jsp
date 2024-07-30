@@ -13,9 +13,9 @@
 	<div class="formbox">
 	<h2>아이디 찾기</h2>
 	<form action="${pageContext.request.contextPath}/user/findid"method="post">
-		이름 &nbsp;&nbsp;&nbsp;: <input type="text" id="name" name="name">
+		<b>이름</b>  <input type="text" id="name" name="name">
 		<br>
-		이메일 : <input type="email" id="email" name="email">
+		<b>이메일</b>  <input type="email" id="email" name="email">
 		<br>
 		<input type="submit" value="아이디 찾기">
 	</form>

@@ -2,12 +2,15 @@ package com.chelseaUniversity.ver1.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import com.chelseaUniversity.ver1.repository.interfaces.SugangStatus;
 import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public class SugangStatusImpl implements SugangStatus{
 
+	public final String SELECT_SUGANG_STATUS = " SELECT status FROM sugang WHERE name = 'sugang'";
+	public final String SELECT_PRE_SUGANG_STATUS = " SELECT status FROM sugang WHERE name = 'pre_sugang'";
 	public final String UPDATE_SUGANG_STATUS = " UPDATE sugang SET status = ? WHERE name = 'sugang' ";
 	public final String UPDATE_PRE_SUGANG_STATUS = " UPDATE sugang SET status = ? WHERE name = 'pre_sugang' ";
 
@@ -41,7 +44,6 @@ public class SugangStatusImpl implements SugangStatus{
 			e.printStackTrace();
 		}
 		return rsRowCount;
-
 	}
 
 	/**
@@ -86,6 +88,36 @@ public class SugangStatusImpl implements SugangStatus{
 			e.printStackTrace();
 		}
 		return rsRowCount;
+	}
+
+	@Override
+	public String selectSugangStatus() {
+		String status = null;
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_SUGANG_STATUS)){
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				status = rs.getString("status");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+
+	@Override
+	public String selectPreSugangStatus() {
+		String status = null;
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_PRE_SUGANG_STATUS)){
+				ResultSet rs = pstmt.executeQuery();
+				if(rs.next()) {
+					status = rs.getString("status");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return status;
 	}
 
 }

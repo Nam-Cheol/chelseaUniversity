@@ -17,10 +17,10 @@
 <!-- s : header-->
 <script type="text/javascript">
     function findId(){
-        window.open("<%= request.getContextPath() %>/user/findid","findid","width=640, height=550")
+        window.open("<%= request.getContextPath() %>/user/findid","findid","width=640, height=550,top= 200, left=950")
     }
     function findPassword(){
-        window.open("<%= request.getContextPath() %>/user/findpassword","findpassword","width=640, height=550")
+        window.open("<%= request.getContextPath() %>/user/findpassword","findpassword","width=640, height=550,top= 200, left=950")
     }
 </script>
 <header>

@@ -425,7 +425,7 @@ public class UserController extends HttpServlet {
 		String original = request.getParameter("original");
 		if (user == null) {
 			response.sendRedirect(request.getContextPath() + "/user/signin");
-		} else if (user.getPassword().equals(original)) {
+		} else if (!user.getPassword().equals(original)) {
 			request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp?pass=false").forward(request,
 					response);
 		}

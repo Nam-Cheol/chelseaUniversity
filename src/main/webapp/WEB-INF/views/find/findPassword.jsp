@@ -13,11 +13,11 @@
 	<div class="formbox">
 	<h2>비밀번호 찾기</h2>
 	<form action="${pageContext.request.contextPath}/user/findpassword"method="post">
-		아이디 : <input type="number" id="id" name="id">
+		<b>아이디</b>  <input type="number" id="id" name="id">
 		<br>
-		이름 &nbsp;&nbsp;&nbsp;: <input type="text" id="name" name="name">
+		<b>이름</b><input type="text" id="name" name="name">
 		<br>
-		<input type="submit" value="비밀번호 찾기 찾기">
+		<input type="submit" value="비밀번호 찾기">
 	</form>
 	</div>
 </body>

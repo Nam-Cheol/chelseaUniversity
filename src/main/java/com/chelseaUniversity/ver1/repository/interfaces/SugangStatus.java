@@ -6,7 +6,8 @@ import java.sql.PreparedStatement;
 import com.chelseaUniversity.ver1.utill.DBUtil;
 
 public interface SugangStatus {
-
+	public String selectSugangStatus();
+	public String selectPreSugangStatus();
 	public int updateAllSugangPeriod(String preSugangStatus, String sugangStatus);
 	public int updatePrePeriod(String preSugangStatus);
 	public int updateSugangPeriod(String sugangStatus);

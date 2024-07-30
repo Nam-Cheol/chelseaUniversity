@@ -1,25 +1,62 @@
 @charset "UTF-8";
-body {
-	display: flex;
-	justify-content: center;
-}
 
-.formbox{
-	border: 1px solid #1E96FF;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 350px;
-	height: 250px;
-	margin: 10px;
-}
-input {
-	margin-top: 25px;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #034694; /* Chelsea FC의 파란색 */
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
 
+    .formbox {
+        background-color: #ffffff;
+        border: 3px solid #034694;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 300px;
+    }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
+    h2 {
+        color: #034694;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="email"],input[type="number"]{
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    input[type="submit"] {
+        background-color: #034694;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #003d82;
+    }
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-}
+    }
+	
+	b {
+	color: black;
+	}
