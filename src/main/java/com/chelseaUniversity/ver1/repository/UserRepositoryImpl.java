@@ -23,7 +23,13 @@ public class UserRepositoryImpl implements UserRepository{
 			+ "		LEFT JOIN college_tb AS c\r\n"
 			+ "		ON d.college_id = c.id\r\n"
 			+ "		WHERE s.id = ? ";
-	private final String GET_PROFESSOR_BYID = " SELECT * FROM professor_tb WHERE id = ?";
+	private final String GET_PROFESSOR_BYID = " SELECT pr.id as id,pr.name as name,pr.birth_date as birth_date,\r\n"
+			+ "pr.gender as gender,pr.address as address,pr.tel as tel,pr.email as email,\r\n"
+			+ "pr.hire_date as hire_date,dp.name as dept_name,pr.dept_id as dept_id\r\n"
+			+ "FROM professor_tb as pr \r\n"
+			+ "join department_tb as dp \r\n"
+			+ "on pr.dept_id = dp.id\r\n"
+			+ "WHERE pr.id = ? ";
 	private final String GET_STAFF_BYID = " SELECT * FROM staff_tb WHERE id = ?";
 	private final String GET_ID_BYNAME = " SELECT id FROM student_tb\r\n"
 			+ "where name = ? and email = ?\r\n"
@@ -107,7 +113,7 @@ public class UserRepositoryImpl implements UserRepository{
 				professor = ProfessorInfoDto.builder().id(rs.getInt("id")).name(rs.getString("name"))
 						.birthDate(rs.getDate("birth_date")).gender(rs.getString("gender"))
 						.address(rs.getString("address")).tel(rs.getString("tel")).email(rs.getString("email"))
-						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).build();
+						.deptId(rs.getInt("dept_id")).hireDate(rs.getDate("hire_date")).deptName(rs.getString("dept_name")).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

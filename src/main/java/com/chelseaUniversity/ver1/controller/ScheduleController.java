@@ -34,7 +34,6 @@ public class ScheduleController extends HttpServlet {
 		case "/list":
 			showSchedulePage(request,response,session);
 			break;
-
 		default:
 			break;
 		}
