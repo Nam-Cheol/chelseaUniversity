@@ -69,7 +69,6 @@ public class UserController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
-		System.out.println("액션 : " + action);
 		switch (action) {
 		case "/signin":
 			showSignIn(request, response, session);
@@ -169,29 +168,6 @@ public class UserController extends HttpServlet {
 			throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/user/changePassword.jsp").forward(request, response);
 	}
-
-	private void showProfessorListByPage(HttpServletRequest request, HttpServletResponse response, HttpSession session)
-			throws IOException {
-
-		try {
-			ProfessorService professorService = new ProfessorService();
-			if (request.getAttribute("pro_deptId") != null) {
-				professorListForm.setDeptId(Integer.parseInt((String) request.getAttribute("pro_deptId")));
-			}
-			professorListForm.setPage((Integer.parseInt((String) request.getAttribute("page")) - 1) * 20);
-			Integer amount = professorService.readProfessorAmount(professorListForm);
-			List<Professor> list = professorService.readProfessorList(professorListForm);
-
-			request.setAttribute("listCount", Math.ceil(amount / 20.0));
-			request.setAttribute("professorList", list);
-			request.setAttribute("page", professorListForm.getPage());
-
-			response.sendRedirect(request.getContextPath() + "/staff/professorList");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	/*
 	 * 비밀번호 찾기 페이지 처리
 	 */

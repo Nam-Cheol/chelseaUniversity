@@ -99,7 +99,6 @@ public class AdminController extends HttpServlet {
 		case "/schedule":
 			showSchedulePage(request, response, session);
 			break;
-
 		case "/scheduleAdd":
 			showScheduleForm(request, response, session);
 			break;

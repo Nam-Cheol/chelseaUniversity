@@ -36,16 +36,10 @@ public class SyllabusController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
-		System.out.println("session : " + session);
-		if (session == null || session.getAttribute("principal") == null) {
-			response.sendRedirect(request.getContextPath() + "/user/signin");
-			return;
-		}
 		switch (action) {
 		case "/info":
 			showInfo(request, response, session);
 			break;
-
 		default:
 			break;
 		}
@@ -71,11 +65,9 @@ public class SyllabusController extends HttpServlet {
 		case "/update":
 			showUpdatePage(request, response, session);
 			break;
-
 		case "/submit":
 			submitUpdate(request, response, session);
 			break;
-
 		default:
 			break;
 		}

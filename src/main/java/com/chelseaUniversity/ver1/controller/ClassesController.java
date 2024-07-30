@@ -28,10 +28,6 @@ public class ClassesController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession(false);
-//		if (session == null || session.getAttribute("principal") == null) {
-//			response.sendRedirect(request.getContextPath() + "/user/signin");
-//			return;
-//		}
 		switch (action) {
 		case "/list":
 			showLists(request, response, session);

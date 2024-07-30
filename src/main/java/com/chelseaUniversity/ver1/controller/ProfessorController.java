@@ -149,7 +149,6 @@ public class ProfessorController extends HttpServlet {
 			e.printStackTrace();
 
 		}
-
 		switch (action) {
 		case "/manageStudent":
 			updateSubjectDetail(request, response);

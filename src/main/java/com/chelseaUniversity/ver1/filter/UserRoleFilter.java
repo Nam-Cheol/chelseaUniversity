@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.chelseaUniversity.ver1.model.Notice;
 import com.chelseaUniversity.ver1.model.Schedule;
-import com.chelseaUniversity.ver1.model.Staff;
 import com.chelseaUniversity.ver1.repository.NoticeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.ScheuleRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.NoticeRepository;
@@ -39,7 +38,6 @@ public class UserRoleFilter extends HttpFilter implements Filter {
         // HttpSession을 얻기 위해 getSession() 호출
         HttpSession session = httpRequest.getSession();
         String action = httpRequest.getRequestURI();
-        System.out.println(action);
         if(action != null) {
         	if(action.equals(httpRequest.getContextPath()+"/user/signin") || action.equals(httpRequest.getContextPath()+"/user/signup")) {
             	chain.doFilter(httpRequest, httpResponse);
