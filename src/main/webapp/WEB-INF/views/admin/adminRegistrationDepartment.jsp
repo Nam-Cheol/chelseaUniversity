@@ -30,10 +30,17 @@
 			</table>
 		</div>
 	</div>
+	
+	
 
 	<main style="width: 100%; padding: 20px;">
+	
 		<h1>학과 등록</h1>
 		<div class="split--div"></div>
+		
+		
+		<a href="${pageContext.request.contextPath}/admin/departmentAdd">dddd</a>
+		
 		<div class="sub--filter">
 			<form action="${pageContext.request.contextPath}/admin/department/create-department" method="post">
 				<div>

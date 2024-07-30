@@ -46,10 +46,9 @@
         <label for="type">단과이름  <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학"></label>
         <button type="submit">수정</button>
         </form>  
-                </div>
+        </div>
      
         <p>단과 대학 리스트</p>
-        
         <br>
         
         <table class="table table-striped sub--list--table">
