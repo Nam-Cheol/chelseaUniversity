@@ -6,11 +6,15 @@
     <div class="form-container">
         <h3>학과 생성</h3>
         <form action="${pageContext.request.contextPath}/admin/departmentAdd" method="post">
-            <label for="department-name">학과이름:</label>
-            <input type="text" id="department-name" name="department-name" placeholder="ㅇㅇ학과" required>
+            <label for="dept-name">학과이름:</label>
+            <input type="text" id="dept-name" name="dept-name" placeholder="학과 이름을 입력하세요" required>
             
             <label for="college-id">단과id:</label>
-            <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3..." required>
+            <select id="college-id" name="college-id" required>
+                <c:forEach var="college" items="${collegeList}">
+                    <option value="${college.id}">${college.id} - ${college.name}</option>
+                </c:forEach>
+            </select>
             
             <button type="submit" class="btn-edit">생성</button>
         </form>
@@ -19,14 +23,22 @@
     <div class="form-container">
         <h3>학과 수정</h3>
         <form action="${pageContext.request.contextPath}/admin/departmentEdit" method="post">
-            <label for="department-id">수정할 id:</label>
-            <input type="text" id="department-id" name="department-id" placeholder="1, 2, 3..." required>
+            <label for="dept-id">수정할 id:</label>
+            <select id="dept-id" name="dept-id" required="required">
+            	<c:forEach var="dept" items="${departmentList}">
+            		<option value="${dept.id}">${dept.id} - ${dept.name}</option>
+            	</c:forEach>
+            </select>
             
-            <label for="department-name">학과이름:</label>
-            <input type="text" id="department-name" name="department-name" placeholder="ㅇㅇ학과" required>
+            <label for="dept-name">학과이름:</label>
+            <input type="text" id="dept-name" name="dept-name" placeholder="학과 이름을 입력하세요" required>
             
             <label for="college-id">단과id:</label>
-            <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3..." required>
+            <select id="college-id" name="college-id" required>
+                <c:forEach var="college" items="${collegeList}">
+                    <option value="${college.id}">${college.id} - ${college.name}</option>
+                </c:forEach>
+            </select>
             
             <button type="submit" class="btn-edit">수정</button>
         </form>

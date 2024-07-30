@@ -17,7 +17,11 @@
         <h3>단과대학 수정</h3>
         <form action="${pageContext.request.contextPath}/admin/collegeEdit" method="post">
             <label for="college-id">수정할 id:</label>
-            <input type="text" id="college-id" name="college-id" placeholder="1, 2, 3..." required="required">
+            <select id="college-id" name="college-id" required="required">
+            	<c:forEach var="college" items="${collegeList}">
+            		<option value="${college.id}">${college.id} - ${college.name}</option>
+            	</c:forEach>
+            </select>
             
             <label for="college-name">단과이름:</label>
             <input type="text" id="college-name" name="college-name" placeholder="ㅇㅇ대학" required="required">

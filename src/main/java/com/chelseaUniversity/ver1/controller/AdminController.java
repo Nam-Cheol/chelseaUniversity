@@ -8,19 +8,23 @@ import java.util.List;
 
 import com.chelseaUniversity.ver1.model.College;
 import com.chelseaUniversity.ver1.model.Department;
+import com.chelseaUniversity.ver1.model.Professor;
 import com.chelseaUniversity.ver1.model.Room;
 import com.chelseaUniversity.ver1.model.Schedule;
 import com.chelseaUniversity.ver1.model.Subject;
 import com.chelseaUniversity.ver1.model.Tuition;
+import com.chelseaUniversity.ver1.model.User;
 import com.chelseaUniversity.ver1.model.dto.ScheduleFormDto;
 import com.chelseaUniversity.ver1.repository.CollegeRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.DepartmentRepositoryImpl;
+import com.chelseaUniversity.ver1.repository.ProfessorRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.RoomRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.ScheuleRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.SubjectRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.TuitionRepositoryImpl;
 import com.chelseaUniversity.ver1.repository.interfaces.CollegeRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.DepartmentRepository;
+import com.chelseaUniversity.ver1.repository.interfaces.ProfessorRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.RoomRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.ScheuleRepository;
 import com.chelseaUniversity.ver1.repository.interfaces.SubjectRepository;
@@ -44,6 +48,7 @@ public class AdminController extends HttpServlet {
 	DepartmentRepository departmentRepository;
 	SubjectRepository subRepository;
 	ScheuleRepository scheuleRepository;
+	ProfessorRepository professorRepository;
 
 	public AdminController() {
 	}
@@ -57,6 +62,7 @@ public class AdminController extends HttpServlet {
 		departmentRepository = new DepartmentRepositoryImpl();
 		subjectRepository = new SubjectRepositoryImpl();
 		scheuleRepository = new ScheuleRepositoryImpl();
+		professorRepository = new ProfessorRepositoryImpl();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -112,11 +118,19 @@ public class AdminController extends HttpServlet {
 	private void showScheduleForm(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
+		List<Schedule> scheduleList = scheuleRepository.selectAll();
+		session.setAttribute("scheduleList", scheduleList);
+
 		request.getRequestDispatcher("/WEB-INF/views/admin/scheduleForm.jsp").forward(request, response);
 	}
 
 	private void showTuitionForm(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
+
+		List<College> collegeList = collegeRepository.selectCollegeDto();
+		List<Tuition> tuitionList = tuitionRepository.selectAmount();
+		session.setAttribute("collegeList", collegeList);
+		session.setAttribute("tuitionList", tuitionList);
 
 		request.getRequestDispatcher("/WEB-INF/views/admin/tuitionForm.jsp").forward(request, response);
 	}
@@ -124,11 +138,22 @@ public class AdminController extends HttpServlet {
 	private void showSubjectForm(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
+		List<Professor> professorList = professorRepository.selectProfessorList();
+		List<Room> roomList = roomRepository.selectRoom();
+		List<Department> departmentList = departmentRepository.selectAll();
+		session.setAttribute("professorList", professorList);
+		session.setAttribute("roomList", roomList);
+		session.setAttribute("departmentList", departmentList);
+
 		request.getRequestDispatcher("/WEB-INF/views/admin/subjectForm.jsp").forward(request, response);
 	}
 
 	private void showRoomForm(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
+		List<Room> roomList = roomRepository.selectRoom();
+		List<College> collegeList = collegeRepository.selectCollegeDto();
+		session.setAttribute("roomList", roomList);
+		session.setAttribute("collegeList", collegeList);
 
 		request.getRequestDispatcher("/WEB-INF/views/admin/roomForm.jsp").forward(request, response);
 	}
@@ -136,11 +161,19 @@ public class AdminController extends HttpServlet {
 	private void showDepartmentForm(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
 
+		List<Department> departmentList = departmentRepository.selectAll();
+		List<College> collegeList = collegeRepository.selectCollegeDto();
+		session.setAttribute("departmentList", departmentList);
+		session.setAttribute("collegeList", collegeList);
+
 		request.getRequestDispatcher("/WEB-INF/views/admin/departmentForm.jsp").forward(request, response);
 	}
 
 	private void showCollegeForm(HttpServletRequest request, HttpServletResponse response, HttpSession session)
 			throws ServletException, IOException {
+
+		List<College> collegeList = collegeRepository.selectCollegeDto();
+		session.setAttribute("collegeList", collegeList);
 
 		request.getRequestDispatcher("/WEB-INF/views/admin/collegeForm.jsp").forward(request, response);
 	}
@@ -280,8 +313,8 @@ public class AdminController extends HttpServlet {
 
 	private void editDepartment(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		int departmentId = Integer.parseInt(request.getParameter("department-id"));
-		String departmentaName = request.getParameter("department-name");
+		int departmentId = Integer.parseInt(request.getParameter("dept-id"));
+		String departmentaName = request.getParameter("dept-name");
 		int collegeId = Integer.parseInt(request.getParameter("college-id"));
 		departmentRepository.updateDepartment(departmentId, departmentaName, collegeId);
 		request.getRequestDispatcher("/WEB-INF/views/admin/departmentForm.jsp").forward(request, response);
@@ -309,7 +342,7 @@ public class AdminController extends HttpServlet {
 
 	private void createDepartment(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		String departmentName = request.getParameter("department-name");
+		String departmentName = request.getParameter("dept-name");
 		int collegeId = Integer.parseInt(request.getParameter("college-id"));
 		departmentRepository.insert(departmentName, collegeId);
 
