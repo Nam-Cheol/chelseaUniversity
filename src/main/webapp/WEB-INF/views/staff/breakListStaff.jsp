@@ -40,7 +40,7 @@
         </div>
 
      <main style="width: 100%; padding: 20px;">
-            <h1>휴학 처리</h1>
+            <h1 class="sub--title">휴학 처리</h1>
             <div class="split--div"></div>
           <table class="table table-striped sub--list--table">
                 <thead>

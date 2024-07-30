@@ -56,7 +56,7 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>전체 강의 조회</h1>
+		<h1 class="sub--title">전체 강의 조회</h1>
 		<div class="split--div"></div>
 		<!-- 여기에 내용 넣기 -->
 

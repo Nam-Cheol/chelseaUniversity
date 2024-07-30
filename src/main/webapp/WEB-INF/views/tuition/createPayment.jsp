@@ -6,12 +6,6 @@
 
 <style>
 /* Custom styles for better presentation */
-h1 {
-    color: #001489;
-    border-bottom: 1px solid #ddd;
-    padding: 20px 0;
-}
-
 main {
     padding: 20px;
     flex: 1;
@@ -73,8 +67,8 @@ button:hover {
     <!-- Main Content -->
     <main>
     
-        <h1>등록금 고지서 발송</h1>
-		<br>
+        <h1 class="sub--title">등록금 고지서 발송</h1>
+		<div class="split--div"></div>
         <!-- Form for Sending Tuition Bills -->
         <form action="${pageContext.request.contextPath}/tuition/create" method="post">
             <button type="submit">등록금 고지서 발송</button>

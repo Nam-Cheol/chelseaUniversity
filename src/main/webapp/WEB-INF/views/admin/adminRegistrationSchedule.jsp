@@ -36,7 +36,7 @@
     </div>
     
     <main class="main-content">
-        <h1>학사일정</h1>
+        <h1 class="sub--title">학사일정</h1>
         <div class="split--div"></div>
         <a href="${pageContext.request.contextPath}/admin/scheduleAdd" class="btn-edit" onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">학사일정 등록</a>
         <br>

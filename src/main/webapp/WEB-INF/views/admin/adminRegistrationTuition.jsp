@@ -35,7 +35,7 @@
     </div>
     <main class="main-content">
         <div class="form-container">
-            <h1>단대별 등록금 목록</h1>
+            <h1 class="sub--title">단대별 등록금 목록</h1>
         	<div class="split--div"></div>
         	<a href="${pageContext.request.contextPath}/admin/tuitionAdd" class="btn-edit" onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">등록금 추가</a>
         	<br>

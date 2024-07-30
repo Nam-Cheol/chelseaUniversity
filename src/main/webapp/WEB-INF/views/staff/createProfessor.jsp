@@ -6,11 +6,6 @@
 
 <!-- Custom CSS for this page -->
 <style>
-h1 {
-	color: #001489;
-	border-bottom: 1px solid #ddd;
-	padding: 20px 0;
-}
 
 .table-container {
 	padding: 10px;
@@ -78,8 +73,8 @@ h1 {
         </div>
 
     <main style="width: 100%; padding: 20px;">
-            <h1>교수 등록</h1>
-            <br>
+            <h1 class="sub--title">교수 등록</h1>
+            <div class="split--div"></div>
             <form action="${pageContext.request.contextPath}/user/professor" method="post">
                 <table class="table-container">
                     <tr>

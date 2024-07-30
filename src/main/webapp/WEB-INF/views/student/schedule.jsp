@@ -54,7 +54,7 @@
 	</div>
 
 	<main>
-		<h1>학사일정</h1>
+		<h1 class="sub--title">학사일정</h1>
 			<div class="split--div"></div>
 		<div class="container">
 					<c:forEach var="schedule" items="${scheduleList}">

@@ -4,6 +4,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/adminForm.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
+<style>
+h1 {
+	color: #001489;
+}
+</style>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="d-flex justify-content-center align-items-start" style="display: flex; min-width: 100em;">
@@ -38,7 +43,8 @@
 	
 
 	<main style="width: 100%; padding: 20px;">
-        <div class="split--div"></div>
+		<h1 class="sub--title">학과 리스트</h1>
+		<div class="split--div"></div>
 		<a href="${pageContext.request.contextPath}/admin/departmentAdd" class="btn-edit" onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">학과 등록</a>
 		<br>
 		<div>

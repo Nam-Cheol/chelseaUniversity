@@ -5,11 +5,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pagination.css">
 <style>
-h1 {
-	color: #001489;
-	border-bottom: 1px solid #ddd;
-	padding: 20px 0;
-}
 
 .table-container {
 	padding: 10px;
@@ -73,7 +68,8 @@ h1 {
     </div>
 
        <main style="width: 100%; padding: 20px;">
-        <h1>학생 명단 조회</h1>
+        <h1 class="sub--title">학생 명단 조회</h1>
+        <div class="split--div"></div>
         <br>
        		 <div class="sub--filter">	
             <form action="${pageContext.request.contextPath}/user/studentList" method="get">

@@ -35,7 +35,7 @@
     </div>
 
     <main style="width: 100%; padding: 20px;">
-        <h1>단과 대학 리스트</h1>
+        <h1 class="sub--title">단과 대학 리스트</h1>
         <div class="split--div"></div>
 		<a href="${pageContext.request.contextPath}/admin/collegeAdd" class="btn-edit" onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">단과대학 등록</a>
         <br>

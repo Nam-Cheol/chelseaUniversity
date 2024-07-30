@@ -56,7 +56,7 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>공지사항</h1>
+		<h1 class="sub--title">공지사항</h1>
 		<div class="split--div"></div>
 		<form action="${pageContext.request.contextPath}/notice/search?page=0" method="post">
 		<div class="search">

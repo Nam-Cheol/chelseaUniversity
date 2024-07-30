@@ -52,7 +52,7 @@
         </div>
 
          <main style="width: 100%; padding: 20px;">
-            <h1>수강 신청 기간 설정</h1>
+            <h1 class="sub--title">수강 신청 기간 설정</h1>
             <div class="split--div"></div>
             <c:if test="${SUGANG_PERIOD == 0}">
                 <p>현재 예비 수강 신청 기간입니다.</p>

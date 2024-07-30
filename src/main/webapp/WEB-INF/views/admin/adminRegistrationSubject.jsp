@@ -34,7 +34,7 @@
         </div>
     </div>
     <main class="main-content">
-        <h1>강의 목록</h1>
+        <h1 class="sub--title">강의 목록</h1>
         <div class="split--div"></div>
         <a href="${pageContext.request.contextPath}/admin/subjectAdd" class="btn-edit" onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">강의 등록</a>
         <br>

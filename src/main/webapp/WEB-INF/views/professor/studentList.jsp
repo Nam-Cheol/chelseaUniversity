@@ -36,7 +36,7 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1><c:out value="[${subject.name}] 학생 리스트 조회"></c:out></h1>
+		<h1 class="sub--title"><c:out value="[${subject.name}] 학생 리스트 조회"></c:out></h1>
 		<div class="split--div"></div>
 		<!-- 여기에 내용 넣기 -->
 

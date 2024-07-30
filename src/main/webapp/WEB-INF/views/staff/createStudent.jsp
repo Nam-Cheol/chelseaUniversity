@@ -6,11 +6,6 @@
 
 <!-- Custom CSS for this page -->
 <style>
-h1 {
-	color: #001489;
-	border-bottom: 1px solid #ddd;
-	padding: 20px 0;
-}
 
 .table-container {
 	padding: 10px;
@@ -79,8 +74,8 @@ h1 {
 
         <!-- Main Content -->
         <main style="width: 100%; padding: 20px;">
-            <h1>학생 등록</h1>
-            <br>
+            <h1 class="sub--title">학생 등록</h1>
+            <div class="split--div"></div>
             <form action="${pageContext.request.contextPath}/user/student" method="post">
                 <table class="table-container">
                     <tr>
