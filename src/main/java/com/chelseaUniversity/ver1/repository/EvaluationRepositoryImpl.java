@@ -14,7 +14,7 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
 
 	private static final String INSERT = " insert into evaluation_tb values(null, ?,?,?,?,?,?,?,?,?,?) ";
 	private static final String SELECT_BY_ID = " SELECT e.*, s.name FROM evaluation_tb AS e JOIN subject_tb AS s ON e.subject_id = s.id WHERE s.professor_id = ? ";
-
+	private static final String SELECT_BY_STUDENT = " SELECT * FROM evaluation_tb WHERE student_id = ? ";
 	@Override
 	public int insert(Evaluation evaluation) {
 		int rowCount = 0;
@@ -51,6 +51,23 @@ public class EvaluationRepositoryImpl implements EvaluationRepository {
 						.answer6(rs.getInt("answer6")).answer7(rs.getInt("answer7"))
 						.suggestions(rs.getString("improvements")).subjectName(rs.getString("name"))
 						.build());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return evaluationList;
+	}
+
+	@Override
+	public List<Evaluation> selectEvaluationByStudentId(int studentId) {
+		List<Evaluation>evaluationList = new ArrayList<>();
+		try (Connection conn = DBUtil.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_STUDENT)){
+			pstmt.setInt(1, studentId);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Evaluation evaluation = Evaluation.builder().studentId(rs.getInt("student_id")).subjectId(rs.getInt("subject_id")).build();
+				evaluationList.add(evaluation);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

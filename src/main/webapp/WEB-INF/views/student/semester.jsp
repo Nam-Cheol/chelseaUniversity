@@ -74,9 +74,22 @@
 						<td>${grade.type}</td>
 						<td>${grade.grade}</td>
 						<td>${grade.gradeValue}</td>
-						<td><a
-							href="/chelseaUniversity/grade/evaluation?subjectId=${grade.subjectId}"
-							onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">Click</a>
+						<td>
+						<c:set var="subjectExists" value="false" />
+                	<c:forEach var="evaluation" items="${evaluation}">
+                    <c:if test="${evaluation.subjectId == grade.subjectId}">
+                        <c:set var="subjectExists" value="true" />
+                    </c:if>
+                	</c:forEach>
+                	<c:choose>
+                    <c:when test="${!subjectExists}">
+                        <a href="/chelseaUniversity/grade/evaluation?subjectId=${grade.subjectId}"
+                            onclick="window.open(this.href, '_blank', 'width=720, height=1000'); return false;">Click</a>
+                    </c:when>
+                    <c:otherwise>
+                    	평가완료
+                    </c:otherwise>
+                    </c:choose>
 						</td>
 					</tr>
 			</c:forEach>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<c:if test="${param.send == true}"><script>window.close();</script></c:if>
 	<main>
 		<div class="title--row">
 			<h1>강의 평가</h1>
@@ -110,8 +111,14 @@
 				<li><textarea cols="80" rows="5" name="improvements"> </textarea></li>
 			</ul>
 			<div class="button--row">
-				<button type="submit" class="btn btn-dark update--button">제출하기</button>
+				<button class="btn btn-dark update--button" onclick="submit()">제출하기</button>
 			</div>
+			<script>
+			function submit() {
+				let form = document.forms[0];
+				form.submit();
+			}
+			</script>
 		</form>
 	</main>
 

@@ -122,6 +122,8 @@ public class GradeController extends HttpServlet {
 		int semester = 1;
 		int year = 2023;
 		List<GradeDto> grade = gradeRespository.selectGradeDtoBySemester(id, semester, year);
+		List<Evaluation>evaluationList = evaluationRepository.selectEvaluationByStudentId(id);
+		request.setAttribute("evaluation", evaluationList);
 		request.setAttribute("gradeList", grade);
 		request.getRequestDispatcher("/WEB-INF/views/student/semester.jsp").forward(request, response);
 	}
@@ -141,6 +143,8 @@ public class GradeController extends HttpServlet {
 		int id = student.getId();
 		List<GradeDto> gradeList = gradeRespository.selectGradeDtoByStudentIdAndSubYear(id, 2023, 1);
 		MyGradeDto grade = gradeRespository.selectMyGradeDtoBySemester(id, 2023, 1);
+		List<Evaluation>evaluationList = evaluationRepository.selectEvaluationByStudentId(id);
+		request.setAttribute("evaluation", evaluationList);
 		request.setAttribute("gradeList", gradeList);
 		request.setAttribute("myGrade", grade);
 		request.getRequestDispatcher("/WEB-INF/views/student/thisSemester.jsp").forward(request, response);
@@ -176,7 +180,7 @@ public class GradeController extends HttpServlet {
 
 		evaluationRepository.insert(evaluation);
 
-		request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/student/evaluation.jsp?send=true").forward(request, response);
 	}
 
 	/**

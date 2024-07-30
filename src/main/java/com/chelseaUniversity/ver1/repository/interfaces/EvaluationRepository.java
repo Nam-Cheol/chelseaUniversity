@@ -10,4 +10,5 @@ public interface EvaluationRepository {
 
 	public List<Evaluation> selectEvaluationByProfessorId(Integer professorId);
 
+	public List<Evaluation> selectEvaluationByStudentId(int studentId);
 }
