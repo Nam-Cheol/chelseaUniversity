@@ -106,7 +106,7 @@ public class SugangController extends HttpServlet {
 			break;
 
 		case "/preAppList":
-			if (season) {
+			if (preSeason) {
 				totalGrade = registrationRepository.preTotalGrades(principalStu.getId());
 				historyList = registrationRepository.resistrationHistory(principalStu.getId());
 

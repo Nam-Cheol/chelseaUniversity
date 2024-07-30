@@ -51,3 +51,10 @@
     border: none;
     border-radius: 4px
 }
+
+.sub--list--table th,
+.sub--list--table td {
+    padding: 12px 15px;
+    border-left: none; /* 세로줄 제거 */
+    border-right: none; /* 세로줄 제거 */
+}
