@@ -57,7 +57,7 @@
 
     <!-- 메인 div -->
     <main>
-        <h1>비밀번호 변경</h1>
+        <h1 class="sub--title">비밀번호 변경</h1>
         <div class="split--div"></div>
         <div class="changeBox">
             <form action="${pageContext.request.contextPath}/user/changepassword" method="post">
@@ -76,11 +76,11 @@
                     </tr>
                 </table>
                 <div class="button-group">
-                    <input type="submit" value="변경하기" disabled class="change demon--slayer">
-                    <input type="button" value="확인하기" onclick='check()' class="checkPass demon--slayer">
+                    <input type="submit" value="변경하기" disabled class="change demon--slayer" style="background-color:gray">
+                    <input type="button" value="확인하기" onclick="checkPassword()" class="checkPass demon--slayer">
                 </div>
                 <script>
-                    function check() {
+                    function checkPassword() {
                         let original = document.getElementById("original");
                         let first = document.getElementById("first");
                         let second = document.getElementById("second");
@@ -89,7 +89,8 @@
                         } else if (first.value === second.value) {
                             let pass = document.getElementsByClassName("change");
                             pass[0].disabled = false;
-                            console.log(second.value);
+                            pass[0].style.backgroundColor = "blue";
+                            console.log("하이");
                         } else {
                             alert("비밀번호가 맞지 않습니다.");
                         }

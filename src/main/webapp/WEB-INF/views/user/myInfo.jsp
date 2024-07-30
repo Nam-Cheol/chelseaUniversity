@@ -53,7 +53,7 @@
 
 	<!-- 메인 div -->
 	<main>
-		<h1>내 정보 조회</h1>
+		<h1 class="sub--title">내 정보 조회</h1>
 		<div class="split--div"></div>
 			<table border="1" class="input--table">
 			<colgroup>
