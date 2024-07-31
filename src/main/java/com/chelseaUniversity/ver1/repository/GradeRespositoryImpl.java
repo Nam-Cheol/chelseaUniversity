@@ -52,7 +52,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 			+ "join student_tb as s\r\n"
 			+ "on s.id = stu.student_id\r\n"
 			+ "where sub.sub_year = ? and sub.semester = ? and s.id = ? ";
-	public final String FIND_ALL_GRADE_BY_ID = " select sum(stu.complete_grade) as my , sum(sub.grades) as sum , sub.sub_year as year , sub.semester as semester ,avg(stu.complete_grade) as avg\r\n"
+	public final String FIND_ALL_GRADE_BY_ID = " select sum(sub.grades) as my , sum(sub.grades) as sum , sub.sub_year as year , sub.semester as semester ,avg(stu.complete_grade) as avg\r\n"
 			+ ",SUM(gr.grade_value)/COUNT(sub.name) AS average\r\n"
 			+ "from student_tb as s\r\n"
 			+ "join stu_sub_tb as stu\r\n"
