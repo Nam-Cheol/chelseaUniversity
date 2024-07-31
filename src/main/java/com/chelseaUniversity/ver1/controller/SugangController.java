@@ -634,7 +634,8 @@ public class SugangController extends HttpServlet {
 			if (!checkList.contains(subId)) {
 				registrationRepository.insertPreSubjectRegistration(principal.getId(), subId);
 				registrationRepository.addNumOfStudent(subId);
-				showSubjectList(request, response, "/pre");
+				response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
+//				showSubjectList(request, response, "/pre");
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -728,7 +729,7 @@ public class SugangController extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
-
+		response.sendRedirect(request.getContextPath() + "/sugang/appList?page=1");
 	}
 
 	private void deletePreSubject(HttpServletRequest request, HttpServletResponse response, StudentInfoDto principal)
@@ -741,7 +742,7 @@ public class SugangController extends HttpServlet {
 			if (checkList.contains(subId)) {
 				registrationRepository.deletePreSubjectRegistration(principal.getId(), subId);
 				registrationRepository.deleteNumOfStudent(subId);
-				showSubjectList(request, response, "/pre");
+				response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
