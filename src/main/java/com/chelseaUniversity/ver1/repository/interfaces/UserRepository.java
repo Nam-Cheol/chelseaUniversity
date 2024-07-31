@@ -20,9 +20,6 @@ public interface UserRepository {
 	// 패스워드 변경
 	public int updatePassword(ChangePasswordDto changePasswordDto);
 	
-	// id 이용해서 user_tb에 insert
-	public int insertToUser(User user);
-
 	// 아이디찾기
 	public int findId(String name,String email);
 	

@@ -22,24 +22,6 @@ public class RoomRepositoryImpl implements RoomRepository {
 	public final String COUNT_ALL_ROOM = " SELECT count(*) AS count FROM room_tb ";
 
 	@Override
-	public int insert(RoomFormDto roomFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<Room> selectByRoomDto() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int deleteById(String id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<Room> selectRoom() {
 		List<Room> roomList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();

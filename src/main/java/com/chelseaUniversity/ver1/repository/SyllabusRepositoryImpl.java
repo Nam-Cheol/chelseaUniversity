@@ -36,14 +36,6 @@ public class SyllabusRepositoryImpl implements SyllaBusRepository {
 		return rowCount;
 	}
 
-	@Override
-	public void deleteById(int id) {
-		try {
-
-		} catch (Exception e) {
-
-		}
-	}
 
 	@Override
 	public SyllabusDto getInfoById(int subjectId) {

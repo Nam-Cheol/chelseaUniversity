@@ -78,15 +78,6 @@ public class TuitionService {
 	}
 
 	/**
-	 * @return 
-	 * 해당 학생의 현재 학기 등록금 고지서 확인 이미 고지서가 있다면 추가로 고지서를 생성하지 않기 위해 확인
-	 */
-	public Tuition readByStudentIdAndSemester(Integer studentId, Integer tuiYear, Integer semester) {
-		Tuition tuitionEntity = tuitionRepository.selectByStudentIdAndSemester(studentId, tuiYear, semester);
-		return tuitionEntity;
-	}
-
-	/**
 	 * 교직원 -> 등록금 고지서 생성
 	 * @param studentId (principal의 id와 동일)
 	 */
@@ -116,11 +107,6 @@ public class TuitionService {
 					}
 				}
 			}
-		}
-
-		// 이미 해당 학기의 등록금 고지서가 존재한다면 생성하지 않음
-		if (readByStudentIdAndSemester(studentId, Define.CURRENT_YEAR, Define.CURRENT_SEMESTER) != null) {
-			return 0;
 		}
 
 		// 등록금액

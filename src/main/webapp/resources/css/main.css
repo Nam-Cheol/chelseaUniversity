@@ -163,3 +163,25 @@ main h1:first-of-type {
 	background-color: #e9ecef; /* Active link background color */
 	border-color: #007bff; /* Active link border color */
 }
+
+.btn-edit {
+	background-color: #33688F;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 16px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 10px;
+}
+
+.btn-edit:hover {
+	background-color: #2a4b6f;
+}
+
+.div-form1{	
+	display: flex;
+}

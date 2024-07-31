@@ -23,12 +23,6 @@ public interface StuStatRepository {
 	// 학생 ID 값으로 STATUS 가져오기
 	public StuStat selectStatusByStudentId(int id);
 	
-	/**
-	 * 학생 내정보 조회에 학적변동리스트
-	 * @author 김지현
-	 */
-	public List<StudentInfoStatListDto> selectStuStatListBystudentId(Integer studentId);
-	
 	// 기존 재학상태 -> 휴학
 	public int updateStatusToBreak(String status, Integer id);
 }

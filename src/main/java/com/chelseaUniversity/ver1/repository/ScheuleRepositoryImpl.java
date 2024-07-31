@@ -25,10 +25,6 @@ public class ScheuleRepositoryImpl implements ScheuleRepository{
 	private static final String UPDATE_SCHEDULE = " UPDATE schedule_tb SET staff_id = ?, start_day = ?, end_day = ?, information = ? WHERE id = ? ";
 	
 	
-	@Override
-	public int insertSchoeduleFormDto(Schedule schedule) {
-		return 0;
-	}
 
 	@Override
 	public int updateSchoeduleFormDtoBycontent(ScheduleFormDto scheduleFormDto) {
@@ -61,11 +57,6 @@ public class ScheuleRepositoryImpl implements ScheuleRepository{
 	}
 
 	@Override
-	public int deleteSchoeduleFormDtoByStaffIdAndId(Integer id) {
-		return 0;
-	}
-
-	@Override
 	public List<Schedule> selectSchodule(int limit, int offset) {
 		List<Schedule>scheduleList = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection();
@@ -85,28 +76,6 @@ public class ScheuleRepositoryImpl implements ScheuleRepository{
 		return scheduleList;
 	}
 
-	@Override
-	public List<ScheduleDto> selectSchoduleMouth() {
-		return null;
-	}
-
-	@Override
-	public ScheduleDto selectScheduleById(Integer id) {
-		return null;
-	}
-
-	@Override
-	public List<Schedule> selectListByMonth(Integer month) {
-		return null;
-	}
-	
-	
-
-	@Override
-	public int updateSchedule(int id, int staffId, String startDate, String endDate, String information) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public int insert(int staffId, Date startDate, Date endDate, String information) {

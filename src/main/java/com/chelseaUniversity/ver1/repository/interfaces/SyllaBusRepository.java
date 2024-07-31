@@ -6,8 +6,6 @@ public interface SyllaBusRepository {
 
 	int updateById(int subjectId, SyllabusDto syllabusDto);
 
-	void deleteById(int subjectId);
-
 	SyllabusDto getInfoById(int subjectId);
 
 }

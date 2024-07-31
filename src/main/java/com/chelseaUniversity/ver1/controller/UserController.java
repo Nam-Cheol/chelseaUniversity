@@ -332,7 +332,6 @@ public class UserController extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
-		System.out.println("액션 : " + action);
 		switch (action) {
 		case "/signin":
 			signInHandler(request, response, session);

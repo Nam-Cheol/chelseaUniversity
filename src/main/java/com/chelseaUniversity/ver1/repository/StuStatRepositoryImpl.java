@@ -124,11 +124,6 @@ public class StuStatRepositoryImpl implements StuStatRepository {
 		return rsCount;
 	}
 
-	@Override
-	public List<StudentInfoStatListDto> selectStuStatListBystudentId(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public StuStat selectStatusByStudentId(int id) {

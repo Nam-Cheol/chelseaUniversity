@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ include file="/WEB-INF/views/home/studentHeader.jsp"%>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+
 
 
 		<!-- 세부 메뉴 + 메인 -->
@@ -38,10 +41,11 @@
 			</tbody></table>
 				</div>
 			</div>
+<main class="main-content">
+<h1 class="sub--title">휴학 처리</h1>
+<div class="split--div"></div>
 
-<h1>휴학 처리</h1>
-
-<table>
+<table class="table table-striped sub--list--table">
 	<tr>
 		<th>단과대</th>
 		<td>${college.name}</td>
@@ -76,15 +80,16 @@
 		<p>위와 같이 휴학하고자 하오니 허가하여 주시기 바랍니다.</p>
 	</tr>
 </table>
-
+<div class="div-form1">
 <form action="${pageContext.request.contextPath}/break/update?id=${breakApp.id}" method="post">
 	<input type="hidden" name="status" value="승인">
-	<button type=submit>승인하기</button>
+	<button type=submit class="btn-edit">승인하기</button>
 </form>
-
 <form action="${pageContext.request.contextPath}/break/update?id=${breakApp.id}" method="post">
 	<input type="hidden" name="status" value="반려">
-	<button type=submit>반려하기</button>
+	<button type=submit class="btn-edit">반려하기</button>
 </form>
-
+</div>
+  </main>
+  </div>
 <%@ include file="/WEB-INF/views/home/footer.jsp"%>

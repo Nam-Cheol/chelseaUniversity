@@ -32,10 +32,8 @@ public class UserRoleFilter extends HttpFilter implements Filter {
 	}
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// ServletRequest를 HttpServletRequest로 캐스팅
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        // HttpSession을 얻기 위해 getSession() 호출
         HttpSession session = httpRequest.getSession();
         String action = httpRequest.getRequestURI();
         if(action != null) {
@@ -44,7 +42,6 @@ public class UserRoleFilter extends HttpFilter implements Filter {
             	return;
             }
         	if (action.startsWith(httpRequest.getContextPath() + "/resources/") || action.startsWith(httpRequest.getContextPath() + "/user/find")) {
-        		// 필터링을 생략하고 다음 필터 또는 서블릿으로 요청을 전달
         		chain.doFilter(request, response);
         		return;
         	}

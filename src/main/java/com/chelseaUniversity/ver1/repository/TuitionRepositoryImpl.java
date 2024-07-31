@@ -63,11 +63,6 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 	return tuitionList;
 	}
 
-	@Override
-	public List<Tuition> selectByStudentIdAndStatus(Integer studentId, Boolean status) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	// 학생 등록금액 확인
 	@Override
@@ -112,12 +107,6 @@ public class TuitionRepositoryImpl implements TuitionRepository {
 		return rsCount;
 	}
 
-	@Override
-	public Tuition selectByStudentIdAndSemester(Integer studentId, Integer tuiYear, Integer semester) {
-		Tuition tuition = null;
-		
-		return tuition;
-	}
 	
 	public Tuition selectByStudentIdToStudent(Integer studentId) {
 		Tuition tuition = null;

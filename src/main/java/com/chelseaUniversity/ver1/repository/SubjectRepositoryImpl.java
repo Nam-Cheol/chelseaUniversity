@@ -42,47 +42,6 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 	
 	public final String SELECT_ALL_SUBJECT = " SELECT * FROM subject_tb ORDER BY id ASC LIMIT ? OFFSET ? ";
 	public final String COUNT_ALL_SUBJECT = " SELECT count(*) AS count FROM subject_tb ";
-	@Override
-	public Integer insert(SubjectFormDto subjectFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateBySubjectDto(SubjectFormDto subjectFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<Subject> selectByRoomIdAndSubDayAndSubYearAndSemester(SubjectFormDto subjectFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer selectIdOrderById(SubjectFormDto subjectFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SubjectDto> selectDtoBySemester(Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SubjectDto> selectDtoBySemesterLimit(Integer subYear, Integer semester, Integer page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<SubjectFormDto> selectDtoAll(int limit, int offset) {
@@ -216,41 +175,9 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
 		return subjectList;
 	}
 	
-	@Override
-	public List<SubjectDto> selectDtoAllLimit(Integer page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SubjectPeriodForProfessorDto> selectSemester(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SubjectForProfessorDto> selectSubjectBySemester(
-			SubjectPeriodForProfessorDto subjectPeriodForProfessorDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SubjectDto> selectDtoBySemesterAndDeptAndName(AllSubjectSearchFormDto allSubjectSearchFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SubjectDto> selectDtoBySemesterAndAndTypeAndDeptAndName(
-			CurrentSemesterSubjectSearchFormDto currentSemesterSubjectSearchFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Subject selectSubjectById(Integer id) {
@@ -358,11 +285,6 @@ public class SubjectRepositoryImpl implements SubjectRepository {
 		return rsCount;
 	}
 
-	@Override
-	public ReadSyllabusDto selectSyllabusBySubjectId(Integer subjectId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<Integer> selectIdByLessNumOfStudent() {
