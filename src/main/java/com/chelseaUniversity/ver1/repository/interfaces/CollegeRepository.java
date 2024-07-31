@@ -12,8 +12,6 @@ import com.chelseaUniversity.ver1.model.College;
 public interface CollegeRepository {
 	public int insert(String CollegeFormDto);
 	public List<College> selectCollegeDto();
-	public int selectCollegeDtoByName(String name);
 	public College selectCollegeDtoById(Integer id);
-	public int deleteById(Integer id);
 	public int updateByNameAndId(String name, int id);
 }

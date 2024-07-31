@@ -16,17 +16,8 @@ public interface ProfessorRepository {
 	// staff_tb에 insert
 	public int insertToProfessor(CreateProfessorDto createProfessorDto);
 
-	// 유저정보 업데이트
-	public int updateProfessor(UserUpdateDto userUpdateDto);
-
 	// id로 조회
 	public ProfessorInfoDto selectProfessorById(Integer id);
-
-	// id 찾기
-	public Integer selectIdByNameAndEmail(FindIdFormDto findIdFormDto);
-
-	// password 발급용 model 확인
-	public Integer selectProfessorByIdAndNameAndEmail(FindPasswordFormDto findPasswordFormDto);
 
 	// 페이지별 교수 조회
 	public List<Professor> selectProfessorList(ProfessorListForm professorListForm);

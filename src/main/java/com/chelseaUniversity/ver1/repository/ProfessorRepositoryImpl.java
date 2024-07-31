@@ -59,12 +59,6 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 	}
 
 	@Override
-	public int updateProfessor(UserUpdateDto userUpdateDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public ProfessorInfoDto selectProfessorById(Integer id) {
 		ProfessorInfoDto professorInfoDto = new ProfessorInfoDto();
 		try (Connection conn = DBUtil.getConnection();
@@ -82,18 +76,6 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 			e.printStackTrace();
 		}
 		return professorInfoDto;
-	}
-
-	@Override
-	public Integer selectIdByNameAndEmail(FindIdFormDto findIdFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer selectProfessorByIdAndNameAndEmail(FindPasswordFormDto findPasswordFormDto) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -63,17 +63,6 @@ public class GradeRespositoryImpl implements GradeRespository {
 			+ "on stu.grade = gr.grade\r\n"
 			+ "where s.id = ? ";
 	
-	@Override
-	public List<GradeDto> selectSubYearByStudentId(Integer studentId) {
-		
-		return null;
-	}
-
-	@Override
-	public List<GradeDto> selectSemesterByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public List<GradeDto> selectGradeDtoBySemester(Integer studentId, Integer semester, Integer subYear) {
@@ -95,17 +84,6 @@ public class GradeRespositoryImpl implements GradeRespository {
 			e.printStackTrace();
 		}
 		return gradeList;
-	}
-
-	@Override
-	public List<GradeDto> selectGradeDtoByStudentId(Integer studentId) {
-		return null;
-	}
-
-	@Override
-	public List<GradeDto> selectGradeDtoBytype(Integer studentId, Integer subYear, Integer semester, String type) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -192,12 +170,6 @@ public class GradeRespositoryImpl implements GradeRespository {
 			e.printStackTrace();
 		}
 		return myGradeList;
-	}
-
-	@Override
-	public List<MyGradeDto> gradeinquiryBysubYear(Integer studentId, Integer subYear) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

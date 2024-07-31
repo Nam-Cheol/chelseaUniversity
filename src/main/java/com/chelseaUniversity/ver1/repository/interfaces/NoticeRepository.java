@@ -22,15 +22,7 @@ public interface NoticeRepository {
 	// 공지사항 삭제
 	public void deleteNotice(String id);
 	
-	public int insert(NoticeFormDto noticeFormDto);
-	public List<Notice> selectByNoticeDto(NoticePageFormDto noticePageFormDto);
 	public Notice selectById(Integer id);
-	public int updateByNoticeDto(NoticeFormDto noticeFormDto);
-	public int deleteById(Integer id);
-	
-	// 파일
-	public int insertFile(NoticeFormDto noticeFormDto);
-	public int selectLimit(NoticeFormDto noticeFormDto);
 	
 	// 페이징
 	public List<Notice> selectByNoticeDtoOrderBy(int limit,int offset);
@@ -45,6 +37,4 @@ public interface NoticeRepository {
 	// 조회수
 	public Integer updateViews(Integer id);
 	
-	// 메인 페이지에 사용할 최신글 5개
-	public List<NoticeFormDto> selectLimit5();
 }
