@@ -24,9 +24,9 @@
 	<div class="formbox">
 	<h2>보안검사</h2>
 	<form action="${pageContext.request.contextPath}/user/check"method="post">
-		아이디 &nbsp;&nbsp;&nbsp;: <input type="text" id="id" name="id">
+		<b style="color:black">아이디</b>: <input type="text" id="id" name="id">
 		<br>
-		비밀번호 : <input type="password" id="password" name="password">
+		<b style="color:black">비밀번호</b> : <input type="password" id="password" name="password">
 		<br>
 		<input type="submit" value="확인">
 	</form>
