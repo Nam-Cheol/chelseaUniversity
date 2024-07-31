@@ -27,11 +27,6 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 			+ "		VALUES (?, ?) ";
 	private final String UPDATE_BY_ID = " UPDATE stu_sub_tb SET GRADE = ? WHERE student_id = ? AND subject_id = ? ";
 
-	@Override
-	public List<StudentInfoForProfessorDto> selectBySubjectId(Integer subjectId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public StuSub selectByStudentIdAndSubjectId(Integer studentId, Integer subjectId) {
@@ -52,23 +47,6 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 		return stuSub;
 	}
 
-	@Override
-	public List<StuSubAppDto> selectListByStudentIdAndSemester(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StuSubSumGradesDto selectSumGrades(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<StuSubDayTimeDto> selectDayTime(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public int insert(Integer studentId, Integer subjectId) {
@@ -90,23 +68,7 @@ public class StuSubRepositoryImpl implements StuSubRepository {
 		return rsCount;
 	}
 
-	@Override
-	public int delete(Integer studentId, Integer subjectId) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public List<StuSubAppDto> selectJoinListByStudentId(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateCompleteGradeByStudentIdAndSubjectId(Integer studentId, Integer subjectId, Integer completeGrade) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public void updateGradeByStudentIdAndSubjectId(StuSubDetail stuSubDetail) {

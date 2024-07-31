@@ -62,12 +62,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 	}
 
 	@Override
-	public Integer selectIdByCreateStudentDto(CreateStudentDto createStudentDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Integer> selectIdList() {
 		List<Integer> list = new ArrayList<>();
 		try (Connection conn = DBUtil.getConnection()) {
@@ -80,36 +74,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	@Override
-	public UserInfoForUpdateDto selectByUserId(Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateStudent(UserUpdateDto userUpdateDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public StudentInfoDto selectStudentInfoById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer selectIdByNameAndEmail(FindIdFormDto findIdFormDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer selectStudentByIdAndNameAndEmail(FindPasswordFormDto findPasswordFormDto) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**
@@ -223,54 +187,6 @@ public class StudentRepositoryImpl implements StudentRepository {
 		}
 
 		return totalStudents;
-	}
-
-	@Override
-	public Integer selectStudentAmountByDeptId(Integer deptId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester1_2() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester2_1() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester2_2() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester3_1() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester3_2() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester4_1() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateStudentGradeAndSemester4_2() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

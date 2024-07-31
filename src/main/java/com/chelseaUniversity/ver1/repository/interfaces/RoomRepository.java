@@ -11,9 +11,6 @@ import com.chelseaUniversity.ver1.model.dto.RoomFormDto;
  */
 
 public interface RoomRepository {
-	public int insert(RoomFormDto roomFormDto);
-	public List<Room> selectByRoomDto();
-	public int deleteById(String id);
 	
 	public List<Room> selectRoom();
 	public int insertRoom(String roomId, int collegeId);

@@ -17,29 +17,6 @@ import com.chelseaUniversity.ver1.model.dto.response.SubjectPeriodForProfessorDt
  */
 
 public interface SubjectRepository {
-	// 과목 insert
-	public Integer insert(SubjectFormDto subjectFormDto);
-	public int deleteById(Integer id);
-	public int updateBySubjectDto(SubjectFormDto subjectFormDto);
-	
-	/**
-	 * 성희 
-	 * 강의 입력 시 같은 강의실, 요일, 연도, 학기 정보 조회
-	 */
-	public List<Subject> selectByRoomIdAndSubDayAndSubYearAndSemester(SubjectFormDto subjectFormDto);
-	
-	/**
-	 * 성희 
-	 * 제일 최근 강의 ID 조회
-	 */
-	public Integer selectIdOrderById(SubjectFormDto subjectFormDto);
-	
-	/**
-	 * @author 서영
-	 * @return 수강 신청에 사용할 강의 정보
-	 */
-	public List<SubjectDto> selectDtoBySemester(Integer subYear, Integer semester);
-	public List<SubjectDto> selectDtoBySemesterLimit( Integer subYear, Integer semester, Integer page);
 	
 	/**
 	 * @author 서영
@@ -47,33 +24,6 @@ public interface SubjectRepository {
 	 */
 	public List<SubjectFormDto> selectDtoAll(int limit, int offset);
 	public List<SubjectFormDto> selectDtoSearch(int limit, int offset, String query, String type, String deptId, String name, int checkNum);
-	public List<SubjectDto> selectDtoAllLimit(Integer page);
-	
-	/**
-	 * @author 김지현
-	 * @param 교수 id
-	 * @return 교수 본인의 수업이 있는 년도-학기
-	 */
-	public List<SubjectPeriodForProfessorDto> selectSemester(Integer id);
-	
-	/**
-	 * @author 김지현
-	 * @return 그 학기의 본인 수업 정보들
-	 */
-	public List<SubjectForProfessorDto> selectSubjectBySemester(SubjectPeriodForProfessorDto subjectPeriodForProfessorDto);
-	
-	/**
-	 * @author 서영
-	 * @return 연도-학기-개설학과-강의명 검색을 조건으로 한 강의 정보
-	 */
-	public List<SubjectDto> selectDtoBySemesterAndDeptAndName(AllSubjectSearchFormDto allSubjectSearchFormDto);
-	
-	/**
-	 * @param currentSemesterSubjectSearchFormDto
-	 * @return 연도-학기-강의구분-개설학과-강의명 검색을 조건으로 한 강의 정보
-	 */
-	public List<SubjectDto> selectDtoBySemesterAndAndTypeAndDeptAndName(CurrentSemesterSubjectSearchFormDto currentSemesterSubjectSearchFormDto);
-	
 	/*
 	 * @author 김지현
 	 * @param id
@@ -89,8 +39,6 @@ public interface SubjectRepository {
 	 */
 	public int updateNumOfStudent(Integer id, String type);
 	
-	
-	public ReadSyllabusDto selectSyllabusBySubjectId(Integer subjectId);
 	
 	/**
 	 * @author 서영

@@ -155,11 +155,6 @@ public class UserRepositoryImpl implements UserRepository{
 		return rowCount;
 	}
 
-	// 회원가입
-	@Override
-	public int insertToUser(User user) {
-		return 0;
-	}
 
 	// id 찾기
 	@Override

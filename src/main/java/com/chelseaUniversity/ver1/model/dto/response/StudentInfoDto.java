@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class StudentInfoDto {
-
+	
 	private Integer id;
 	private String name;
 	private Date birthDate;
