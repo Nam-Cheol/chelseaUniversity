@@ -121,7 +121,7 @@ public class GradeRespositoryImpl implements GradeRespository {
 				GradeDto grade = GradeDto.builder().subYear(rs.getInt("year")).semester(rs.getInt("semester"))
 						.subjectId(rs.getInt("id")).name(rs.getString("name")).type(rs.getString("type"))
 						.grade(rs.getString("completegrade")).gradeValue(rs.getString("grade")).build();
-				System.out.println(grade.getName());
+				System.out.println(grade.getGradeValue());
 				GradeDtoList.add(grade);
 			}
 		} catch (Exception e) {

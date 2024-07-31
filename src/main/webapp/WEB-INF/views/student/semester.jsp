@@ -73,7 +73,6 @@
 						<td class="sub--list--name">${grade.name}</td>
 						<td>${grade.type}</td>
 						<td>${grade.grade}</td>
-						<td>${grade.gradeValue}</td>
 						<td>
 						<c:set var="subjectExists" value="false" />
                 	<c:forEach var="evaluation" items="${evaluation}">
@@ -81,6 +80,15 @@
                         <c:set var="subjectExists" value="true" />
                     </c:if>
                 	</c:forEach>
+                	<c:choose>
+                    <c:when test="${!subjectExists}">
+                    </c:when>
+                    <c:otherwise>
+                    	${grade.gradeValue}
+                    </c:otherwise>
+                    </c:choose>
+                    </td>
+						<td>
                 	<c:choose>
                     <c:when test="${!subjectExists}">
                         <a href="/chelseaUniversity/grade/evaluation?subjectId=${grade.subjectId}"
