@@ -67,12 +67,6 @@ public class CollegeRepositoryImpl implements CollegeRepository{
 	}
 	
 	@Override
-	public int selectCollegeDtoByName(String name) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public College selectCollegeDtoById(Integer id) {
 		College college = null ;
 		try (Connection conn = DBUtil.getConnection()) {
@@ -86,12 +80,6 @@ public class CollegeRepositoryImpl implements CollegeRepository{
 			e.printStackTrace();
 		}
 		return college;
-	}
-
-	@Override
-	public int deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

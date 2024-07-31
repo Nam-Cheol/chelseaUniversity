@@ -28,18 +28,6 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 	private static final String DELETE_NOTICE = " DELETE FROM notice_tb WHERE id = ? ";
 	
 	@Override
-	public int insert(NoticeFormDto noticeFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<Notice> selectByNoticeDto(NoticePageFormDto noticePageFormDto) {
-		
-		return null;
-	}
-
-	@Override
 	public Notice selectById(Integer id) {
 		Notice notice = null;
 		try (Connection conn = DBUtil.getConnection();
@@ -55,30 +43,6 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 			e.printStackTrace();
 		}
 		return notice;
-	}
-
-	@Override
-	public int updateByNoticeDto(NoticeFormDto noticeFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertFile(NoticeFormDto noticeFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int selectLimit(NoticeFormDto noticeFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -219,12 +183,6 @@ public class NoticeRepositoryImpl implements NoticeRepository {
 			e.printStackTrace();
 		}
 		return rowCount;
-	}
-
-	@Override
-	public List<NoticeFormDto> selectLimit5() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

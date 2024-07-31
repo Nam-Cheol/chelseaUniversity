@@ -19,30 +19,6 @@ public class PreStuSubRepositoryImpl implements PreStuSubRepository {
 	public final String SELECT_BY_SUB_ID = " SELECT * FROM sub_registration WHERE sub_id = ? ";
 
 	@Override
-	public PreStuSub selectByStudentIdAndSubjectId(Integer studentId, Integer subjectId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<StuSubAppDto> selectListByStudentIdAndSemester(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StuSubSumGradesDto selectSumGrades(Integer studentId, Integer subYear, Integer semester) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<StuSubDayTimeDto> selectDayTime(Integer studentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int insert(Integer studentId, Integer subjectId) {
 		int rsCount = 0;
 		
@@ -60,12 +36,6 @@ public class PreStuSubRepositoryImpl implements PreStuSubRepository {
 		
 		
 		return rsCount;
-	}
-
-	@Override
-	public int delete(Integer studentId, Integer subjectId) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

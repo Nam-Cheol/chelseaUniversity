@@ -23,12 +23,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 	public final String COUNT_ALL_DEPARTMENT = " SELECT count(*) AS count FROM department_tb ";
 
 	@Override
-	public int insert(DepartmentFormDto departmentFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public Department selectById(Integer id) {
 		Department department = null;
 		try (Connection conn = DBUtil.getConnection()) {
@@ -55,24 +49,6 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 		}
 
 		return department;
-	}
-
-	@Override
-	public List<Department> selectByDepartmentDto() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByDepartmentDto(DepartmentFormDto departmentFormDto) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

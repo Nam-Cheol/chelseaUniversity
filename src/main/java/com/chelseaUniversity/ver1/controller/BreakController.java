@@ -119,40 +119,40 @@ public class BreakController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String action = request.getPathInfo();
-		HttpSession session = request.getSession();
-		StudentInfoDto principal = (StudentInfoDto) session.getAttribute("principal");
-		if (principal == null) {
-			response.sendRedirect("index.jsp");
-			return;
-		}
+            throws ServletException, IOException {
+        String action = request.getPathInfo();
+        HttpSession session = request.getSession();
+        User userRole = (User) session.getAttribute("user");
+        StudentInfoDto principal = null;
+        if ("student".equalsIgnoreCase(userRole.getUserRole())) {
+            principal = (StudentInfoDto) session.getAttribute("principal");
+        }
 
-		if (action != null || action.trim().isEmpty()) {
+        if (action != null || action.trim().isEmpty()) {
 
-			switch (action) {
-			case "/application":
-				insertBreakApplication(request, response, principal);
-				response.sendRedirect(request.getContextPath() + "/break/list");
-				break;
+            switch (action) {
+            case "/application":
+                insertBreakApplication(request, response, principal);
+                response.sendRedirect(request.getContextPath() + "/break/list");
+                break;
 
-			case "/update":
-				updateBreak(request, response, session);
-				break;
+            case "/update":
+                updateBreak(request, response, session);
+                break;
 
-			case "/delete":
-				deleteBreak(request, response);
-				break;
+            case "/delete":
+                deleteBreak(request, response);
+                break;
 
-			default:
-				response.sendError(HttpServletResponse.SC_NOT_FOUND);
-				break;
-			}
+            default:
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                break;
+            }
 
-		} else {
-			response.sendRedirect(request.getContextPath());
-		}
-	}
+        } else {
+            response.sendRedirect(request.getContextPath());
+        }
+    }
 
 	/**
 	 * 교직원 -> 휴학 요청 들어왔는지 확인
