@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.chelseaUniversity.ver1.model.CheckSubjectTime;
 import com.chelseaUniversity.ver1.model.PreStuSub;
+import com.chelseaUniversity.ver1.model.SendSub;
 import com.chelseaUniversity.ver1.model.StuSub;
 import com.chelseaUniversity.ver1.model.SubjectHistory;
 import com.chelseaUniversity.ver1.model.User;
@@ -201,12 +202,10 @@ public class SugangController extends HttpServlet {
 
 		case "/regist":
 			registrationPreSubject(request, response, principalStu);
-			response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 			break;
 
 		case "/delete":
 			deletePreSubject(request, response, principalStu);
-			response.sendRedirect(request.getContextPath() + "/sugang/pre?page=1");
 			break;
 
 		case "/application":
@@ -215,7 +214,6 @@ public class SugangController extends HttpServlet {
 
 		case "/deleteList":
 			deletePreSubject(request, response, principalStu);
-			response.sendRedirect(request.getContextPath() + "/sugang/preAppList");
 			break;
 
 		case "/deleteSugang":
@@ -339,9 +337,11 @@ public class SugangController extends HttpServlet {
 		final int SUGANG_PERIOD = 2;
 		int rscount2 = -1;
 		// 수강 디테일에 입력
-		while (rscount2 != 0) {
-			rscount2 = stuSubDetailRepository.insert(stuSub.getId(), stuSub.getStudentId(), stuSub.getSubjectId());
+		List<SendSub> fixList = stuSubDetailRepository.selectFixSubject();
+		for (SendSub sendSub : fixList) {
+			stuSubDetailRepository.insert(sendSub.getStudentId(), sendSub.getSubjectId());	
 		}
+		
 		request.setAttribute("SUGANG_PERIOD", SUGANG_PERIOD);
 		request.getRequestDispatcher("/WEB-INF/views/staff/sugangPeriod.jsp").forward(request, response);
 	}
@@ -366,7 +366,6 @@ public class SugangController extends HttpServlet {
 		request.setAttribute("subjectList", subjectList);
 		request.setAttribute("totalCount", totalCount);
 		request.setAttribute("totalPage", totalPage);
-
 		if ("/subjectList".equals(action)) {
 			request.getRequestDispatcher("/WEB-INF/views/student/subjectList.jsp").forward(request, response);
 		} else if ("/pre".equals(action)) {

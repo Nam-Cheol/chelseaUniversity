@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.plaf.ScrollBarUI;
+
+import com.chelseaUniversity.ver1.model.SendSub;
 import com.chelseaUniversity.ver1.model.StuSubDetail;
 import com.chelseaUniversity.ver1.repository.interfaces.StuSubDetailRepository;
 import com.chelseaUniversity.ver1.utill.DBUtil;
@@ -17,8 +20,8 @@ public class StuSubDetailRepositoryImpl implements StuSubDetailRepository {
 	private static final String SELECT_STUDENT_BY_ID = " SELECT s.id, s.name, d.name, sd.* FROM student_tb as s LEFT JOIN department_tb as d ON s.dept_id = d.id LEFT JOIN stu_sub_detail_tb as sd ON s.id = sd.student_id LEFT JOIN subject_tb as su on sd.subject_id = su.id WHERE s.id = ? ";
 	private static final String UPDATE_STUDENT_BY_ID = " UPDATE stu_sub_detail_tb SET absent = ?, lateness = ?, homework = ?, mid_exam = ?, final_exam = ?, converted_mark = ? where student_id = ? ";
 
-	// TODO - define 클래스 이동 쿼리문
-	public final String INSERT_PRE_INFO = "INSERT stu_sub_detail_tb(id, student_id, subject_id) VALUE (?, ?, ?)";
+	private static final String INSERT_SUB_DETAIL_INFO = " INSERT INTO stu_sub_detail_tb(student_id, subject_id) VALUES (?, ?) ";
+	private static final String SELECT_SUB_FIX = " select student_id, subject_id from stu_sub_tb ";
 
 	@Override
 	public int updateGrade(StuSubDetail stuSubDetail) {
@@ -45,14 +48,13 @@ public class StuSubDetailRepositoryImpl implements StuSubDetailRepository {
 	}
 
 	@Override
-	public int insert(Integer id, Integer studentId, Integer subjectId) {
+	public int insert(String studentId, String subjectId) {
 		int rsCount = 0;
 		try (Connection conn = DBUtil.getConnection()) {
 			conn.setAutoCommit(false);
-			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_PRE_INFO)) {
-				pstmt.setInt(1, id);
-				pstmt.setInt(2, studentId);
-				pstmt.setInt(3, subjectId);
+			try (PreparedStatement pstmt = conn.prepareStatement(INSERT_SUB_DETAIL_INFO)) {
+				pstmt.setString(1, studentId);
+				pstmt.setString(2, subjectId);
 				rsCount = pstmt.executeUpdate();
 				conn.commit();
 			} catch (Exception e) {
@@ -101,6 +103,34 @@ public class StuSubDetailRepositoryImpl implements StuSubDetailRepository {
 			e.printStackTrace();
 		}
 		return detail;
+	}
+
+	@Override
+	public List<SendSub> selectFixSubject() {
+		List<SendSub> list = new ArrayList<>();
+		
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(SELECT_SUB_FIX)){
+			
+			try (ResultSet rs = pstmt.executeQuery()){
+				
+				while(rs.next()) {
+					SendSub dto = SendSub.builder()
+									.StudentId(rs.getString("student_id"))
+									.SubjectId(rs.getString("subject_id"))
+									.build();
+					list.add(dto);
+					
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 }
